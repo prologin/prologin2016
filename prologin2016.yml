@@ -1,0 +1,109 @@
+name: prologin2016
+
+constant:
+  -
+    cst_name: TAILLE_TERRAIN
+    cst_val: 30
+    cst_comment: Taille du terrain (longueur et largeur).
+
+  -
+    cst_name: NB_TOURS
+    cst_val: 100
+    cst_comment: Nombre de tours à jouer avant la fin de la partie.
+
+  -
+    cst_name: NB_POINTS_DEPLACEMENT
+    cst_val: 6
+    cst_comment: Nombre de points de déplacement par tour.
+
+enum:
+  -
+    enum_name: erreur
+    enum_summary: "Erreurs possibles"
+    enum_field:
+      - [ok, "L'action a été exécutée avec succès"]
+      - [position_invalide, "La position spécifiée est hors de la carte."]
+      - [position_eloignee, "La destination est trop éloignée."]
+
+struct:
+  -
+    str_name: position
+    str_summary: Position sur la carte, donnée par deux coordonnées.
+    str_tuple: yes
+    str_field:
+      - [x, int, "Coordonnée en X"]
+      - [y, int, "Coordonnée en Y"]
+
+function:
+
+# Actions
+
+  -
+    fct_name: deplacer
+    fct_summary: Déplace votre agent sur la case passée en argument.
+    fct_ret_type: erreur
+    fct_action: yes
+    fct_arg:
+      - [dest, position, "Case de destination."]
+
+# Algorithmes offerts gratuitement
+
+  -
+    fct_name: distance
+    fct_summary: Renvoie la distance de Manhattan entre deux positions.
+    fct_ret_type: int
+    fct_arg:
+      - [pos1, position, "Première position"]
+      - [pos2, position, "Seconde position"]
+
+# Autre
+
+  -
+    fct_name: moi
+    fct_summary: Renvoie votre numéro de joueur.
+    fct_ret_type: int
+    fct_arg: []
+  -
+    fct_name: adversaire
+    fct_summary: Renvoie le numéro de votre adversaire.
+    fct_ret_type: int
+    fct_arg: []
+  -
+    fct_name: points_deplacement
+    fct_summary: Indique votre nombre de points de déplacement restants pour ce tour-ci.
+    fct_ret_type: int
+    fct_arg: []
+  -
+    fct_name: score
+    fct_summary: Renvoie le score du joueur désigné par le numéro ``id_joueur``.
+    fct_ret_type: int
+    fct_arg:
+      - [id_joueur, int, "Identifiant du joueur"]
+  -
+    fct_name: tour_actuel
+    fct_summary: Renvoie le numéro du tour actuel.
+    fct_ret_type: int
+    fct_arg: []
+  -
+    fct_name: annuler
+    fct_summary: "Annule la dernière action.
+         Renvoie ``false`` quand il n'y a pas d'action à annuler ce tour-ci."
+    fct_ret_type: bool
+    fct_arg: []
+
+user_function:
+  -
+    fct_name: partie_init
+    fct_summary: Fonction appelée au début de la partie.
+    fct_ret_type: void
+    fct_arg: []
+  -
+    fct_name: jouer_tour
+    fct_summary: Fonction appelée à chaque tour.
+    fct_ret_type: void
+    fct_arg: []
+  -
+    fct_name: partie_fin
+    fct_summary: Fonction appelée à la fin de la partie.
+    fct_ret_type: void
+    fct_arg: []
