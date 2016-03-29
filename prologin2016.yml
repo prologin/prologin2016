@@ -12,9 +12,75 @@ constant:
     cst_comment: Nombre de tours à jouer avant la fin de la partie.
 
   -
-    cst_name: NB_POINTS_DEPLACEMENT
-    cst_val: 6
-    cst_comment: Nombre de points de déplacement par tour.
+    cst_name: NB_POINTS_ACTION
+    cst_val: 42
+    cst_comment: Nombre de points d'action par tour.
+
+  -
+    cst_name: NB_POINTS_ENERGIE_ASPIRATION
+    cst_val: 10
+    cst_comment: Nombre de points d'énergie d'aspiration de la base.
+
+  -
+    cst_name: COUT_CONSTRUCTION_TUYAU
+    cst_val: 2
+    cst_comment: Nombre de points d'action que coûte la construction d'un tuyau.
+
+  -
+    cst_name: COUT_AMELIORATION_TUYAU
+    cst_val: 10
+    cst_comment: Nombre de points d'action que coûte l'amélioration d'un tuyau.
+
+  -
+    cst_name: COUT_DESTRUCTION_TUYAU
+    cst_val: 25
+    cst_comment: Nombre de points d'action que coûte la destruction d'un tuyau.
+
+  -
+    cst_name: COUT_DESTRUCTION_SUPER_TUYAU
+    cst_val: 40
+    cst_comment: Nombre de points d'action que coûte la destruction d'un
+                 super-tuyau.
+
+  -
+    cst_name: COUT_MODIFICATION_ASPIRATION
+    cst_val: 2
+    cst_comment: Nombre de points d'action que coûte le déplacement d'un point
+                 d'énergie de la base.
+  -
+    cst_name: MULTIPLICATEUR_VITESSE_SUPER_TUYAU
+    cst_val: 2
+    cst_comment: Multiplicateur de la vitesse des pulsar lors de leur présence
+                 dans un super-tuyau.
+
+  -
+    cst_name: TEMPS_DISSIPATION_RADIOACTIVE
+    cst_val: 3
+    cst_comment: Nombre de tours d'impossibilité de reconstruire un tuyau dans
+                 une zone après la destruction d'un autre.
+
+  -
+    cst_name: RAYON_ZONE_RADIOACTIVE
+    cst_val: 2
+    cst_comment: Rayon définissant une zone autour d'une case où un tuyau a été
+                 détruit dans laquelle il n'est pas possible de construire
+                 pendant un certain temps.
+
+  -
+    cst_name: COUT_AMELIORATION_TUYAU
+    cst_val: 10
+    cst_comment: Nombre de points d'action que coûte l'amélioration d'un tuyau.
+
+  -
+    cst_name: TEMPS_DESTRUCTION_TUYAU
+    cst_val: 3
+    cst_comment: Nombre de tours que prend la destruction d'un tuyau.
+
+  -
+    cst_name: NB_POINTS_GAIN_PULSE
+    cst_val: 5
+    cst_comment: Nombre de points que rapporte à un joueur la réception d'un
+                 pulse d'énergie dans sa base, par point d'énergie de celle-ci.
 
 enum:
   -
@@ -22,8 +88,17 @@ enum:
     enum_summary: "Erreurs possibles"
     enum_field:
       - [ok, "L'action a été exécutée avec succès"]
+      - [pa_insuffisants, "Vous ne possédez pas assez de points d'action pour
+                           cette action."]
+      - [aucun_tuyau, "Il n'y a pas de tuyau à la position spécifiée."]
       - [position_invalide, "La position spécifiée est hors de la carte."]
-      - [position_eloignee, "La destination est trop éloignée."]
+      - [pe_insuffisants, "Vous ne possédez pas assez de points d'énergie sur
+                           cette partie de la base."]
+      - [amelioration_impossible, "Il y a déjà un super-tuyau sur cette case."]
+      - [construction_impossible, "Il est impossible de construire un tuyau à
+                                   la position indiquée".]
+      - [destruction_impossible, "Il n'y a pas de tuyau à la position
+                                  spécifiée".]
 
 struct:
   -
@@ -33,28 +108,147 @@ struct:
     str_field:
       - [x, int, "Coordonnée en X"]
       - [y, int, "Coordonnée en Y"]
+  -
+    str_name: case
+    str_summary: Représente l'état d'une case.
+    str_tuple: no
+    str_field:
+      - [emplacement, position, "Position de la case."]
+      - [etat, int, "0 pour tuyau, 1 pour super-tuyau et -1 pour absence
+                     de tuyau."]
+      - [destruction, int, "Temps avant destruction du tuyau, -1 si le tuyau
+                            n'est pas en cours de destruction."]
+      - [radiation, int, "Temps avant dissipation des radiations, -1 s'il
+                          n'y a pas de radiation."]
+
+  -
+    str_name: pulsar
+    str_summary: Représente un pulsar existant.
+    str_tuple: no
+    str_field:
+      - [emplacement, position, "Position du pulsar."]
+      - [periode, int, "Période d'émission du pulsar."]
+      - [puissance, int, "Quantité d'énergie envoyée par pulse."]
+      - [capacite, int, "Quantité d'énergie initiale du pulsar"]
+
+  -
+    str_name: pulse
+    str_summary: Représente un pulsar existant.
+    str_tuple: no
+    str_field:
+      - [emplacement, position, "Position du pulse."]
+      - [energie, int, "Quantité d'énergie contenue dans le pulse."]
 
 function:
 
 # Actions
 
   -
-    fct_name: deplacer
-    fct_summary: Déplace votre agent sur la case passée en argument.
+    fct_name: construire
+    fct_summary: Construit un tuyau sur une case donnée
     fct_ret_type: erreur
     fct_action: yes
     fct_arg:
-      - [dest, position, "Case de destination."]
-
-# Algorithmes offerts gratuitement
+      - [position, "Case choisie."]
 
   -
-    fct_name: distance
-    fct_summary: Renvoie la distance de Manhattan entre deux positions.
-    fct_ret_type: int
+    fct_name: ameliorer
+    fct_summary: Améliore un tuyau en super-tuyau.
+    fct_ret_type: erreur
+    fct_action: yes
     fct_arg:
-      - [pos1, position, "Première position"]
-      - [pos2, position, "Seconde position"]
+      - [position, "Case choisie."]
+
+  -
+    fct_name: detruire
+    fct_summary: Détruit un tuyau sur une case donnée.
+    fct_ret_type: erreur
+    fct_action: yes
+    fct_arg:
+      - [position, "Case choisie."]
+
+  -
+    fct_name: deplacer_aspiration
+    fct_summary: "Déplace un point d'aspiration d'un point
+                  de la base vers l'autre."
+    fct_ret_type: erreur
+    fct_action: yes
+    fct_arg:
+      - [int, "Position de la base où est prise l'énergie."]
+      - [int, "Position de la base où est apportée l'énergie."]
+
+# Fonctions de query sur les pulsars / les tuyaux / le terrain
+
+  -
+    fct_name: liste_pulsars
+    fct_summary: Renvoie la liste de tous les pulsars présents.
+    fct_ret_type: pulsar array
+    fct_arg: []
+
+  -
+    fct_name: liste_pulses
+    fct_summary: Renvoie la liste de tous les pulses présents.
+    fct_ret_type: pulse array
+    fct_arg: []
+
+  -
+    fct_name: terrain
+    fct_summary: Renvoie l'état du terrain sous la forme d'une double
+                 liste de cases.
+    fct_ret_type: case array array
+    fct_arg: []
+
+  -
+    fct_name: liste_tuyaux
+    fct_summary: Renvoie la liste des cases contenant un tuyau (ou super-tuyau).
+    fct_ret_type: case array
+    fct_arg: []
+
+  -
+    fct_name: liste_super_tuyaux
+    fct_summary: Renvoie la liste des cases contenant un super-tuyau.
+    fct_ret_type: case array
+    fct_arg: []
+
+  -
+    fct_name: liste_radiation
+    fct_summary: Renvoie la liste des cases sous l'effet de radiations.
+    fct_ret_type: case array
+    fct_arg: []
+
+  -
+    fct_name: liste_destruction_tuyaux
+    fct_summary: Renvoie la liste des cases contenant un tuyau (ou super-tuyau)
+                 en cours de destruction
+    fct_ret_type: case array
+    fct_arg: []
+
+# Historique (actions de l'adversaire le tour précédent)
+
+  -
+    fct_name: hist_tuyaux construits
+    fct_summary: "Renvoie la liste des tuyaux construits par votre adversaire
+        au dernier tour."
+    fct_ret_type: case array
+    fct_arg: []
+  -
+    fct_name: hist_tuyaux_detruits
+    fct_summary: "Renvoie la liste des tuyaux détruits par votre adversaire
+        au dernier tour."
+    fct_ret_type: case array
+    fct_arg: []
+  -
+    fct_name: hist_tuyaux_ameliores
+    fct_summary: "Renvoie la liste des tuyaux améliorés par votre adversaire au
+        dernier tour."
+    fct_ret_type: case array
+    fct_arg: []
+  -
+    fct_name: hist_base_modification
+    fct_summary: "Renvoie la liste des différences d'énergie d'aspiration dans
+        la base de votre adversaire au dernier tour."
+    fct_ret_type: int array
+    fct_arg: []
 
 # Autre
 
@@ -69,8 +263,8 @@ function:
     fct_ret_type: int
     fct_arg: []
   -
-    fct_name: points_deplacement
-    fct_summary: Indique votre nombre de points de déplacement restants pour ce tour-ci.
+    fct_name: points_action
+    fct_summary: Indique votre nombre de points d'actions restants pour ce tour-ci.
     fct_ret_type: int
     fct_arg: []
   -
