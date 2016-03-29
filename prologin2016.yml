@@ -1,4 +1,5 @@
 name: prologin2016
+rules_type: turnbased
 
 constant:
   -
@@ -78,7 +79,7 @@ constant:
 
   -
     cst_name: NB_POINTS_GAIN_PULSE
-    cst_val: 5
+    cst_val: 1
     cst_comment: Nombre de points que rapporte à un joueur la réception d'un
                  pulse d'énergie dans sa base, par point d'énergie de celle-ci.
 
@@ -87,18 +88,30 @@ enum:
     enum_name: erreur
     enum_summary: "Erreurs possibles"
     enum_field:
-      - [ok, "L'action a été exécutée avec succès"]
+      - [ok, "L'action a été exécutée avec succès."]
       - [pa_insuffisants, "Vous ne possédez pas assez de points d'action pour
                            cette action."]
       - [aucun_tuyau, "Il n'y a pas de tuyau à la position spécifiée."]
       - [position_invalide, "La position spécifiée est hors de la carte."]
       - [pe_insuffisants, "Vous ne possédez pas assez de points d'énergie sur
                            cette partie de la base."]
+      - [pas_dans_base, "Cette case n'appartient pas à votre base."]
       - [amelioration_impossible, "Il y a déjà un super-tuyau sur cette case."]
       - [construction_impossible, "Il est impossible de construire un tuyau à
                                    la position indiquée".]
       - [destruction_impossible, "Il n'y a pas de tuyau à la position
-                                  spécifiée".]
+                                  spécifiée."]
+      - [pas_de_pulsar, "Il n'y a pas de pulsar à la position spécifiée."]
+      - [pas_de_pulse, "Il n'y a pas de pulse à la position spécifiée."]
+  -
+    enum_name: direction
+    enum_summary: "Directions possibles"
+    enum_field:
+      - [nord, "Nord."]
+      - [sud, "Sud."]
+      - [ouest, "Ouest."]
+      - [est, "Est."]
+      - [aucune, "Aucune direction."]
 
 struct:
   -
@@ -108,35 +121,21 @@ struct:
     str_field:
       - [x, int, "Coordonnée en X"]
       - [y, int, "Coordonnée en Y"]
-  -
-    str_name: case
-    str_summary: Représente l'état d'une case.
-    str_tuple: no
-    str_field:
-      - [emplacement, position, "Position de la case."]
-      - [etat, int, "0 pour tuyau, 1 pour super-tuyau et -1 pour absence
-                     de tuyau."]
-      - [destruction, int, "Temps avant destruction du tuyau, -1 si le tuyau
-                            n'est pas en cours de destruction."]
-      - [radiation, int, "Temps avant dissipation des radiations, -1 s'il
-                          n'y a pas de radiation."]
 
   -
     str_name: pulsar
     str_summary: Représente un pulsar existant.
     str_tuple: no
     str_field:
-      - [emplacement, position, "Position du pulsar."]
       - [periode, int, "Période d'émission du pulsar."]
       - [puissance, int, "Quantité d'énergie envoyée par pulse."]
       - [capacite, int, "Quantité d'énergie initiale du pulsar"]
 
   -
     str_name: pulse
-    str_summary: Représente un pulsar existant.
+    str_summary: Représente un pulse existant.
     str_tuple: no
     str_field:
-      - [emplacement, position, "Position du pulse."]
       - [energie, int, "Quantité d'énergie contenue dans le pulse."]
 
 function:
@@ -174,54 +173,160 @@ function:
     fct_ret_type: erreur
     fct_action: yes
     fct_arg:
-      - [int, "Position de la base où est prise l'énergie."]
-      - [int, "Position de la base où est apportée l'énergie."]
+      - [position, "Position de la base où est prise l'énergie."]
+      - [position, "Position de la base où est apportée l'énergie."]
 
 # Fonctions de query sur les pulsars / les tuyaux / le terrain
 
   -
     fct_name: liste_pulsars
     fct_summary: Renvoie la liste de tous les pulsars présents.
-    fct_ret_type: pulsar array
+    fct_ret_type: position array
     fct_arg: []
 
   -
     fct_name: liste_pulses
     fct_summary: Renvoie la liste de tous les pulses présents.
-    fct_ret_type: pulse array
-    fct_arg: []
-
-  -
-    fct_name: terrain
-    fct_summary: Renvoie l'état du terrain sous la forme d'une double
-                 liste de cases.
-    fct_ret_type: case array array
+    fct_ret_type: position array
     fct_arg: []
 
   -
     fct_name: liste_tuyaux
     fct_summary: Renvoie la liste des cases contenant un tuyau (ou super-tuyau).
-    fct_ret_type: case array
+    fct_ret_type: position array
     fct_arg: []
 
   -
     fct_name: liste_super_tuyaux
     fct_summary: Renvoie la liste des cases contenant un super-tuyau.
-    fct_ret_type: case array
+    fct_ret_type: position array
     fct_arg: []
 
   -
     fct_name: liste_radiation
     fct_summary: Renvoie la liste des cases sous l'effet de radiations.
-    fct_ret_type: case array
+    fct_ret_type: position array
     fct_arg: []
 
   -
     fct_name: liste_destruction_tuyaux
     fct_summary: Renvoie la liste des cases contenant un tuyau (ou super-tuyau)
-                 en cours de destruction
-    fct_ret_type: case array
+                 en cours de destruction.
+    fct_ret_type: position array
     fct_arg: []
+
+  -
+    fct_name: est_tuyau
+    fct_summary: Renvoie vrai si et seulement si la case contient un simple tuyau.
+    fct_ret_type: bool
+    fct_arg:
+      - [position, "Case choisie."]
+
+  -
+    fct_name: est_super_tuyau
+    fct_summary: Renvoie vrai si et seulement si la case contient un super tuyau.
+    fct_ret_type: bool
+    fct_arg:
+      - [position, "Case choisie."]
+
+  -
+    fct_name: est_en_destruction
+    fct_summary: Renvoie vrai si et seulement si la case contient un tuyau en cours
+                 de destruction.
+    fct_ret_type: bool
+    fct_arg:
+      - [position, "Case choisie."]
+
+  -
+    fct_name: est_en_radiation
+    fct_summary: Renvoie vrai si et seulement si la case est sous l'effet de
+                 radiations.
+    fct_ret_type: bool
+    fct_arg:
+      - [position, "Case choisie."]
+
+  -
+    fct_name: est_libre
+    fct_summary: Renvoie vrai si et seulement s'il est possible de construire sur
+                 cette case.
+    fct_ret_type: bool
+    fct_arg:
+      - [position, "Case choisie."]
+
+  -
+    fct_name: temps_destruction
+    fct_summary: Renvoie le temps qu'il reste avant la destruction d'une case, et
+                 -1 si elle n'est pas en cours de destruction.
+    fct_ret_type: bool
+    fct_arg:
+      - [position, "Case choisie."]
+
+  -
+    fct_name: temps_radiation
+    fct_summary: Renvoie le temps qu'il reste avant la dissipation des radiations
+                 sur une case, et -1 si elle n'en subit pas.
+    fct_ret_type: bool
+    fct_arg:
+      - [position, "Case choisie."]
+
+  -
+    fct_name: info_pulsar
+    fct_summary: Renvoie les informations propres au pulsar à la position donnée.
+    fct_ret_type: pulsar
+    fct_arg:
+      - [position, "Case choisie."]
+
+  -
+    fct_name: info_pulse
+    fct_summary: Renvoie les informations propres au pulse à la position donnée.
+    fct_ret_type: pulse
+    fct_arg:
+      - [position, "Case choisie."]
+
+  -
+    fct_name: ma_base
+    fct_summary: Renvoie la liste des cases composant votre base.
+    fct_ret_type: position array
+    fct_arg: []
+
+  -
+    fct_name: base_ennemie
+    fct_summary: Renvoie la liste des cases composant la base de votre ennemi.
+    fct_ret_type: position array
+    fct_arg: []
+
+  -
+    fct_name: energie_aspiration
+    fct_summary: Renvoie la puissance d'aspiration d'une case de base donnée.
+    fct_ret_type: position array
+    fct_arg:
+      - [position, "Case choisie."]
+
+  -
+    fct_name: energie_aspiration
+    fct_summary: Renvoie la puissance d'aspiration d'une case de base donnée.
+    fct_ret_type: position array
+    fct_arg:
+      - [position, "Case choisie."]
+
+  -
+    fct_name: priorite_directionnelle
+    fct_summary: Renvoie la liste des priorités des directions, dans l'ordre
+                 décroissant de priorité, au tour donné.
+    fct_ret_type: direction array
+    fct_arg:
+      - [position, "Case choisie."]
+      - [int, "Tour choisi."]
+
+  -
+    fct_name: aspiration
+    fct_summary: Renvoie pour une case donnée la direction de son aspiration
+                 (qu'elle contienne une pulse ou non), renvoie -1 si la case
+                 n'est pas une case contenant un tuyau ou si elle n'est
+                 reliée à aucune base.
+    fct_ret_type: direction array
+    fct_arg:
+      - [position, "Case choisie."]
 
 # Historique (actions de l'adversaire le tour précédent)
 
@@ -229,25 +334,25 @@ function:
     fct_name: hist_tuyaux construits
     fct_summary: "Renvoie la liste des tuyaux construits par votre adversaire
         au dernier tour."
-    fct_ret_type: case array
+    fct_ret_type: position array
     fct_arg: []
   -
     fct_name: hist_tuyaux_detruits
     fct_summary: "Renvoie la liste des tuyaux détruits par votre adversaire
         au dernier tour."
-    fct_ret_type: case array
+    fct_ret_type: position array
     fct_arg: []
   -
     fct_name: hist_tuyaux_ameliores
     fct_summary: "Renvoie la liste des tuyaux améliorés par votre adversaire au
         dernier tour."
-    fct_ret_type: case array
+    fct_ret_type: position array
     fct_arg: []
   -
     fct_name: hist_base_modification
     fct_summary: "Renvoie la liste des différences d'énergie d'aspiration dans
         la base de votre adversaire au dernier tour."
-    fct_ret_type: int array
+    fct_ret_type: position array
     fct_arg: []
 
 # Autre
