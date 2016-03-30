@@ -13,6 +13,15 @@ def configure(cfg):
 def build(bld):
     bld.shlib(
         source = '''
+            src/action_ameliorer.cc
+            src/action_construire.cc
+            src/action_deplacer_aspiration.cc
+            src/action_detruire.cc
+            src/api.cc
+            src/entry.cc
+            src/game_state.cc
+            src/interface.cc
+            src/rules.cc
         ''',
         defines = ['MODULE_COLOR=ANSI_COL_BROWN', 'MODULE_NAME="rules"'],
         target = 'prologin2016',
