@@ -4,8 +4,13 @@ rules_type: turnbased
 constant:
   -
     cst_name: TAILLE_TERRAIN
-    cst_val: 30
+    cst_val: 33
     cst_comment: Taille du terrain (longueur et largeur).
+
+  -
+    cst_name: LONGUEUR_BASE
+    cst_val: 11
+    cst_comment: Longueur de chacune de vos deux bases.
 
   -
     cst_name: NB_TOURS
@@ -19,17 +24,18 @@ constant:
 
   -
     cst_name: NB_POINTS_ENERGIE_ASPIRATION
-    cst_val: 10
-    cst_comment: Nombre de points d'énergie d'aspiration de la base.
+    cst_val: 11
+    cst_comment: Nombre de points d'énergie d'aspiration dans chacune
+                 de vos bases.
 
   -
     cst_name: COUT_CONSTRUCTION_TUYAU
-    cst_val: 2
+    cst_val: 10
     cst_comment: Nombre de points d'action que coûte la construction d'un tuyau.
 
   -
     cst_name: COUT_AMELIORATION_TUYAU
-    cst_val: 10
+    cst_val: 25
     cst_comment: Nombre de points d'action que coûte l'amélioration d'un tuyau.
 
   -
@@ -49,9 +55,14 @@ constant:
     cst_comment: Nombre de points d'action que coûte le déplacement d'un point
                  d'énergie de la base.
   -
+    cst_name: VITESSE_TUYAU
+    cst_val: 1
+    cst_comment: Vitesse du plasma dans un tuyau normal, en nombre de case
+                 par tour.
+  -
     cst_name: MULTIPLICATEUR_VITESSE_SUPER_TUYAU
     cst_val: 2
-    cst_comment: Multiplicateur de la vitesse des pulsar lors de leur présence
+    cst_comment: Multiplicateur de la vitesse du plasma lors de leur présence
                  dans un super-tuyau.
 
   -
@@ -68,20 +79,9 @@ constant:
                  pendant un certain temps.
 
   -
-    cst_name: COUT_AMELIORATION_TUYAU
-    cst_val: 10
-    cst_comment: Nombre de points d'action que coûte l'amélioration d'un tuyau.
-
-  -
     cst_name: TEMPS_DESTRUCTION_TUYAU
     cst_val: 3
     cst_comment: Nombre de tours que prend la destruction d'un tuyau.
-
-  -
-    cst_name: NB_POINTS_GAIN_PULSE
-    cst_val: 1
-    cst_comment: Nombre de points que rapporte à un joueur la réception d'un
-                 pulse d'énergie dans sa base, par point d'énergie de celle-ci.
 
 enum:
   -
@@ -102,7 +102,7 @@ enum:
       - [destruction_impossible, "Il n'y a pas de tuyau à la position
                                   spécifiée."]
       - [pas_de_pulsar, "Il n'y a pas de pulsar à la position spécifiée."]
-      - [pas_de_pulse, "Il n'y a pas de pulse à la position spécifiée."]
+
   -
     enum_name: direction
     enum_summary: "Directions possibles"
@@ -128,15 +128,8 @@ struct:
     str_tuple: no
     str_field:
       - [periode, int, "Période d'émission du pulsar."]
-      - [puissance, int, "Quantité d'énergie envoyée par pulse."]
+      - [puissance, int, "Quantité d'énergie envoyée par plasma."]
       - [capacite, int, "Quantité d'énergie initiale du pulsar"]
-
-  -
-    str_name: pulse
-    str_summary: Représente un pulse existant.
-    str_tuple: no
-    str_field:
-      - [energie, int, "Quantité d'énergie contenue dans le pulse."]
 
 function:
 
@@ -185,8 +178,8 @@ function:
     fct_arg: []
 
   -
-    fct_name: liste_pulses
-    fct_summary: Renvoie la liste de tous les pulses présents.
+    fct_name: liste_plasmas
+    fct_summary: Renvoie la liste de tous les plasmas présents.
     fct_ret_type: position array
     fct_arg: []
 
@@ -277,9 +270,10 @@ function:
       - [position, "Case choisie."]
 
   -
-    fct_name: info_pulse
-    fct_summary: Renvoie les informations propres au pulse à la position donnée.
-    fct_ret_type: pulse
+    fct_name: energie_presente
+    fct_summary: Renvoie la quantité d'énergie du plasma sur une case donnée,
+                 et 0 s'il n'y a pas de plasma.
+    fct_ret_type: int
     fct_arg:
       - [position, "Case choisie."]
 
@@ -321,10 +315,10 @@ function:
   -
     fct_name: aspiration
     fct_summary: Renvoie pour une case donnée la direction de son aspiration
-                 (qu'elle contienne une pulse ou non), renvoie -1 si la case
+                 (qu'elle contienne un plasma ou non), ou "aucune" si la case
                  n'est pas une case contenant un tuyau ou si elle n'est
                  reliée à aucune base.
-    fct_ret_type: direction array
+    fct_ret_type: direction
     fct_arg:
       - [position, "Case choisie."]
 
