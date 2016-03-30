@@ -14,6 +14,10 @@
 
 #include "api.hh"
 
+typedef void (*f_champion_partie_init)();
+typedef void (*f_champion_jouer_tour)();
+typedef void (*f_champion_partie_fin)();
+
 class Rules : public rules::TurnBasedRules
 {
 public:
@@ -26,6 +30,10 @@ public:
 
 protected:
     // FIXME: Override TurnBasedRules methods here
+
+    f_champion_partie_init champion_partie_init_;
+    f_champion_jouer_tour champion_jouer_tour_;
+    f_champion_partie_fin champion_partie_fin_;
 
 private:
     void register_actions();

@@ -1,3 +1,4 @@
+#include <fstream>
 #include "rules.hh"
 #include "actions.hh"
 
@@ -7,11 +8,21 @@ Rules::Rules(const rules::Options opt)
     if (!opt.champion_lib.empty())
     {
         champion_dll_ = std::make_unique<utils::DLL>(opt.champion_lib);
-
-        // FIXME: register user functions
+        champion_partie_init_ =
+            champion_dll_->get<f_champion_partie_init>("partie_init");
+        champion_jouer_tour_ =
+            champion_dll_->get<f_champion_jouer_tour>("jouer_tour");
+        champion_partie_fin_ =
+            champion_dll_->get<f_champion_partie_fin>("partie_fin");
     }
+    else
+        champion_dll_ = nullptr;
 
-    GameState* game_state = new GameState(opt.players);
+    std::ifstream ifs(opt.map_file);
+    if (!ifs.is_open())
+        FATAL("Cannot open file: %s", opt.map_file.c_str());
+
+    GameState* game_state = new GameState(ifs, opt.players);
     api_ = std::make_unique<Api>(game_state, opt.player);
     register_actions();
 }
