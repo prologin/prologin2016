@@ -313,7 +313,7 @@ function:
 # Historique (actions de l'adversaire le tour précédent)
 
   -
-    fct_name: hist_tuyaux construits
+    fct_name: hist_tuyaux_construits
     fct_summary: "Renvoie la liste des tuyaux construits par votre adversaire
         au dernier tour."
     fct_ret_type: position array
