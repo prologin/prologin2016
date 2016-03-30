@@ -8,6 +8,11 @@ constant:
     cst_comment: Taille du terrain (longueur et largeur).
 
   -
+    cst_name: LONGUEUR_BASE
+    cst_val: 11
+    cst_comment: Longueur de chacune de vos deux bases.
+
+  -
     cst_name: NB_TOURS
     cst_val: 100
     cst_comment: Nombre de tours à jouer avant la fin de la partie.
