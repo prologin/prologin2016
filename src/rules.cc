@@ -15,8 +15,6 @@ Rules::Rules(const rules::Options opt)
         champion_partie_fin_ =
             champion_dll_->get<f_champion_partie_fin>("partie_fin");
     }
-    else
-        champion_dll_ = nullptr;
 
     std::ifstream ifs(opt.map_file);
     if (!ifs.is_open())

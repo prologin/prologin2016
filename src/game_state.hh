@@ -7,32 +7,16 @@
 #include <rules/player.hh>
 #include "constant.hh"
 
-enum class CellType
-{
-    EMPTY,
-    PULSAR,
-    PIPE,
-    SUPER_PIPE
-};
-
 struct Cell
 {
-    CellType type_;
+    case_type type;
 
     // Plasma amount on this cell (>= 0).
-    int plasma_;
-
-    // Time left until irradiation dissipates.
-    // -1 if cell is not irradiated.
-    int irradiation_time_;
-
-    // Time left until the pipe is destroyed.
-    // -1 if not a pipe or not scheduled for destruction.
-    int destruction_time_;
+    int plasma;
 
     // Index of a pulsar in the pulsars_info_ list.
     // -1 if not a pulsar.
-    int pulsar_;
+    int pulsar;
 };
 
 class GameState : public rules::GameState
@@ -43,11 +27,9 @@ class GameState : public rules::GameState
                   std::vector<pulsar>& pulsars_info,
                   rules::Players_sptr players);
         GameState(std::ifstream&, rules::Players_sptr players);
-        GameState(const GameState& st);
-        virtual rules::GameState* copy() const;
-        ~GameState();
+        rules::GameState* copy() const final;
 
-        void next_turn();
+        void increment_turn() { turn_++; }
         int get_turn() const { return turn_; }
         int get_current_player() const;
 
@@ -68,8 +50,6 @@ class GameState : public rules::GameState
         int turn_;
 
         rules::Players_sptr players_;
-
-        static const Cell kEmptyCell;
 };
 
 #endif /* !GAME_STATE_HH */
