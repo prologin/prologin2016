@@ -204,6 +204,13 @@ function:
     fct_arg: []
 
   -
+    fct_name: est_pulsar
+    fct_summary: Renvoie vrai si et seulement si la case contient un pulsar.
+    fct_ret_type: bool
+    fct_arg:
+      - [position, position, "Case choisie."]
+
+  -
     fct_name: est_tuyau
     fct_summary: Renvoie vrai si et seulement si la case contient un simple tuyau.
     fct_ret_type: bool
