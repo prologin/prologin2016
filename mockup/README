@@ -1,10 +1,10 @@
-Le joueur 1 possède les bases Ouest et Est, et le joueur 2 Nord et Sud.
+Le joueur 1 possÃ¨de les bases Ouest et Est, et le joueur 2 Nord et Sud.
 
 Les actions possibles sont :
-    - clic gauche de la souris pour sélectionner une case
-    - ZQSD pour se déplacer
+    - clic gauche de la souris pour sÃ©lectionner une case
+    - ZQSD pour se dÃ©placer
     - C pour construire
-    - I pour améliorer
-    - O pour détruire
-    - A pour attraper un point d'aspiration, puis A à nouveau pour le relâcher
-    - ENTRÉE pour finir son tour
+    - I pour amÃ©liorer
+    - O pour dÃ©truire
+    - A pour attraper un point d'aspiration, puis A Ã  nouveau pour le relÃ¢cher
+    - ENTRÃ‰E pour finir son tour
