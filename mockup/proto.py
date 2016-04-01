@@ -122,7 +122,7 @@ def move():
         for j in range(N):
             if grille[i][j] == "pulsar":
                 for d, e in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
-                    if grille[d][e] in ["tuyau", "super_tuyau"]:
+                    if grille[d][e] in ["tuyau", "super_tuyau"] and distance_base[d][e] != 1000:
                         energie[d][e] += 1.0
     for i in range(N):
         for j in range(N):
@@ -134,6 +134,27 @@ def move():
                 energie[i][j] = 0
 
 
+def connexite_base(a, b):
+    global grille
+    grille[a][b] = "tuyau"
+    connexe = [[False for j in range(N)] for i in range(N)]
+    pq = []
+    for i in range(N):
+        for j in range(N):
+            if (mode, grille[i][j]) in [("Joueur 1", "base_1"), ("Joueur 2", "base_2")]:
+                connexe[i][j] = True
+                heappush(pq, (i, j))
+    while pq != []:
+        i, j = heappop(pq)
+        for d, e in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
+            if 0 <= d < N and 0 <= e < N and grille[d][e] in ["tuyau", "super_tuyau"]:
+                if not connexe[d][e]:
+                    connexe[d][e] = True
+                    heappush(pq, (d, e))
+    grille[a][b] = "none"
+    return(connexe[a][b])
+                
+                
 def appui_clavier(event):
     global points_action, case_selectionnee, grille, mode, change, max_aspiration, destruction, temps_destruction
     lettre = event.char
@@ -147,7 +168,7 @@ def appui_clavier(event):
         rafraichir()
         return
     if lettre == 'c' and points_action >= 10 and 0 < i < N - 1 and 0 < j < N - 1:
-        if grille[i][j] == "none":
+        if grille[i][j] == "none" and connexite_base(i,j):
             grille[i][j] = "tuyau"
             points_action -= 10
     if lettre == 'i' and points_action >= 25:
