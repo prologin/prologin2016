@@ -24,9 +24,9 @@ public:
     explicit Rules(const rules::Options opt);
     virtual ~Rules() {}
 
-    virtual rules::Actions* get_actions();
-    virtual void apply_action(const rules::IAction_sptr& action);
-    virtual bool is_finished();
+    rules::Actions* get_actions() override;
+    void apply_action(const rules::IAction_sptr& action) override;
+    bool is_finished() override;
 
 protected:
     // FIXME: Override TurnBasedRules methods here

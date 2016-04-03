@@ -30,7 +30,7 @@ class GameState : public rules::GameState
         // The input stream consists of simply five integers for every pulsar:
         // x y periode puissance plasma_total
         GameState(std::istream&, rules::Players_sptr players);
-        rules::GameState* copy() const final;
+        rules::GameState* copy() const final override;
 
         void increment_turn() { turn_++; }
         int get_turn() const { return turn_; }
