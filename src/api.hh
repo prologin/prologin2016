@@ -67,6 +67,14 @@ public:
 //
    erreur deplacer_aspiration(position source, position destination);
 ///
+// Déblaye une case où un tuyau a été détruit.
+//
+   erreur deblayer(position position);
+///
+// Renvoie le type d'une case donnée.
+//
+   case_type type_case(position position);
+///
 // Renvoie la liste de tous les pulsars présents.
 //
    std::vector<position> liste_pulsars();
@@ -83,13 +91,9 @@ public:
 //
    std::vector<position> liste_super_tuyaux();
 ///
-// Renvoie la liste des cases sous l'effet de radiations.
+// Renvoie la liste des tuyaux détruits, non encore déblayés.
 //
-   std::vector<position> liste_radiation();
-///
-// Renvoie la liste des cases contenant un tuyau (ou super-tuyau) en cours de destruction.
-//
-   std::vector<position> liste_destruction_tuyaux();
+   std::vector<position> liste_tuyaux_detruits();
 ///
 // Renvoie vrai si et seulement si la case contient un pulsar.
 //
@@ -103,33 +107,21 @@ public:
 //
    bool est_super_tuyau(position position);
 ///
-// Renvoie vrai si et seulement si la case contient un tuyau en cours de destruction.
+// Renvoie vrai si et seulement si la case contient un tuyau détruit non encore déblayé
 //
-   bool est_en_destruction(position position);
-///
-// Renvoie vrai si et seulement si la case est sous l'effet de radiations.
-//
-   bool est_en_radiation(position position);
+   bool est_detruit(position position);
 ///
 // Renvoie vrai si et seulement s'il est possible de construire sur cette case.
 //
    bool est_libre(position position);
 ///
-// Renvoie le temps qu'il reste avant la destruction d'une case, et -1 si elle n'est pas en cours de destruction.
-//
-   int temps_destruction(position position);
-///
-// Renvoie le temps qu'il reste avant la dissipation des radiations sur une case, et -1 si elle n'en subit pas.
-//
-   int temps_radiation(position position);
-///
 // Renvoie les informations propres au pulsar à la position donnée.
 //
    pulsar info_pulsar(position position);
 ///
-// Renvoie la quantité de plasma sur une case donnée (0 s'il n'y a pas de plasma).
+// Renvoie la quantité de plasma sur une case donnée.
 //
-   int charges_presentes(position position);
+   double charges_presentes(position position);
 ///
 // Renvoie la liste des cases composant votre base.
 //
@@ -151,6 +143,10 @@ public:
 //
    direction aspiration(position position);
 ///
+// Renvoie la valeur du coût de la prochaine modification de vos points d'aspiration.
+//
+   int cout_prochaine_modification_aspiration();
+///
 // Renvoie la liste des tuyaux construits par votre adversaire au dernier tour.
 //
    std::vector<position> hist_tuyaux_construits();
@@ -163,9 +159,17 @@ public:
 //
    std::vector<position> hist_tuyaux_ameliores();
 ///
-// Renvoie la liste des différences d'énergie d'aspiration dans la base de votre adversaire au dernier tour.
+// Renvoie la liste des tuyauxc déblayés par votre adversaire au dernier tour.
 //
-   std::vector<position> hist_base_modification();
+   std::vector<position> hist_tuyaux_deblayes();
+///
+// Renvoie la liste des cases de base de votre adversaire qui ont reçu un point d'aspiration (une même case peut apparaître plusieurs fois).
+//
+   std::vector<position> hist_points_aspiration_ajoutes();
+///
+// Renvoie la liste des cases de base de votre adversaire qui ont perdu un point d'aspiration (une même case peut apparaître plusieurs fois).
+//
+   std::vector<position> hist_points_aspiration_retires();
 ///
 // Renvoie votre numéro de joueur.
 //
@@ -196,6 +200,10 @@ public:
 
 ///
 // Affiche le contenu d'une valeur de type direction
+//
+
+///
+// Affiche le contenu d'une valeur de type case_type
 //
 
 ///

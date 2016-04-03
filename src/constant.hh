@@ -16,12 +16,12 @@
 ///
 // Taille du terrain (longueur et largeur).
 //
-# define TAILLE_TERRAIN            33
+# define TAILLE_TERRAIN            39
 
 ///
 // Longueur de chacune de vos deux bases.
 //
-# define LONGUEUR_BASE             11
+# define LONGUEUR_BASE             13
 
 ///
 // Nombre de tours à jouer avant la fin de la partie.
@@ -31,12 +31,7 @@
 ///
 // Nombre de points d'action par tour.
 //
-# define NB_POINTS_ACTION          42
-
-///
-// Nombre de points d'énergie d'aspiration dans chacune de vos bases.
-//
-# define NB_POINTS_ENERGIE_ASPIRATION 11
+# define NB_POINTS_ACTION          40
 
 ///
 // Nombre de points d'action que coûte la construction d'un tuyau.
@@ -46,12 +41,12 @@
 ///
 // Nombre de points d'action que coûte l'amélioration d'un tuyau.
 //
-# define COUT_AMELIORATION_TUYAU   25
+# define COUT_AMELIORATION_TUYAU   10
 
 ///
 // Nombre de points d'action que coûte la destruction d'un tuyau.
 //
-# define COUT_DESTRUCTION_TUYAU    25
+# define COUT_DESTRUCTION_TUYAU    30
 
 ///
 // Nombre de points d'action que coûte la destruction d'un super-tuyau.
@@ -59,9 +54,14 @@
 # define COUT_DESTRUCTION_SUPER_TUYAU 40
 
 ///
-// Nombre de points d'action que coûte le déplacement d'un point d'énergie de la base.
+// Nombre de points d'action que coûte le déplacement d'un point d'énergie de la base (la première modification de chaque tour est offerte).
 //
-# define COUT_MODIFICATION_ASPIRATION 2
+# define COUT_MODIFICATION_ASPIRATION 10
+
+///
+// Nombre de points d'action que coûte le déblayage d'une case où un tuyau a été détruit.
+//
+# define COUT_DEBLAYAGE            20
 
 ///
 // Vitesse du plasma dans un tuyau normal, en nombre de case par tour.
@@ -72,16 +72,6 @@
 // Multiplicateur de la vitesse du plasma lors de leur présence dans un super-tuyau.
 //
 # define MULTIPLICATEUR_VITESSE_SUPER_TUYAU 2
-
-///
-// Nombre de tours d'impossibilité de reconstruire un tuyau dans une zone après la destruction d'un autre.
-//
-# define TEMPS_DISSIPATION_RADIOACTIVE 3
-
-///
-// Rayon définissant une zone autour d'une case où un tuyau a été détruit dans laquelle il n'est pas possible de construire pendant un certain temps.
-//
-# define RAYON_ZONE_RADIOACTIVE    2
 
 ///
 // Nombre de tours que prend la destruction d'un tuyau.
@@ -102,6 +92,7 @@ typedef enum erreur {
   CONSTRUCTION_IMPOSSIBLE, /* <- Il est impossible de construire un tuyau à la position indiquée. */
   DESTRUCTION_IMPOSSIBLE, /* <- Il n'y a pas de tuyau à la position spécifiée. */
   PAS_DE_PULSAR, /* <- Il n'y a pas de pulsar à la position spécifiée. */
+  PAS_DE_TUYAU_DETRUIT, /* <- Il n'y a pas de tuyau détruit à déblayer à la position spécifiée. */
 } erreur;
 
 
@@ -115,6 +106,19 @@ typedef enum direction {
   EST, /* <- Est. */
   AUCUNE, /* <- Aucune direction. */
 } direction;
+
+
+///
+// Types de cases
+//
+typedef enum case_type {
+  VIDE, /* <- Case vide */
+  TUYAU, /* <- Case contenant un tuyau */
+  SUPER_TUYAU, /* <- Case contenant un super-tuyau */
+  PULSAR, /* <- Case contenant un pulsar */
+  DEBRIS, /* <- Case contenant des débris à déblayer */
+  BASE, /* <- Case appartenant à une base d'un des joueurs */
+} case_type;
 
 
 ///

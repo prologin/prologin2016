@@ -73,6 +73,7 @@ std::string convert_to_string(erreur in){
     case CONSTRUCTION_IMPOSSIBLE: return "\"construction_impossible\"";
     case DESTRUCTION_IMPOSSIBLE: return "\"destruction_impossible\"";
     case PAS_DE_PULSAR: return "\"pas_de_pulsar\"";
+    case PAS_DE_TUYAU_DETRUIT: return "\"pas_de_tuyau_detruit\"";
   }
   return "bad value";
 }
@@ -99,6 +100,29 @@ std::string convert_to_string(direction in){
   return "bad value";
 }
 std::string convert_to_string(std::vector<direction> in){
+  if (in.size()){
+    std::string s = "[" + convert_to_string(in[0]);
+    for (int i = 1, l = in.size(); i < l; i++){
+      s = s + ", " + convert_to_string(in[i]);
+    }
+    return s + "]";
+  }else{
+    return "[]";
+  }
+}
+std::string convert_to_string(case_type in){
+  switch (in)
+  {
+    case VIDE: return "\"vide\"";
+    case TUYAU: return "\"tuyau\"";
+    case SUPER_TUYAU: return "\"super_tuyau\"";
+    case PULSAR: return "\"pulsar\"";
+    case DEBRIS: return "\"debris\"";
+    case BASE: return "\"base\"";
+  }
+  return "bad value";
+}
+std::string convert_to_string(std::vector<case_type> in){
   if (in.size()){
     std::string s = "[" + convert_to_string(in[0]);
     for (int i = 1, l = in.size(); i < l; i++){
@@ -187,6 +211,22 @@ extern "C" erreur api_deplacer_aspiration(position source, position destination)
 }
 
 ///
+// Déblaye une case où un tuyau a été détruit.
+//
+extern "C" erreur api_deblayer(position position)
+{
+  return api->deblayer(position);
+}
+
+///
+// Renvoie le type d'une case donnée.
+//
+extern "C" case_type api_type_case(position position)
+{
+  return api->type_case(position);
+}
+
+///
 // Renvoie la liste de tous les pulsars présents.
 //
 extern "C" std::vector<position> api_liste_pulsars()
@@ -219,19 +259,11 @@ extern "C" std::vector<position> api_liste_super_tuyaux()
 }
 
 ///
-// Renvoie la liste des cases sous l'effet de radiations.
+// Renvoie la liste des tuyaux détruits, non encore déblayés.
 //
-extern "C" std::vector<position> api_liste_radiation()
+extern "C" std::vector<position> api_liste_tuyaux_detruits()
 {
-  return api->liste_radiation();
-}
-
-///
-// Renvoie la liste des cases contenant un tuyau (ou super-tuyau) en cours de destruction.
-//
-extern "C" std::vector<position> api_liste_destruction_tuyaux()
-{
-  return api->liste_destruction_tuyaux();
+  return api->liste_tuyaux_detruits();
 }
 
 ///
@@ -259,19 +291,11 @@ extern "C" bool api_est_super_tuyau(position position)
 }
 
 ///
-// Renvoie vrai si et seulement si la case contient un tuyau en cours de destruction.
+// Renvoie vrai si et seulement si la case contient un tuyau détruit non encore déblayé
 //
-extern "C" bool api_est_en_destruction(position position)
+extern "C" bool api_est_detruit(position position)
 {
-  return api->est_en_destruction(position);
-}
-
-///
-// Renvoie vrai si et seulement si la case est sous l'effet de radiations.
-//
-extern "C" bool api_est_en_radiation(position position)
-{
-  return api->est_en_radiation(position);
+  return api->est_detruit(position);
 }
 
 ///
@@ -283,22 +307,6 @@ extern "C" bool api_est_libre(position position)
 }
 
 ///
-// Renvoie le temps qu'il reste avant la destruction d'une case, et -1 si elle n'est pas en cours de destruction.
-//
-extern "C" int api_temps_destruction(position position)
-{
-  return api->temps_destruction(position);
-}
-
-///
-// Renvoie le temps qu'il reste avant la dissipation des radiations sur une case, et -1 si elle n'en subit pas.
-//
-extern "C" int api_temps_radiation(position position)
-{
-  return api->temps_radiation(position);
-}
-
-///
 // Renvoie les informations propres au pulsar à la position donnée.
 //
 extern "C" pulsar api_info_pulsar(position position)
@@ -307,9 +315,9 @@ extern "C" pulsar api_info_pulsar(position position)
 }
 
 ///
-// Renvoie la quantité de plasma sur une case donnée (0 s'il n'y a pas de plasma).
+// Renvoie la quantité de plasma sur une case donnée.
 //
-extern "C" int api_charges_presentes(position position)
+extern "C" double api_charges_presentes(position position)
 {
   return api->charges_presentes(position);
 }
@@ -355,6 +363,14 @@ extern "C" direction api_aspiration(position position)
 }
 
 ///
+// Renvoie la valeur du coût de la prochaine modification de vos points d'aspiration.
+//
+extern "C" int api_cout_prochaine_modification_aspiration()
+{
+  return api->cout_prochaine_modification_aspiration();
+}
+
+///
 // Renvoie la liste des tuyaux construits par votre adversaire au dernier tour.
 //
 extern "C" std::vector<position> api_hist_tuyaux_construits()
@@ -379,11 +395,27 @@ extern "C" std::vector<position> api_hist_tuyaux_ameliores()
 }
 
 ///
-// Renvoie la liste des différences d'énergie d'aspiration dans la base de votre adversaire au dernier tour.
+// Renvoie la liste des tuyauxc déblayés par votre adversaire au dernier tour.
 //
-extern "C" std::vector<position> api_hist_base_modification()
+extern "C" std::vector<position> api_hist_tuyaux_deblayes()
 {
-  return api->hist_base_modification();
+  return api->hist_tuyaux_deblayes();
+}
+
+///
+// Renvoie la liste des cases de base de votre adversaire qui ont reçu un point d'aspiration (une même case peut apparaître plusieurs fois).
+//
+extern "C" std::vector<position> api_hist_points_aspiration_ajoutes()
+{
+  return api->hist_points_aspiration_ajoutes();
+}
+
+///
+// Renvoie la liste des cases de base de votre adversaire qui ont perdu un point d'aspiration (une même case peut apparaître plusieurs fois).
+//
+extern "C" std::vector<position> api_hist_points_aspiration_retires()
+{
+  return api->hist_points_aspiration_retires();
 }
 
 ///
@@ -450,6 +482,7 @@ std::ostream& operator<<(std::ostream& os, erreur v)
   case CONSTRUCTION_IMPOSSIBLE: os << "CONSTRUCTION_IMPOSSIBLE"; break;
   case DESTRUCTION_IMPOSSIBLE: os << "DESTRUCTION_IMPOSSIBLE"; break;
   case PAS_DE_PULSAR: os << "PAS_DE_PULSAR"; break;
+  case PAS_DE_TUYAU_DETRUIT: os << "PAS_DE_TUYAU_DETRUIT"; break;
   }
   return os;
 }
@@ -473,6 +506,26 @@ std::ostream& operator<<(std::ostream& os, direction v)
   return os;
 }
 extern "C" void api_afficher_direction(direction v)
+{
+  std::cerr << v << std::endl;
+}
+
+///
+// Affiche le contenu d'une valeur de type case_type
+//
+std::ostream& operator<<(std::ostream& os, case_type v)
+{
+  switch (v) {
+  case VIDE: os << "VIDE"; break;
+  case TUYAU: os << "TUYAU"; break;
+  case SUPER_TUYAU: os << "SUPER_TUYAU"; break;
+  case PULSAR: os << "PULSAR"; break;
+  case DEBRIS: os << "DEBRIS"; break;
+  case BASE: os << "BASE"; break;
+  }
+  return os;
+}
+extern "C" void api_afficher_case_type(case_type v)
 {
   std::cerr << v << std::endl;
 }
