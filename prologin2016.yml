@@ -111,9 +111,10 @@ enum:
       - [vide, "Case vide"]
       - [tuyau, "Case contenant un tuyau"]
       - [super_tuyau, "Case contenant un super-tuyau"]
-      - [pulsar, "Case contenant un pulsar"]
       - [debris, "Case contenant des débris à déblayer"]
+      - [pulsar, "Case contenant un pulsar"]
       - [base, "Case appartenant à une base d'un des joueurs"]
+      - [interdit, "Case où aucune action n'est possible"]
 
 struct:
   -
