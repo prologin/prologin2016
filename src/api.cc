@@ -27,7 +27,7 @@ Api::Api(GameState* game_state, rules::Player_sptr player)
 
 
 ///
-// Construit un tuyau sur une case donnée
+// Construit un tuyau sur une case donnée.
 //
 erreur Api::construire(position position)
 {
@@ -91,7 +91,7 @@ erreur Api::deplacer_aspiration(position source, position destination)
 }
 
 ///
-// Déblaye une case où un tuyau a été détruit.
+// Déblaye une case de débris.
 //
 erreur Api::deblayer(position position)
 {
@@ -305,9 +305,9 @@ std::vector<position> Api::hist_tuyaux_ameliores()
 }
 
 ///
-// Renvoie la liste des tuyauxc déblayés par votre adversaire au dernier tour.
+// Renvoie la liste des débris déblayés par votre adversaire au dernier tour.
 //
-std::vector<position> Api::hist_tuyaux_deblayes()
+std::vector<position> Api::hist_debris_deblayes()
 {
   // TODO
   abort();
