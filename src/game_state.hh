@@ -52,6 +52,10 @@ class GameState : public rules::GameState
         GameState(std::istream&, rules::Players_sptr players);
         rules::GameState* copy() const final override;
 
+        /// Get the type of a case at a given position
+        /// Return 'INTERDIT' if the position is invalid
+        case_type get_case_type(position) const;
+
         void increment_turn() { turn_++; }
         int get_turn() const { return turn_; }
         rules::Player_sptr get_current_player() const;

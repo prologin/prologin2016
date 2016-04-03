@@ -76,6 +76,14 @@ rules::GameState* GameState::copy() const
     return new GameState(*this);
 }
 
+case_type GameState::get_case_type(position pos) const
+{
+    if (in_bounds(pos))
+        return cell(pos).type;
+    else
+        return case_type::INTERDIT;
+}
+
 rules::Player_sptr GameState::get_current_player() const
 {
     return players_[turn_ % 2];

@@ -106,8 +106,7 @@ erreur Api::deblayer(position position)
 /// Renvoie le type d'une case donnée.
 case_type Api::type_case(position position)
 {
-    // TODO
-    abort();
+    return game_state_->get_case_type(position);
 }
 
 /// Renvoie la liste de tous les pulsars présents.
