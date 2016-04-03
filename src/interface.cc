@@ -116,9 +116,10 @@ std::string convert_to_string(case_type in){
     case VIDE: return "\"vide\"";
     case TUYAU: return "\"tuyau\"";
     case SUPER_TUYAU: return "\"super_tuyau\"";
-    case PULSAR: return "\"pulsar\"";
     case DEBRIS: return "\"debris\"";
+    case PULSAR: return "\"pulsar\"";
     case BASE: return "\"base\"";
+    case INTERDIT: return "\"interdit\"";
   }
   return "bad value";
 }
@@ -179,7 +180,7 @@ std::string convert_to_string(std::vector<pulsar> in){
   }
 }
 ///
-// Construit un tuyau sur une case donnée
+// Construit un tuyau sur une case donnée.
 //
 extern "C" erreur api_construire(position position)
 {
@@ -211,7 +212,7 @@ extern "C" erreur api_deplacer_aspiration(position source, position destination)
 }
 
 ///
-// Déblaye une case où un tuyau a été détruit.
+// Déblaye une case de débris.
 //
 extern "C" erreur api_deblayer(position position)
 {
@@ -395,11 +396,11 @@ extern "C" std::vector<position> api_hist_tuyaux_ameliores()
 }
 
 ///
-// Renvoie la liste des tuyauxc déblayés par votre adversaire au dernier tour.
+// Renvoie la liste des débris déblayés par votre adversaire au dernier tour.
 //
-extern "C" std::vector<position> api_hist_tuyaux_deblayes()
+extern "C" std::vector<position> api_hist_debris_deblayes()
 {
-  return api->hist_tuyaux_deblayes();
+  return api->hist_debris_deblayes();
 }
 
 ///
@@ -519,9 +520,10 @@ std::ostream& operator<<(std::ostream& os, case_type v)
   case VIDE: os << "VIDE"; break;
   case TUYAU: os << "TUYAU"; break;
   case SUPER_TUYAU: os << "SUPER_TUYAU"; break;
-  case PULSAR: os << "PULSAR"; break;
   case DEBRIS: os << "DEBRIS"; break;
+  case PULSAR: os << "PULSAR"; break;
   case BASE: os << "BASE"; break;
+  case INTERDIT: os << "INTERDIT"; break;
   }
   return os;
 }

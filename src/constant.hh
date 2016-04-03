@@ -59,24 +59,19 @@
 # define COUT_MODIFICATION_ASPIRATION 10
 
 ///
-// Nombre de points d'action que coûte le déblayage d'une case où un tuyau a été détruit.
+// Nombre de points d'action que coûte le déblayage d'une case de débris.
 //
 # define COUT_DEBLAYAGE            20
 
 ///
-// Vitesse du plasma dans un tuyau normal, en nombre de case par tour.
+// Vitesse du plasma dans un tuyau normal, en nombre de cases par tour.
 //
 # define VITESSE_TUYAU             1
 
 ///
-// Multiplicateur de la vitesse du plasma lors de leur présence dans un super-tuyau.
+// Multiplicateur de la vitesse du plasma dans un super-tuyau.
 //
 # define MULTIPLICATEUR_VITESSE_SUPER_TUYAU 2
-
-///
-// Nombre de tours que prend la destruction d'un tuyau.
-//
-# define TEMPS_DESTRUCTION_TUYAU   3
 
 ///
 // Erreurs possibles
@@ -100,11 +95,11 @@ typedef enum erreur {
 // Directions possibles
 //
 typedef enum direction {
-  NORD, /* <- Nord. */
-  SUD, /* <- Sud. */
-  OUEST, /* <- Ouest. */
-  EST, /* <- Est. */
-  AUCUNE, /* <- Aucune direction. */
+  NORD, /* <- Nord */
+  SUD, /* <- Sud */
+  OUEST, /* <- Ouest */
+  EST, /* <- Est */
+  AUCUNE, /* <- Aucune direction */
 } direction;
 
 
@@ -115,9 +110,10 @@ typedef enum case_type {
   VIDE, /* <- Case vide */
   TUYAU, /* <- Case contenant un tuyau */
   SUPER_TUYAU, /* <- Case contenant un super-tuyau */
-  PULSAR, /* <- Case contenant un pulsar */
   DEBRIS, /* <- Case contenant des débris à déblayer */
+  PULSAR, /* <- Case contenant un pulsar */
   BASE, /* <- Case appartenant à une base d'un des joueurs */
+  INTERDIT, /* <- Case où aucune action n'est possible */
 } case_type;
 
 
@@ -134,9 +130,9 @@ typedef struct position {
 // Représente un pulsar existant.
 //
 typedef struct pulsar {
-  int periode;  /* <- Période de pulsation du pulsar. */
-  int puissance;  /* <- Quantité de plasma émise par chaque pulsation. */
-  int plasma_total;  /* <- Quantité de plasma restante. */
+  int periode;  /* <- Période de pulsation du pulsar */
+  int puissance;  /* <- Quantité de plasma émise par chaque pulsation */
+  int plasma_total;  /* <- Quantité de plasma restante */
 } pulsar;
 
 
