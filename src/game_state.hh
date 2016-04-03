@@ -17,6 +17,11 @@ struct Cell
     // Index of a pulsar in the pulsars_info_ list.
     // -1 if not a pulsar.
     int pulsar;
+
+    // Owner of a base, or ID of the player who built a pipe. The latter has
+    // no incidence on gameplay, though it might be useful to AI programmers.
+    // -1 if not applicable.
+    int owner;
 };
 
 class GameState : public rules::GameState
@@ -33,21 +38,26 @@ class GameState : public rules::GameState
         int get_turn() const { return turn_; }
         int get_current_player() const;
 
-        // Player to which a base cell belongs to (should be out of bounds).
+        int get_action_points() const { return action_points_; }
+        void decrease_action_points(int delta);
+        void reset_action_points();
+
+        // Player to which a base cell belongs to.
         // -1 if not a base cell.
         int base_cell(position) const;
 
     private:
         // Must be within bounds.
         Cell& cell(position);
+        Cell cell(position) const;
         int map_index(position) const;
         bool in_bounds(position) const;
 
-        int map_size_;
         std::vector<position> pulsars_pos_;
         std::vector<pulsar> pulsars_info_;
         std::vector<Cell> map_;
         int turn_;
+        int action_points_;
 
         rules::Players_sptr players_;
 };
