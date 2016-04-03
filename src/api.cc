@@ -147,36 +147,31 @@ std::vector<position> Api::liste_tuyaux_detruits()
 /// Renvoie vrai si et seulement si la case contient un pulsar.
 bool Api::est_pulsar(position position)
 {
-    // TODO
-    abort();
+    return game_state_->get_case_type(position) == case_type::PULSAR;
 }
 
 /// Renvoie vrai si et seulement si la case contient un simple tuyau.
 bool Api::est_tuyau(position position)
 {
-    // TODO
-    abort();
+    return game_state_->get_case_type(position) == case_type::TUYAU;
 }
 
 /// Renvoie vrai si et seulement si la case contient un super tuyau.
 bool Api::est_super_tuyau(position position)
 {
-    // TODO
-    abort();
+    return game_state_->get_case_type(position) == case_type::SUPER_TUYAU;
 }
 
 /// Renvoie vrai si et seulement si la case contient un tuyau détruit non encore déblayé
 bool Api::est_detruit(position position)
 {
-    // TODO
-    abort();
+    return game_state_->get_case_type(position) == case_type::DEBRIS;
 }
 
 /// Renvoie vrai si et seulement s'il est possible de construire sur cette case.
 bool Api::est_libre(position position)
 {
-    // TODO
-    abort();
+    return game_state_->get_case_type(position) == case_type::VIDE;
 }
 
 /// Renvoie les informations propres au pulsar à la position donnée.
