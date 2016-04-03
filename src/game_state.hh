@@ -18,9 +18,12 @@ struct Cell
     // -1 if not a pulsar.
     int pulsar;
 
-    // Owner of a base, or ID of the player who built a pipe. The latter has
-    // no incidence on gameplay, though it might be useful to AI programmers.
-    // -1 if not applicable.
+    // ID of either:
+    // - the owner of a BASE;
+    // - the player who built a TUYAU;
+    // - the one who upgraded one to a SUPER_TUYAU.
+    // In the last two cases, this information has no effect on gameplay,
+    // though it might be useful to AI programmers. -1 if not applicable.
     int owner;
 };
 
@@ -46,6 +49,11 @@ class GameState : public rules::GameState
         int get_vacuum(position) const;
         void decrement_vacuum(position);
         void increment_vacuum(position);
+
+        void build_pipe(position);
+        void upgrade_pipe(position);
+        void destroy_pipe(position);
+        void clear_rubble(position);
 
         // Player to which a base cell belongs to.
         // -1 if not a base cell.
@@ -83,8 +91,8 @@ class GameState : public rules::GameState
         // Base vacuum on four sides (Top, Bottom, Left, Right)
         std::vector<int> vacuums_[4];
 
-        // In GameState, players are identified by 0 and 1, and the player
-        // whose turn it is to play is given by the parity of turn_.
+        // In GameState, the ID of a player is either 0 or 1; the player whose
+        // turn it is to play is given by the parity of turn_.
         rules::Player_sptr players_[2];
 
         double score_[2];

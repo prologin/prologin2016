@@ -99,6 +99,38 @@ void GameState::decrement_vacuum(position p)
     vacuum_at(p)--;
 }
 
+void GameState::build_pipe(position p)
+{
+    Cell& c = cell(p);
+    assert(c.type == VIDE);
+    c.type = TUYAU;
+    c.owner = turn_ % 2;
+}
+
+void GameState::upgrade_pipe(position p)
+{
+    Cell& c = cell(p);
+    assert(c.type == TUYAU);
+    c.type = SUPER_TUYAU;
+    c.owner = turn_ % 2;
+}
+
+void GameState::destroy_pipe(position p)
+{
+    Cell& c = cell(p);
+    assert(c.type == TUYAU || c.type == SUPER_TUYAU);
+    assert(c.plasma == 0);
+    c.type = DEBRIS;
+    c.owner = -1;
+}
+
+void GameState::clear_rubble(position p)
+{
+    Cell& c = cell(p);
+    assert(c.type == DEBRIS);
+    c.type = VIDE;
+}
+
 int GameState::base_cell(position p) const
 {
     const Cell& c = cell(p);
