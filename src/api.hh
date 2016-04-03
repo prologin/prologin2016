@@ -147,6 +147,7 @@ public:
     int points_action();
 
     /// Renvoie le score du joueur désigné par le numéro ``id_joueur``.
+    /// Renvoie -1 si ``id_joueur`` est invalide.
     int score(int id_joueur);
 
     /// Renvoie le numéro du tour actuel.

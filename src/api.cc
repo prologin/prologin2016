@@ -183,8 +183,7 @@ pulsar Api::info_pulsar(position position)
 /// Renvoie la quantité de plasma sur une case donnée.
 double Api::charges_presentes(position position)
 {
-    // TODO
-    abort();
+    return game_state_->get_plasma(position);
 }
 
 /// Renvoie la liste des cases composant votre base.
@@ -208,7 +207,9 @@ std::vector<position> Api::energie_aspiration(position position)
     abort();
 }
 
-/// Renvoie pour une case donnée la direction de son aspiration (qu'elle contienne un plasma ou non), ou "aucune" si la case n'est pas une case contenant un tuyau ou si elle n'est reliée à aucune base.
+/// Renvoie pour une case donnée la direction de son aspiration (qu'elle
+/// contienne un plasma ou non), ou "aucune" si la case n'est pas une case
+/// contenant un tuyau ou si elle n'est reliée à aucune base.
 direction Api::aspiration(position position)
 {
     // TODO
@@ -218,8 +219,10 @@ direction Api::aspiration(position position)
 /// Renvoie la valeur du coût de la prochaine modification de vos points d'aspiration.
 int Api::cout_prochaine_modification_aspiration()
 {
-    // TODO
-    abort();
+    if (game_state_->get_displaced_vacuum()) // Already used, full cost
+        return COUT_MODIFICATION_ASPIRATION;
+    else // The first one is free
+        return 0;
 }
 
 /// Renvoie la liste des tuyaux construits par votre adversaire au dernier tour.
@@ -267,8 +270,7 @@ std::vector<position> Api::hist_points_aspiration_retires()
 /// Renvoie votre numéro de joueur.
 int Api::moi()
 {
-    // TODO
-    abort();
+    return game_state_->get_current_player()->id;
 }
 
 /// Renvoie le numéro de votre adversaire.
@@ -281,22 +283,25 @@ int Api::adversaire()
 /// Indique votre nombre de points d'actions restants pour ce tour-ci.
 int Api::points_action()
 {
-    // TODO
-    abort();
+    return game_state_->get_action_points();
 }
 
 /// Renvoie le score du joueur désigné par le numéro ``id_joueur``.
+/// Renvoie -1 si ``id_joueur`` est invalide.
 int Api::score(int id_joueur)
 {
-    // TODO
-    abort();
+    if (id_joueur == moi())
+        return game_state_->get_score_current_player();
+    else if (id_joueur == adversaire())
+        return game_state_->get_score_opponent();
+    else
+        return -1;
 }
 
 /// Renvoie le numéro du tour actuel.
 int Api::tour_actuel()
 {
-    // TODO
-    abort();
+    return game_state_->get_turn();
 }
 
 /// Annule la dernière action. Renvoie ``false`` quand il n'y a pas d'action à annuler ce tour-ci.
