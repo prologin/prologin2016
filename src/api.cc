@@ -26,9 +26,7 @@ Api::Api(GameState* game_state, rules::Player_sptr player)
 }
 
 
-///
-// Construit un tuyau sur une case donnée.
-//
+/// Construit un tuyau sur une case donnée.
 erreur Api::construire(position position)
 {
     rules::IAction_sptr action(new ActionConstruire(position, player_->id));
@@ -42,9 +40,7 @@ erreur Api::construire(position position)
     return OK;
 }
 
-///
-// Améliore un tuyau en super-tuyau.
-//
+/// Améliore un tuyau en super-tuyau.
 erreur Api::ameliorer(position position)
 {
     rules::IAction_sptr action(new ActionAmeliorer(position, player_->id));
@@ -58,9 +54,7 @@ erreur Api::ameliorer(position position)
     return OK;
 }
 
-///
-// Détruit un tuyau sur une case donnée.
-//
+/// Détruit un tuyau sur une case donnée.
 erreur Api::detruire(position position)
 {
     rules::IAction_sptr action(new ActionDetruire(position, player_->id));
@@ -74,9 +68,7 @@ erreur Api::detruire(position position)
     return OK;
 }
 
-///
-// Déplace un point d'aspiration d'un point de la base vers l'autre.
-//
+/// Déplace un point d'aspiration d'un point de la base vers l'autre.
 erreur Api::deplacer_aspiration(position source, position destination)
 {
     rules::IAction_sptr action(new ActionDeplacerAspiration(source, destination, player_->id));
@@ -90,9 +82,7 @@ erreur Api::deplacer_aspiration(position source, position destination)
     return OK;
 }
 
-///
-// Déblaye une case de débris.
-//
+/// Déblaye une case de débris.
 erreur Api::deblayer(position position)
 {
     rules::IAction_sptr action(new ActionDeblayer(position, player_->id));
@@ -106,303 +96,221 @@ erreur Api::deblayer(position position)
     return OK;
 }
 
-///
-// Renvoie le type d'une case donnée.
-//
+/// Renvoie le type d'une case donnée.
 case_type Api::type_case(position position)
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la liste de tous les pulsars présents.
-//
+/// Renvoie la liste de tous les pulsars présents.
 std::vector<position> Api::liste_pulsars()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la liste des cases contenant du plasma.
-//
+/// Renvoie la liste des cases contenant du plasma.
 std::vector<position> Api::liste_plasmas()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la liste des cases contenant un tuyau (ou super-tuyau).
-//
+/// Renvoie la liste des cases contenant un tuyau (ou super-tuyau).
 std::vector<position> Api::liste_tuyaux()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la liste des cases contenant un super-tuyau.
-//
+/// Renvoie la liste des cases contenant un super-tuyau.
 std::vector<position> Api::liste_super_tuyaux()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la liste des tuyaux détruits, non encore déblayés.
-//
+/// Renvoie la liste des tuyaux détruits, non encore déblayés.
 std::vector<position> Api::liste_tuyaux_detruits()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie vrai si et seulement si la case contient un pulsar.
-//
+/// Renvoie vrai si et seulement si la case contient un pulsar.
 bool Api::est_pulsar(position position)
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie vrai si et seulement si la case contient un simple tuyau.
-//
+/// Renvoie vrai si et seulement si la case contient un simple tuyau.
 bool Api::est_tuyau(position position)
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie vrai si et seulement si la case contient un super tuyau.
-//
+/// Renvoie vrai si et seulement si la case contient un super tuyau.
 bool Api::est_super_tuyau(position position)
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie vrai si et seulement si la case contient un tuyau détruit non encore déblayé
-//
+/// Renvoie vrai si et seulement si la case contient un tuyau détruit non encore déblayé
 bool Api::est_detruit(position position)
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie vrai si et seulement s'il est possible de construire sur cette case.
-//
+/// Renvoie vrai si et seulement s'il est possible de construire sur cette case.
 bool Api::est_libre(position position)
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie les informations propres au pulsar à la position donnée.
-//
+/// Renvoie les informations propres au pulsar à la position donnée.
 pulsar Api::info_pulsar(position position)
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la quantité de plasma sur une case donnée.
-//
+/// Renvoie la quantité de plasma sur une case donnée.
 double Api::charges_presentes(position position)
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la liste des cases composant votre base.
-//
+/// Renvoie la liste des cases composant votre base.
 std::vector<position> Api::ma_base()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la liste des cases composant la base de votre ennemi.
-//
+/// Renvoie la liste des cases composant la base de votre ennemi.
 std::vector<position> Api::base_ennemie()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la puissance d'aspiration d'une case de base donnée.
-//
+/// Renvoie la puissance d'aspiration d'une case de base donnée.
 std::vector<position> Api::energie_aspiration(position position)
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la liste des priorités des directions, dans l'ordre décroissant de priorité, au tour donné.
-//
+/// Renvoie la liste des priorités des directions, dans l'ordre décroissant de priorité, au tour donné.
 std::vector<direction> Api::priorite_directionnelle(position position, int tour)
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie pour une case donnée la direction de son aspiration (qu'elle contienne un plasma ou non), ou "aucune" si la case n'est pas une case contenant un tuyau ou si elle n'est reliée à aucune base.
-//
+/// Renvoie pour une case donnée la direction de son aspiration (qu'elle contienne un plasma ou non), ou "aucune" si la case n'est pas une case contenant un tuyau ou si elle n'est reliée à aucune base.
 direction Api::aspiration(position position)
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la valeur du coût de la prochaine modification de vos points d'aspiration.
-//
+/// Renvoie la valeur du coût de la prochaine modification de vos points d'aspiration.
 int Api::cout_prochaine_modification_aspiration()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la liste des tuyaux construits par votre adversaire au dernier tour.
-//
+/// Renvoie la liste des tuyaux construits par votre adversaire au dernier tour.
 std::vector<position> Api::hist_tuyaux_construits()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la liste des tuyaux détruits par votre adversaire au dernier tour.
-//
+/// Renvoie la liste des tuyaux détruits par votre adversaire au dernier tour.
 std::vector<position> Api::hist_tuyaux_detruits()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la liste des tuyaux améliorés par votre adversaire au dernier tour.
-//
+/// Renvoie la liste des tuyaux améliorés par votre adversaire au dernier tour.
 std::vector<position> Api::hist_tuyaux_ameliores()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la liste des débris déblayés par votre adversaire au dernier tour.
-//
+/// Renvoie la liste des débris déblayés par votre adversaire au dernier tour.
 std::vector<position> Api::hist_debris_deblayes()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la liste des cases de base de votre adversaire qui ont reçu un point d'aspiration (une même case peut apparaître plusieurs fois).
-//
+/// Renvoie la liste des cases de base de votre adversaire qui ont reçu un point d'aspiration (une même case peut apparaître plusieurs fois).
 std::vector<position> Api::hist_points_aspiration_ajoutes()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie la liste des cases de base de votre adversaire qui ont perdu un point d'aspiration (une même case peut apparaître plusieurs fois).
-//
+/// Renvoie la liste des cases de base de votre adversaire qui ont perdu un point d'aspiration (une même case peut apparaître plusieurs fois).
 std::vector<position> Api::hist_points_aspiration_retires()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie votre numéro de joueur.
-//
+/// Renvoie votre numéro de joueur.
 int Api::moi()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie le numéro de votre adversaire.
-//
+/// Renvoie le numéro de votre adversaire.
 int Api::adversaire()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Indique votre nombre de points d'actions restants pour ce tour-ci.
-//
+/// Indique votre nombre de points d'actions restants pour ce tour-ci.
 int Api::points_action()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie le score du joueur désigné par le numéro ``id_joueur``.
-//
+/// Renvoie le score du joueur désigné par le numéro ``id_joueur``.
 int Api::score(int id_joueur)
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Renvoie le numéro du tour actuel.
-//
+/// Renvoie le numéro du tour actuel.
 int Api::tour_actuel()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
 
-///
-// Annule la dernière action. Renvoie ``false`` quand il n'y a pas d'action à annuler ce tour-ci.
-//
+/// Annule la dernière action. Renvoie ``false`` quand il n'y a pas d'action à annuler ce tour-ci.
 bool Api::annuler()
 {
-  // TODO
-  abort();
+    // TODO
+    abort();
 }
-
-///
-// Affiche le contenu d'une valeur de type erreur
-//
-
-///
-// Affiche le contenu d'une valeur de type direction
-//
-
-///
-// Affiche le contenu d'une valeur de type case_type
-//
-
-///
-// Affiche le contenu d'une valeur de type position
-//
-
-///
-// Affiche le contenu d'une valeur de type pulsar
-//
 
 
