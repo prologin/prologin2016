@@ -6,7 +6,8 @@ GameState::GameState(std::istream& map_stream, rules::Players_sptr players)
     : rules::GameState(),
       map_(TAILLE_TERRAIN * TAILLE_TERRAIN, {case_type::VIDE, 0, -1, -1}),
       turn_(0),
-      action_points_(0)
+      action_points_(NB_POINTS_ACTION),
+      displaced_vacuum_(false)
 {
     int p_count = 0;
     for (auto& p : players->players)
@@ -34,6 +35,9 @@ GameState::GameState(std::istream& map_stream, rules::Players_sptr players)
                 cell(wall[j]) = {case_type::INTERDIT, 0, -1, -1};
         }
     }
+
+    for (auto& vacuum : vacuums_)
+        vacuum = std::vector<int>(N - 2 * (N / 3), 1);
 
     while (map_stream >> std::ws, !map_stream.eof())
     {
@@ -73,6 +77,27 @@ void GameState::reset_action_points()
     action_points_ = NB_POINTS_ACTION;
 }
 
+
+void GameState::set_displaced_vacuum(bool b)
+{
+    displaced_vacuum_ = b;
+}
+
+int GameState::get_vacuum(position p) const
+{
+    return base_cell(p) == -1 ? -1 : vacuum_at(p);
+}
+
+void GameState::increment_vacuum(position p)
+{
+    vacuum_at(p)++;
+}
+
+void GameState::decrement_vacuum(position p)
+{
+    vacuum_at(p)--;
+}
+
 int GameState::base_cell(position p) const
 {
     const Cell& c = cell(p);
@@ -91,6 +116,7 @@ Cell GameState::cell(position p) const
 
 int GameState::map_index(position p) const
 {
+    assert(in_bounds(p));
     return p.x * TAILLE_TERRAIN + p.y;
 }
 
@@ -98,4 +124,23 @@ bool GameState::in_bounds(position p) const
 {
     return 0 <= p.x && p.x < TAILLE_TERRAIN &&
         0 <= p.y && p.y < TAILLE_TERRAIN;
+}
+
+const int& GameState::vacuum_at(position p) const
+{
+    assert(cell(p).type == BASE);
+    const int offset = TAILLE_TERRAIN / 3;
+    if (p.y == 0)
+        return vacuums_[0][p.x - offset];
+    else if (p.y == TAILLE_TERRAIN - 1)
+        return vacuums_[1][p.x - offset];
+    else if (p.x == 0)
+        return vacuums_[2][p.y - offset];
+    else // (p.x == TAILLE_TERRAIN - 1)
+        return vacuums_[3][p.y - offset];
+}
+
+int& GameState::vacuum_at(position p)
+{
+    return const_cast<int&>(static_cast<const GameState&>(*this).vacuum_at(p));
 }

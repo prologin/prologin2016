@@ -40,6 +40,13 @@ class GameState : public rules::GameState
         void decrease_action_points(int delta);
         void reset_action_points();
 
+        bool get_displaced_vacuum() const { return displaced_vacuum_; }
+        void set_displaced_vacuum(bool);
+
+        int get_vacuum(position) const;
+        void decrement_vacuum(position);
+        void increment_vacuum(position);
+
         // Player to which a base cell belongs to.
         // -1 if not a base cell.
         int base_cell(position) const;
@@ -51,11 +58,20 @@ class GameState : public rules::GameState
         int map_index(position) const;
         bool in_bounds(position) const;
 
+        const int& vacuum_at(position) const;
+        int& vacuum_at(position);
+
         std::vector<position> pulsars_pos_;
         std::vector<pulsar> pulsars_info_;
         std::vector<Cell> map_;
         int turn_;
         int action_points_;
+
+        // True if vacuum was displaced this turn
+        bool displaced_vacuum_;
+
+        // Base vacuum on four sides (Top, Bottom, Left, Right)
+        std::vector<int> vacuums_[4];
 
         rules::Player_sptr players_[2];
 };
