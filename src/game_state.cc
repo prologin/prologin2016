@@ -15,14 +15,10 @@ GameState::GameState(std::istream& map_stream, rules::Players_sptr players)
     {
         if (p->type == rules::PLAYER)
         {
-            if (p_count >= 2)
-                FATAL("Too many players. This is a two-player game.");
             p->score = 0;
             players_[p_count++] = p;
         }
     }
-    if (p_count < 2)
-        FATAL("Not enough players. This is a two-player game.");
 
     const int N = TAILLE_TERRAIN;
     for (int i = 0 ; i < N ; i++)
