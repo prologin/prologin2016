@@ -2,14 +2,55 @@
 
 #include "game_state.hh"
 
-GameState::GameState(std::ifstream& map_stream, rules::Players_sptr players)
+GameState::GameState(std::istream& map_stream, rules::Players_sptr players)
     : rules::GameState(),
       map_(TAILLE_TERRAIN * TAILLE_TERRAIN, {case_type::VIDE, 0, -1, -1}),
       turn_(0),
-      action_points_(0),
-      players_(players)
+      action_points_(0)
 {
-    // TODO
+    int p_count = 0;
+    for (auto& p : players->players)
+    {
+        if (p->type == rules::PLAYER)
+        {
+            if (p_count >= 2)
+                FATAL("Too many players. This is a two-player game.");
+            p->score = 0;
+            players_[p_count++] = p;
+        }
+    }
+    if (p_count < 2)
+        FATAL("Not enough players. This is a two-player game.");
+
+    const int N = TAILLE_TERRAIN;
+    for (int i = 0 ; i < N ; i++)
+    {
+        position wall[] = {{i, 0}, {i, N-1}, {0, i}, {N-1, i}};
+        for (int j = 0 ; j < 4 ; j++)
+        {
+            if (N / 3 <= i && i < N - N / 3)
+                cell(wall[j]) = {case_type::BASE, 0, -1, j / 2};
+            else
+                cell(wall[j]) = {case_type::INTERDIT, 0, -1, -1};
+        }
+    }
+
+    while (map_stream >> std::ws, !map_stream.eof())
+    {
+        position pos;
+        pulsar pr;
+
+        map_stream >> pos.x >> pos.y >>
+            pr.periode >> pr.puissance >> pr.plasma_total;
+
+        pulsars_pos_.push_back(pos);
+
+        auto& c = cell(pos);
+        c.type = case_type::PULSAR;
+        c.pulsar = pulsars_info_.size();
+
+        pulsars_info_.push_back(pr);
+    }
 }
 
 rules::GameState* GameState::copy() const
@@ -17,9 +58,9 @@ rules::GameState* GameState::copy() const
     return new GameState(*this);
 }
 
-int GameState::get_current_player() const
+rules::Player_sptr GameState::get_current_player() const
 {
-    return 2 - turn_ % 2;
+    return players_[turn_ % 2];
 }
 
 void GameState::decrease_action_points(int delta)

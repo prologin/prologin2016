@@ -27,16 +27,14 @@ struct Cell
 class GameState : public rules::GameState
 {
     public:
-        GameState(int map_size,
-                  std::vector<position>& pulsars_pos,
-                  std::vector<pulsar>& pulsars_info,
-                  rules::Players_sptr players);
-        GameState(std::ifstream&, rules::Players_sptr players);
+        // The input stream consists of simply five integers for every pulsar:
+        // x y periode puissance plasma_total
+        GameState(std::istream&, rules::Players_sptr players);
         rules::GameState* copy() const final;
 
         void increment_turn() { turn_++; }
         int get_turn() const { return turn_; }
-        int get_current_player() const;
+        rules::Player_sptr get_current_player() const;
 
         int get_action_points() const { return action_points_; }
         void decrease_action_points(int delta);
@@ -59,7 +57,7 @@ class GameState : public rules::GameState
         int turn_;
         int action_points_;
 
-        rules::Players_sptr players_;
+        rules::Player_sptr players_[2];
 };
 
 #endif /* !GAME_STATE_HH */
