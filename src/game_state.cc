@@ -7,7 +7,8 @@ GameState::GameState(std::istream& map_stream, rules::Players_sptr players)
       map_(TAILLE_TERRAIN * TAILLE_TERRAIN, {case_type::VIDE, 0, -1, -1}),
       turn_(0),
       action_points_(NB_POINTS_ACTION),
-      displaced_vacuum_(false)
+      displaced_vacuum_(false),
+      score_{0, 0}
 {
     int p_count = 0;
     for (auto& p : players->players)
@@ -102,6 +103,38 @@ int GameState::base_cell(position p) const
 {
     const Cell& c = cell(p);
     return (c.type == BASE) ? c.owner : -1;
+}
+
+double GameState::get_plasma(position p) const
+{
+    return cell(p).plasma;
+}
+
+void GameState::increase_plasma(position p, double plasma)
+{
+    auto& c = cell(p);
+    if (c.type == BASE)
+        score_[c.owner] += plasma;
+    else
+    {
+        assert(c.type == TUYAU || c.type == SUPER_TUYAU);
+        cell(p).plasma += plasma;
+    }
+}
+
+void GameState::clear_plasma(position p)
+{
+    cell(p).plasma = 0;
+}
+
+double GameState::get_score_current_player() const
+{
+    return score_[turn_ % 2];
+}
+
+double GameState::get_score_opponent() const
+{
+    return score_[(1+turn_) % 2];
 }
 
 Cell& GameState::cell(position p)

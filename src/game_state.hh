@@ -12,7 +12,7 @@ struct Cell
     case_type type;
 
     // Plasma amount on this cell (>= 0).
-    int plasma;
+    double plasma;
 
     // Index of a pulsar in the pulsars_info_ list.
     // -1 if not a pulsar.
@@ -51,6 +51,16 @@ class GameState : public rules::GameState
         // -1 if not a base cell.
         int base_cell(position) const;
 
+        double get_plasma(position) const;
+        void clear_plasma(position);
+
+        // Should be called on a TUYAU, a SUPER_TUYAU or a BASE. In the last case,
+        // the score of the owner is increased instead.
+        void increase_plasma(position, double);
+
+        double get_score_current_player() const;
+        double get_score_opponent() const;
+
     private:
         // Must be within bounds.
         Cell& cell(position);
@@ -73,7 +83,11 @@ class GameState : public rules::GameState
         // Base vacuum on four sides (Top, Bottom, Left, Right)
         std::vector<int> vacuums_[4];
 
+        // In GameState, players are identified by 0 and 1, and the player
+        // whose turn it is to play is given by the parity of turn_.
         rules::Player_sptr players_[2];
+
+        double score_[2];
 };
 
 #endif /* !GAME_STATE_HH */
