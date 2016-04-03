@@ -113,9 +113,6 @@ public:
     /// Renvoie la puissance d'aspiration d'une case de base donnée.
     std::vector<position> energie_aspiration(position position);
 
-    /// Renvoie la liste des priorités des directions, dans l'ordre décroissant de priorité, au tour donné.
-    std::vector<direction> priorite_directionnelle(position position, int tour);
-
     /// Renvoie pour une case donnée la direction de son aspiration (qu'elle contienne un plasma ou non), ou "aucune" si la case n'est pas une case contenant un tuyau ou si elle n'est reliée à aucune base.
     direction aspiration(position position);
 

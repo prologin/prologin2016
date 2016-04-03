@@ -285,15 +285,6 @@ function:
       - [position, position, "Case choisie."]
 
   -
-    fct_name: priorite_directionnelle
-    fct_summary: Renvoie la liste des priorités des directions, dans l'ordre
-                 décroissant de priorité, au tour donné.
-    fct_ret_type: direction array
-    fct_arg:
-      - [position, position, "Case choisie."]
-      - [tour, int, "Tour choisi."]
-
-  -
     fct_name: aspiration
     fct_summary: Renvoie pour une case donnée la direction de son aspiration
                  (qu'elle contienne un plasma ou non), ou "aucune" si la case

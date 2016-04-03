@@ -348,14 +348,6 @@ extern "C" std::vector<position> api_energie_aspiration(position position)
 }
 
 ///
-// Renvoie la liste des priorités des directions, dans l'ordre décroissant de priorité, au tour donné.
-//
-extern "C" std::vector<direction> api_priorite_directionnelle(position position, int tour)
-{
-  return api->priorite_directionnelle(position, tour);
-}
-
-///
 // Renvoie pour une case donnée la direction de son aspiration (qu'elle contienne un plasma ou non), ou "aucune" si la case n'est pas une case contenant un tuyau ou si elle n'est reliée à aucune base.
 //
 extern "C" direction api_aspiration(position position)
