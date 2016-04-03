@@ -91,6 +91,31 @@ erreur Api::deplacer_aspiration(position source, position destination)
 }
 
 ///
+// Déblaye une case où un tuyau a été détruit.
+//
+erreur Api::deblayer(position position)
+{
+    rules::IAction_sptr action(new ActionDeblayer(position, player_->id));
+
+    erreur err;
+    if ((err = static_cast<erreur>(action->check(game_state_))) != OK)
+        return err;
+
+    actions_.add(action);
+    game_state_set(action->apply(game_state_));
+    return OK;
+}
+
+///
+// Renvoie le type d'une case donnée.
+//
+case_type Api::type_case(position position)
+{
+  // TODO
+  abort();
+}
+
+///
 // Renvoie la liste de tous les pulsars présents.
 //
 std::vector<position> Api::liste_pulsars()
@@ -127,18 +152,9 @@ std::vector<position> Api::liste_super_tuyaux()
 }
 
 ///
-// Renvoie la liste des cases sous l'effet de radiations.
+// Renvoie la liste des tuyaux détruits, non encore déblayés.
 //
-std::vector<position> Api::liste_radiation()
-{
-  // TODO
-  abort();
-}
-
-///
-// Renvoie la liste des cases contenant un tuyau (ou super-tuyau) en cours de destruction.
-//
-std::vector<position> Api::liste_destruction_tuyaux()
+std::vector<position> Api::liste_tuyaux_detruits()
 {
   // TODO
   abort();
@@ -172,18 +188,9 @@ bool Api::est_super_tuyau(position position)
 }
 
 ///
-// Renvoie vrai si et seulement si la case contient un tuyau en cours de destruction.
+// Renvoie vrai si et seulement si la case contient un tuyau détruit non encore déblayé
 //
-bool Api::est_en_destruction(position position)
-{
-  // TODO
-  abort();
-}
-
-///
-// Renvoie vrai si et seulement si la case est sous l'effet de radiations.
-//
-bool Api::est_en_radiation(position position)
+bool Api::est_detruit(position position)
 {
   // TODO
   abort();
@@ -199,24 +206,6 @@ bool Api::est_libre(position position)
 }
 
 ///
-// Renvoie le temps qu'il reste avant la destruction d'une case, et -1 si elle n'est pas en cours de destruction.
-//
-int Api::temps_destruction(position position)
-{
-  // TODO
-  abort();
-}
-
-///
-// Renvoie le temps qu'il reste avant la dissipation des radiations sur une case, et -1 si elle n'en subit pas.
-//
-int Api::temps_radiation(position position)
-{
-  // TODO
-  abort();
-}
-
-///
 // Renvoie les informations propres au pulsar à la position donnée.
 //
 pulsar Api::info_pulsar(position position)
@@ -226,9 +215,9 @@ pulsar Api::info_pulsar(position position)
 }
 
 ///
-// Renvoie la quantité de plasma sur une case donnée (0 s'il n'y a pas de plasma).
+// Renvoie la quantité de plasma sur une case donnée.
 //
-int Api::charges_presentes(position position)
+double Api::charges_presentes(position position)
 {
   // TODO
   abort();
@@ -280,6 +269,15 @@ direction Api::aspiration(position position)
 }
 
 ///
+// Renvoie la valeur du coût de la prochaine modification de vos points d'aspiration.
+//
+int Api::cout_prochaine_modification_aspiration()
+{
+  // TODO
+  abort();
+}
+
+///
 // Renvoie la liste des tuyaux construits par votre adversaire au dernier tour.
 //
 std::vector<position> Api::hist_tuyaux_construits()
@@ -307,9 +305,27 @@ std::vector<position> Api::hist_tuyaux_ameliores()
 }
 
 ///
-// Renvoie la liste des différences d'énergie d'aspiration dans la base de votre adversaire au dernier tour.
+// Renvoie la liste des tuyauxc déblayés par votre adversaire au dernier tour.
 //
-std::vector<position> Api::hist_base_modification()
+std::vector<position> Api::hist_tuyaux_deblayes()
+{
+  // TODO
+  abort();
+}
+
+///
+// Renvoie la liste des cases de base de votre adversaire qui ont reçu un point d'aspiration (une même case peut apparaître plusieurs fois).
+//
+std::vector<position> Api::hist_points_aspiration_ajoutes()
+{
+  // TODO
+  abort();
+}
+
+///
+// Renvoie la liste des cases de base de votre adversaire qui ont perdu un point d'aspiration (une même case peut apparaître plusieurs fois).
+//
+std::vector<position> Api::hist_points_aspiration_retires()
 {
   // TODO
   abort();
@@ -375,6 +391,10 @@ bool Api::annuler()
 
 ///
 // Affiche le contenu d'une valeur de type direction
+//
+
+///
+// Affiche le contenu d'une valeur de type case_type
 //
 
 ///

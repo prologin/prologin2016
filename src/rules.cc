@@ -45,6 +45,10 @@ void Rules::register_actions()
         ID_ACTION_DEPLACER_ASPIRATION,
         []() -> rules::IAction* { return new ActionDeplacerAspiration(); }
         );
+    api_->actions()->register_action(
+        ID_ACTION_DEBLAYER,
+        []() -> rules::IAction* { return new ActionDeblayer(); }
+        );
 }
 
 rules::Actions* Rules::get_actions()

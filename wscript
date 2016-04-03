@@ -15,6 +15,7 @@ def build(bld):
         source = '''
             src/action_ameliorer.cc
             src/action_construire.cc
+            src/action_deblayer.cc
             src/action_deplacer_aspiration.cc
             src/action_detruire.cc
             src/api.cc

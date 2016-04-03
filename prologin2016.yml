@@ -105,13 +105,14 @@ enum:
       - [aucune, "Aucune direction."]
 
   -
-    enum_name: case
+    enum_name: case_type
     enum_summary: "Types de cases"
     enum_field:
       - [vide, "Case vide"]
       - [tuyau, "Case contenant un tuyau"]
       - [super_tuyau, "Case contenant un super-tuyau"]
       - [pulsar, "Case contenant un pulsar"]
+      - [debris, "Case contenant des débris à déblayer"]
       - [base, "Case appartenant à une base d'un des joueurs"]
 
 struct:
@@ -176,7 +177,7 @@ function:
     fct_ret_type: erreur
     fct_action: yes
     fct_arg:
-      - position, position, "Case choisie."]
+      - [position, position, "Case choisie."]
 
 
 # Fonctions de query sur les pulsars / les tuyaux / le terrain
@@ -184,7 +185,7 @@ function:
   -
     fct_name: type_case
     fct_summary: Renvoie le type d'une case donnée.
-    fct_ret_type: case
+    fct_ret_type: case_type
     fct_arg:
       - [position, position, "Case choisie."]
 
@@ -341,14 +342,14 @@ function:
     fct_ret_type: position array
     fct_arg: []
   -
-    fct_name: hist_points_aspiration ajoutes
+    fct_name: hist_points_aspiration_ajoutes
     fct_summary: "Renvoie la liste des cases de base de votre adversaire qui
                   ont reçu un point d'aspiration (une même case peut apparaître
                   plusieurs fois)."
     fct_ret_type: position array
     fct_arg: []
   -
-    fct_name: hist_points_aspiration retires
+    fct_name: hist_points_aspiration_retires
     fct_summary: "Renvoie la liste des cases de base de votre adversaire qui
                   ont perdu un point d'aspiration (une même case peut apparaître
                   plusieurs fois)."
