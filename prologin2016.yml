@@ -53,24 +53,18 @@ constant:
   -
     cst_name: COUT_DEBLAYAGE
     cst_val: 20
-    cst_comment: Nombre de points d'action que coûte le déblayage d'une case
-                 où un tuyau a été détruit.
+    cst_comment: Nombre de points d'action que coûte le déblayage d'une case de
+                 débris.
 
   -
     cst_name: VITESSE_TUYAU
     cst_val: 1
-    cst_comment: Vitesse du plasma dans un tuyau normal, en nombre de case
+    cst_comment: Vitesse du plasma dans un tuyau normal, en nombre de cases
                  par tour.
   -
     cst_name: MULTIPLICATEUR_VITESSE_SUPER_TUYAU
     cst_val: 2
-    cst_comment: Multiplicateur de la vitesse du plasma lors de leur présence
-                 dans un super-tuyau.
-
-  -
-    cst_name: TEMPS_DESTRUCTION_TUYAU
-    cst_val: 3
-    cst_comment: Nombre de tours que prend la destruction d'un tuyau.
+    cst_comment: Multiplicateur de la vitesse du plasma dans un super-tuyau.
 
 enum:
   -
@@ -98,11 +92,11 @@ enum:
     enum_name: direction
     enum_summary: "Directions possibles"
     enum_field:
-      - [nord, "Nord."]
-      - [sud, "Sud."]
-      - [ouest, "Ouest."]
-      - [est, "Est."]
-      - [aucune, "Aucune direction."]
+      - [nord, "Nord"]
+      - [sud, "Sud"]
+      - [ouest, "Ouest"]
+      - [est, "Est"]
+      - [aucune, "Aucune direction"]
 
   -
     enum_name: case_type
@@ -130,9 +124,9 @@ struct:
     str_summary: Représente un pulsar existant.
     str_tuple: no
     str_field:
-      - [periode, int, "Période de pulsation du pulsar."]
-      - [puissance, int, "Quantité de plasma émise par chaque pulsation."]
-      - [plasma_total, int, "Quantité de plasma restante."]
+      - [periode, int, "Période de pulsation du pulsar"]
+      - [puissance, int, "Quantité de plasma émise par chaque pulsation"]
+      - [plasma_total, int, "Quantité de plasma restante"]
 
 function:
 
@@ -140,7 +134,7 @@ function:
 
   -
     fct_name: construire
-    fct_summary: Construit un tuyau sur une case donnée
+    fct_summary: Construit un tuyau sur une case donnée.
     fct_ret_type: erreur
     fct_action: yes
     fct_arg:
@@ -174,7 +168,7 @@ function:
 
   -
     fct_name: deblayer
-    fct_summary: "Déblaye une case où un tuyau a été détruit."
+    fct_summary: Déblaye une case de débris.
     fct_ret_type: erreur
     fct_action: yes
     fct_arg:
@@ -337,8 +331,8 @@ function:
     fct_ret_type: position array
     fct_arg: []
   -
-    fct_name: hist_tuyaux_deblayes
-    fct_summary: "Renvoie la liste des tuyauxc déblayés par votre adversaire au
+    fct_name: hist_debris_deblayes
+    fct_summary: "Renvoie la liste des débris déblayés par votre adversaire au
         dernier tour."
     fct_ret_type: position array
     fct_arg: []
