@@ -118,8 +118,17 @@ std::vector<position> Api::liste_pulsars()
 /// Renvoie la liste des cases contenant du plasma.
 std::vector<position> Api::liste_plasmas()
 {
-    // TODO
-    abort();
+    std::vector<position> ret;
+    for (int x = 0; x < TAILLE_TERRAIN; ++x)
+    {
+        for (int y = 0; y < TAILLE_TERRAIN; ++y)
+        {
+            position pos{x, y};
+            if (game_state_->get_plasma(pos) > 0)
+                ret.push_back(pos);
+        }
+    }
+    return ret;
 }
 
 /// Renvoie la liste des cases contenant un tuyau (ou super-tuyau).
