@@ -21,11 +21,20 @@
 
 int ActionAmeliorer::check(const GameState* st) const
 {
-    // FIXME
-    return 0;
+    case_type ct = get_case_type(position_);
+    if (ct == case_type::INTERDIT)
+        return POSITION_INVALIDE;
+    if (ct == case_type::SUPER_TUYAU)
+        return AMELIORATION_IMPOSSIBLE;
+    if (ct != case_type::TUYAU)
+        return AUCUN_TUYAU;
+    if (st->get_action_points() < COUT_AMELIORATION_TUYAU)
+        return PA_INSUFFISANTS;
+    return OK;
 }
 
 void ActionAmeliorer::apply_on(GameState* st) const
 {
-    // FIXME
+    st->decrease_action_points(COUT_AMELIORATION_TUYAU);
+    st->upgrade_pipe(position_, player_id_);
 }
