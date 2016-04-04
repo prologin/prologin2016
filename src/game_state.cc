@@ -31,6 +31,7 @@ PlayerInfo::PlayerInfo(rules::Player_sptr player)
 
 void PlayerInfo::collect_plasma(double plasma)
 {
+    assert(plasma > 0);
     collected_plasma_ += plasma;
     player_->score = std::floor(collected_plasma_);
 }
@@ -170,6 +171,7 @@ double GameState::get_plasma(position p) const
 
 void GameState::increase_plasma(position p, double plasma)
 {
+    assert(plasma > 0);
     auto& c = cell(p);
     if (c.type == BASE)
         player_info_.at(c.owner).collect_plasma(plasma);
