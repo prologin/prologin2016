@@ -228,15 +228,13 @@ double Api::charges_presentes(position position)
 /// Renvoie la liste des cases composant votre base.
 std::vector<position> Api::ma_base()
 {
-    // TODO
-    abort();
+    return game_state_->bases_list(moi());
 }
 
 /// Renvoie la liste des cases composant la base de votre ennemi.
 std::vector<position> Api::base_ennemie()
 {
-    // TODO
-    abort();
+    return game_state_->bases_list(adversaire());
 }
 
 /// Renvoie la puissance d'aspiration d'une case de base donnée.
