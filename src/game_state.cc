@@ -53,7 +53,7 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
         }
     }
 
-    board_.fill({case_type::VIDE, 0, -1, 0});
+    board_.fill({case_type::VIDE, 0, 0});
     const int N = TAILLE_TERRAIN;
     for (int i = 0 ; i < N ; i++)
     {
@@ -61,9 +61,9 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
         for (unsigned j = 0 ; j < 4 ; j++)
         {
             if (N / 3 <= i && i < N - N / 3)
-                cell(wall[j]) = {case_type::BASE, 0, -1, player_ids_[j / 2]};
+                cell(wall[j]) = {case_type::BASE, 0, player_ids_[j / 2]};
             else
-                cell(wall[j]) = {case_type::INTERDIT, 0, -1, 0};
+                cell(wall[j]) = {case_type::INTERDIT, 0, 0};
         }
     }
 
@@ -78,13 +78,9 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
         board_stream >> pos.x >> pos.y >>
             pr.periode >> pr.puissance >> pr.plasma_total;
 
-        pulsars_pos_.push_back(pos);
+        cell(pos).type = case_type::PULSAR;
 
-        auto& c = cell(pos);
-        c.type = case_type::PULSAR;
-        c.pulsar = pulsars_info_.size();
-
-        pulsars_info_.push_back(pr);
+        pulsars_.emplace(pos, pr);
     }
 }
 

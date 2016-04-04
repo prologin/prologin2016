@@ -53,10 +53,6 @@ struct Cell
     // Plasma amount on this cell (>= 0).
     double plasma;
 
-    // Index of a pulsar in the pulsars_info_ list.
-    // -1 if not a pulsar.
-    int pulsar;
-
     // ID of either:
     // - the owner of a BASE;
     // - the player who built a TUYAU;
@@ -66,6 +62,22 @@ struct Cell
     // 0 if not applicable.
     unsigned owner;
 };
+
+namespace std
+{
+    template<> struct hash<position>
+    {
+        size_t operator()(const position& pos) const
+        {
+            return TAILLE_TERRAIN * pos.y + pos.x;
+        }
+    };
+}
+
+inline bool operator==(const position& p1, const position& p2)
+{
+    return p1.x == p2.x && p1.y == p2.y;
+}
 
 class GameState : public rules::GameState
 {
@@ -128,8 +140,7 @@ class GameState : public rules::GameState
         std::array<unsigned, 2> player_ids_;
         std::unordered_map<unsigned, PlayerInfo> player_info_;
 
-        std::vector<position> pulsars_pos_;
-        std::vector<pulsar> pulsars_info_;
+        std::unordered_map<position, pulsar> pulsars_;
         std::array<Cell, TAILLE_TERRAIN * TAILLE_TERRAIN> board_;
         unsigned turn_;
         unsigned action_points_;
