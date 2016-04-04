@@ -182,18 +182,12 @@ void GameState::increase_plasma(position p, double plasma)
 
 int GameState::get_score(unsigned player_id) const
 {
-    if (player_info_.count(player_id))
-        return player_info_.at(player_id).get_score();
-    else
-        return -1;
+    return player_info_.at(player_id).get_score();
 }
 
 double GameState::get_collected_plasma(unsigned player_id) const
 {
-    if (player_info_.count(player_id))
-        return player_info_.at(player_id).get_collected_plasma();
-    else
-        return -1;
+    return player_info_.at(player_id).get_collected_plasma();
 }
 
 void GameState::clear_plasma(position p)

@@ -291,7 +291,10 @@ int Api::points_action()
 /// Renvoie -1 si ``id_joueur`` est invalide.
 int Api::score(int id_joueur)
 {
-    return game_state_->get_score(id_joueur);
+    if (id_joueur == moi() || id_joueur == adversaire())
+        return game_state_->get_score(id_joueur);
+    else
+        return -1;
 }
 
 /// Renvoie le numéro du tour actuel.
