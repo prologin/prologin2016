@@ -151,8 +151,17 @@ std::vector<position> Api::liste_tuyaux()
 /// Renvoie la liste des cases contenant un super-tuyau.
 std::vector<position> Api::liste_super_tuyaux()
 {
-    // TODO
-    abort();
+    std::vector<position> ret;
+    for (int x = 0; x < TAILLE_TERRAIN; ++x)
+    {
+        for (int y = 0; y < TAILLE_TERRAIN; ++y)
+        {
+            position pos{x, y};
+            if (game_state_->get_case_type(pos) == SUPER_TUYAU)
+                ret.push_back(pos);
+        }
+    }
+    return ret;
 }
 
 /// Renvoie la liste des tuyaux détruits, non encore déblayés.
