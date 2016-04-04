@@ -265,43 +265,63 @@ int Api::cout_prochaine_modification_aspiration()
 /// Renvoie la liste des tuyaux construits par votre adversaire au dernier tour.
 std::vector<position> Api::hist_tuyaux_construits()
 {
-    // TODO
-    abort();
+    std::vector<position> ret;
+    for (const auto& action : game_state_->get_history(adversaire()))
+        if (action.type == BUILD)
+            ret.push_back(action.pos);
+    return ret;
 }
 
 /// Renvoie la liste des tuyaux détruits par votre adversaire au dernier tour.
 std::vector<position> Api::hist_tuyaux_detruits()
 {
-    // TODO
-    abort();
+    std::vector<position> ret;
+    for (const auto& action : game_state_->get_history(adversaire()))
+        if (action.type == DESTROY)
+            ret.push_back(action.pos);
+    return ret;
 }
 
 /// Renvoie la liste des tuyaux améliorés par votre adversaire au dernier tour.
 std::vector<position> Api::hist_tuyaux_ameliores()
 {
-    // TODO
-    abort();
+    std::vector<position> ret;
+    for (const auto& action : game_state_->get_history(adversaire()))
+        if (action.type == UPGRADE)
+            ret.push_back(action.pos);
+    return ret;
 }
 
 /// Renvoie la liste des débris déblayés par votre adversaire au dernier tour.
 std::vector<position> Api::hist_debris_deblayes()
 {
-    // TODO
-    abort();
+    std::vector<position> ret;
+    for (const auto& action : game_state_->get_history(adversaire()))
+        if (action.type == CLEAR)
+            ret.push_back(action.pos);
+    return ret;
 }
 
-/// Renvoie la liste des cases de base de votre adversaire qui ont reçu un point d'aspiration (une même case peut apparaître plusieurs fois).
+/// Renvoie la liste des cases de base de votre adversaire qui ont reçu un point
+/// d'aspiration (une même case peut apparaître plusieurs fois).
 std::vector<position> Api::hist_points_aspiration_ajoutes()
 {
-    // TODO
-    abort();
+    std::vector<position> ret;
+    for (const auto& action : game_state_->get_history(adversaire()))
+        if (action.type == INCR_VACUUM)
+            ret.push_back(action.pos);
+    return ret;
 }
 
-/// Renvoie la liste des cases de base de votre adversaire qui ont perdu un point d'aspiration (une même case peut apparaître plusieurs fois).
+/// Renvoie la liste des cases de base de votre adversaire qui ont perdu un
+/// point d'aspiration (une même case peut apparaître plusieurs fois).
 std::vector<position> Api::hist_points_aspiration_retires()
 {
-    // TODO
-    abort();
+    std::vector<position> ret;
+    for (const auto& action : game_state_->get_history(adversaire()))
+        if (action.type == DECR_VACUUM)
+            ret.push_back(action.pos);
+    return ret;
 }
 
 /// Renvoie votre numéro de joueur.
