@@ -177,8 +177,10 @@ bool Api::est_libre(position position)
 /// Renvoie les informations propres au pulsar à la position donnée.
 pulsar Api::info_pulsar(position position)
 {
-    // TODO
-    abort();
+    if (est_pulsar(position))
+        return game_state_->get_pulsar(position);
+    else
+        return {-1, -1, -1};
 }
 
 /// Renvoie la quantité de plasma sur une case donnée.
