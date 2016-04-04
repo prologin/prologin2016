@@ -167,8 +167,17 @@ std::vector<position> Api::liste_super_tuyaux()
 /// Renvoie la liste des tuyaux détruits, non encore déblayés.
 std::vector<position> Api::liste_tuyaux_detruits()
 {
-    // TODO
-    abort();
+    std::vector<position> ret;
+    for (int x = 0; x < TAILLE_TERRAIN; ++x)
+    {
+        for (int y = 0; y < TAILLE_TERRAIN; ++y)
+        {
+            position pos{x, y};
+            if (game_state_->get_case_type(pos) == DEBRIS)
+                ret.push_back(pos);
+        }
+    }
+    return ret;
 }
 
 /// Renvoie vrai si et seulement si la case contient un pulsar.
