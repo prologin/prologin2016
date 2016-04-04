@@ -277,8 +277,7 @@ int Api::moi()
 /// Renvoie le numéro de votre adversaire.
 int Api::adversaire()
 {
-    // TODO
-    abort();
+    return game_state_->opponent(player_->id);
 }
 
 /// Indique votre nombre de points d'actions restants pour ce tour-ci.
