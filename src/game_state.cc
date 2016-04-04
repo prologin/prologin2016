@@ -102,6 +102,15 @@ pulsar GameState::get_pulsar(position pos) const
     return pulsars_.at(pos);
 }
 
+std::vector<position> GameState::pulsars_list() const
+{
+    std::vector<position> keys;
+    keys.reserve(pulsars_.size());
+    for (const auto& pulsar : pulsars_)
+        keys.push_back(pulsar.first);
+    return keys;
+}
+
 void GameState::decrease_action_points(unsigned delta)
 {
     action_points_ -= delta;

@@ -112,8 +112,7 @@ case_type Api::type_case(position position)
 /// Renvoie la liste de tous les pulsars présents.
 std::vector<position> Api::liste_pulsars()
 {
-    // TODO
-    abort();
+    return game_state_->pulsars_list();
 }
 
 /// Renvoie la liste des cases contenant du plasma.

@@ -94,6 +94,9 @@ class GameState : public rules::GameState
         /// Return pulsar info at a given position (it must contain a pulsar).
         pulsar get_pulsar(position) const;
 
+        /// Return the position of all pulsars
+        std::vector<position> pulsars_list() const;
+
         void increment_turn() { turn_++; }
         unsigned get_turn() const { return turn_; }
 
