@@ -19,6 +19,8 @@
 
 #include "game_state.hh"
 
+#include <cmath>
+
 PlayerInfo::PlayerInfo(rules::Player_sptr player)
     : player_(std::move(player))
     , collected_plasma_(0)
@@ -30,7 +32,7 @@ PlayerInfo::PlayerInfo(rules::Player_sptr player)
 void PlayerInfo::collect_plasma(double plasma)
 {
     collected_plasma_ += plasma;
-    player_->score = collected_plasma_;
+    player_->score = std::floor(collected_plasma_);
 }
 
 GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
