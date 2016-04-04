@@ -307,8 +307,9 @@ int Api::tour_actuel()
 /// Annule la dernière action. Renvoie ``false`` quand il n'y a pas d'action à annuler ce tour-ci.
 bool Api::annuler()
 {
-    // TODO
-    abort();
+    if (!game_state_->can_cancel())
+        return false;
+    actions_.cancel();
+    game_state_ = rules::cancel(game_state_);
+    return true;
 }
-
-
