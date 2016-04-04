@@ -19,10 +19,11 @@
 
 #include "game_state.hh"
 
-PlayerInfo::PlayerInfo(rules::Player_sptr& player)
-    : player_(player)
+PlayerInfo::PlayerInfo(rules::Player_sptr player)
+    : player_(std::move(player))
     , collected_plasma_(0)
 {
+    assert(player_);
     player_->score = 0;
 }
 

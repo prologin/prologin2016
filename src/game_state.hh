@@ -25,19 +25,25 @@
 #include <rules/player.hh>
 #include "constant.hh"
 
+/// Information about a player; encapsulate its rules::Player_sptr
 class PlayerInfo
 {
     public:
-        PlayerInfo(rules::Player_sptr& player);
-        void collect_plasma(double);
-        int get_score() const
-        { return player_->score; }
-        double get_collected_plasma() const
-        { return collected_plasma_; }
+        /// Constructor from the rules::Player_sptr to encapsulate
+        PlayerInfo(rules::Player_sptr player);
+
+        /// Increase the amount of collected plasma (thus the score)
+        void collect_plasma(double plasma);
+
+        /// Get this player's score (floor of total collected plasma)
+        int get_score() const { return player_->score; }
+
+        /// Get total collected plasma by this player
+        double get_collected_plasma() const { return collected_plasma_; }
 
     private:
-        rules::Player_sptr player_;
-        double collected_plasma_;
+        rules::Player_sptr player_; ///< Encapsulated stechec implementation
+        double collected_plasma_; ///< Total collected plasma by this player
 };
 
 struct Cell
