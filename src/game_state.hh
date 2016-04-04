@@ -91,6 +91,9 @@ class GameState : public rules::GameState
         /// Return 'INTERDIT' if the position is invalid
         case_type get_case_type(position) const;
 
+        /// Return pulsar info at a given position (it must contain a pulsar).
+        pulsar get_pulsar(position) const;
+
         void increment_turn() { turn_++; }
         unsigned get_turn() const { return turn_; }
 

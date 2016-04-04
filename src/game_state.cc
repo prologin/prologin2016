@@ -97,6 +97,11 @@ case_type GameState::get_case_type(position pos) const
         return case_type::INTERDIT;
 }
 
+pulsar GameState::get_pulsar(position pos) const
+{
+    return pulsars_.at(pos);
+}
+
 void GameState::decrease_action_points(unsigned delta)
 {
     action_points_ -= delta;
