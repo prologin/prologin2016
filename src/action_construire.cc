@@ -21,11 +21,18 @@
 
 int ActionConstruire::check(const GameState* st) const
 {
-    // FIXME
-    return 0;
+    case_type ct = get_case_type(position_);
+    if (ct == case_type::INTERDIT)
+        return POSITION_INVALIDE;
+    if (ct != case_type::VIDE)
+        return CONSTRUCTION_IMPOSSIBLE;
+    if (st->get_action_points() < COUT_CONSTRUCTION_TUYAU)
+        return PA_INSUFFISANTS;
+    return OK;
 }
 
 void ActionConstruire::apply_on(GameState* st) const
 {
-    // FIXME
+    st->decrease_action_points(COUT_CONSTRUCTION_TUYAU);
+    st->build_pipe(position_, player_id_);
 }
