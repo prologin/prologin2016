@@ -108,11 +108,11 @@ class GameState : public rules::GameState
         // the owner collects the plasma.
         void increase_plasma(position, double);
 
-        int get_score(unsigned player) const
-        { return player_info_.at(player).get_score(); }
+        /// Get a player's score, or -1 if the player id is invalid
+        int get_score(unsigned player_id) const;
 
-        double get_collected_plasma(unsigned player) const
-        { return player_info_.at(player).get_collected_plasma(); }
+        /// Get a player's total collected plasma, or -1 if the id is invalid
+        double get_collected_plasma(unsigned player_id) const;
 
     private:
         // Must be within bounds.
