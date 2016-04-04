@@ -76,9 +76,6 @@ class GameState : public rules::GameState
         void increment_turn() { turn_++; }
         unsigned get_turn() const { return turn_; }
 
-        unsigned me(unsigned player) const
-        { return (p_[0] == player) ? p_[0] : p_[1]; }
-
         unsigned opponent(unsigned player) const
         { return (p_[0] == player) ? p_[1] : p_[0]; }
 
