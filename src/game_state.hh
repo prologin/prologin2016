@@ -97,6 +97,9 @@ class GameState : public rules::GameState
         /// Return the position of all pulsars
         std::vector<position> pulsars_list() const;
 
+        /// Return the position of all bases owned by a player
+        std::vector<position> bases_list(unsigned player_id) const;
+
         void increment_turn() { turn_++; }
         unsigned get_turn() const { return turn_; }
 

@@ -111,6 +111,27 @@ std::vector<position> GameState::pulsars_list() const
     return keys;
 }
 
+std::vector<position> GameState::bases_list(unsigned player_id) const
+{
+    std::vector<position> bases;
+    bases.resize(TAILLE_TERRAIN * 2 / 3);
+    for (unsigned side = 0 ; side < 4 ; ++side)
+    {
+        if (player_ids_[side / 2] != player_id) // This is not our base
+            continue;
+        for (int i = 0; i < TAILLE_TERRAIN; ++i)
+        {
+            if (TAILLE_TERRAIN / 3 <= i && i < 2 * TAILLE_TERRAIN / 3)
+            {
+                position wall[] = {{i, 0}, {i, TAILLE_TERRAIN - 1},
+                    {0, i}, {TAILLE_TERRAIN - 1, i}};
+                bases.push_back(wall[side]);
+            }
+        }
+    }
+    return bases;
+}
+
 void GameState::decrease_action_points(unsigned delta)
 {
     action_points_ -= delta;
