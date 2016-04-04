@@ -48,7 +48,7 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
         if (p->type == rules::PLAYER)
         {
             player_info_.insert({p->id, p});
-            p_[pi++] = p->id;
+            player_ids_[pi++] = p->id;
         }
     }
 
@@ -60,7 +60,7 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
         for (unsigned j = 0 ; j < 4 ; j++)
         {
             if (N / 3 <= i && i < N - N / 3)
-                cell(wall[j]) = {case_type::BASE, 0, -1, p_[j / 2]};
+                cell(wall[j]) = {case_type::BASE, 0, -1, player_ids_[j / 2]};
             else
                 cell(wall[j]) = {case_type::INTERDIT, 0, -1, 0};
         }

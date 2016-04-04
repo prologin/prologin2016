@@ -83,7 +83,7 @@ class GameState : public rules::GameState
         unsigned get_turn() const { return turn_; }
 
         unsigned opponent(unsigned player) const
-        { return (p_[0] == player) ? p_[1] : p_[0]; }
+        { return (player_ids_[0] == player) ? player_ids_[1] : player_ids_[0]; }
 
         unsigned get_action_points() const { return action_points_; }
         void decrease_action_points(unsigned delta);
@@ -125,7 +125,7 @@ class GameState : public rules::GameState
         unsigned& vacuum_at(position);
 
         rules::Players_sptr players_;
-        std::array<unsigned, 2> p_;
+        std::array<unsigned, 2> player_ids_;
         std::unordered_map<unsigned, PlayerInfo> player_info_;
 
         std::vector<position> pulsars_pos_;
