@@ -25,6 +25,22 @@
 #include <rules/player.hh>
 #include "constant.hh"
 
+enum action_type
+{
+    BUILD,
+    UPGRADE,
+    DESTROY,
+    CLEAR,
+    INCR_VACUUM,
+    DECR_VACUUM,
+};
+
+struct action
+{
+    action_type type;
+    position pos;
+};
+
 /// Information about a player; encapsulate its rules::Player_sptr
 class PlayerInfo
 {
@@ -41,9 +57,19 @@ class PlayerInfo
         /// Get total collected plasma by this player
         double get_collected_plasma() const { return collected_plasma_; }
 
+        /// Get the list of actions taken by this player last turn
+        const std::vector<action>& get_actions() const { return actions_; }
+
+        /// Empty the list of actions at the start of a new turn
+        void reset_actions() { actions_.clear(); }
+
+        /// Register a new action
+        void add_action(action action) { actions_.push_back(action); }
+
     private:
         rules::Player_sptr player_; ///< Encapsulated stechec implementation
         double collected_plasma_; ///< Total collected plasma by this player
+        std::vector<action> actions_; ///< Actions taken during last turn
 };
 
 struct Cell
@@ -110,8 +136,8 @@ class GameState : public rules::GameState
         void decrease_action_points(unsigned delta);
         void reset_action_points();
 
-        bool get_displaced_vacuum() const { return displaced_vacuum_; }
-        void set_displaced_vacuum(bool);
+        bool get_vacuum_moved() const { return vacuum_moved_; }
+        void set_vacuum_moved(bool);
 
         unsigned get_vacuum(position) const;
         void decrement_vacuum(position);
@@ -121,6 +147,16 @@ class GameState : public rules::GameState
         void upgrade_pipe(position, unsigned);
         void destroy_pipe(position);
         void clear_rubble(position);
+
+        // Update action history
+        void hist_add_build(position, unsigned);
+        void hist_add_upgrade(position, unsigned);
+        void hist_add_destroy(position, unsigned);
+        void hist_add_clear(position, unsigned);
+        void hist_add_move_vacuum(position, position, unsigned);
+        void reset_history(unsigned);
+
+        const std::vector<action>& get_history(unsigned) const;
 
         double get_plasma(position) const;
         void clear_plasma(position);
@@ -154,8 +190,8 @@ class GameState : public rules::GameState
         unsigned turn_;
         unsigned action_points_;
 
-        // True if vacuum was displaced this turn
-        bool displaced_vacuum_;
+        // True if vacuum was moved this turn
+        bool vacuum_moved_;
 
         // Base vacuum on four sides (Top, Bottom, Left, Right)
         std::array<std::array<unsigned, LONGUEUR_BASE>, 4> vacuums_;

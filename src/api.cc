@@ -256,7 +256,7 @@ direction Api::aspiration(position position)
 /// Renvoie la valeur du coût de la prochaine modification de vos points d'aspiration.
 int Api::cout_prochaine_modification_aspiration()
 {
-    if (game_state_->get_displaced_vacuum()) // Already used, full cost
+    if (game_state_->get_vacuum_moved()) // Already used, full cost
         return COUT_MODIFICATION_ASPIRATION;
     else // The first one is free
         return 0;

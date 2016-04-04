@@ -41,7 +41,7 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
     , players_(players)
     , turn_(0)
     , action_points_(NB_POINTS_ACTION)
-    , displaced_vacuum_(false)
+    , vacuum_moved_(false)
 {
     unsigned pi = 0;
     for (auto& p : players_->players)
@@ -142,10 +142,9 @@ void GameState::reset_action_points()
     action_points_ = NB_POINTS_ACTION;
 }
 
-
-void GameState::set_displaced_vacuum(bool b)
+void GameState::set_vacuum_moved(bool b)
 {
-    displaced_vacuum_ = b;
+    vacuum_moved_ = b;
 }
 
 unsigned GameState::get_vacuum(position p) const
@@ -193,6 +192,42 @@ void GameState::clear_rubble(position p)
     Cell& c = cell(p);
     assert(c.type == DEBRIS);
     c.type = VIDE;
+}
+
+void GameState::hist_add_build(position p, unsigned player)
+{
+    player_info_.at(player).add_action({BUILD, p});
+}
+
+void GameState::hist_add_upgrade(position p, unsigned player)
+{
+    player_info_.at(player).add_action({UPGRADE, p});
+}
+
+void GameState::hist_add_destroy(position p, unsigned player)
+{
+    player_info_.at(player).add_action({DESTROY, p});
+}
+
+void GameState::hist_add_clear(position p, unsigned player)
+{
+    player_info_.at(player).add_action({CLEAR, p});
+}
+
+void GameState::hist_add_move_vacuum(position src, position dest, unsigned player)
+{
+    player_info_.at(player).add_action({DECR_VACUUM, src});
+    player_info_.at(player).add_action({INCR_VACUUM, dest});
+}
+
+void GameState::reset_history(unsigned player)
+{
+    player_info_.at(player).reset_actions();
+}
+
+const std::vector<action>& GameState::get_history(unsigned player) const
+{
+    return player_info_.at(player).get_actions();
 }
 
 double GameState::get_plasma(position p) const
