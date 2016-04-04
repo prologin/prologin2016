@@ -134,8 +134,18 @@ std::vector<position> Api::liste_plasmas()
 /// Renvoie la liste des cases contenant un tuyau (ou super-tuyau).
 std::vector<position> Api::liste_tuyaux()
 {
-    // TODO
-    abort();
+    std::vector<position> ret;
+    for (int x = 0; x < TAILLE_TERRAIN; ++x)
+    {
+        for (int y = 0; y < TAILLE_TERRAIN; ++y)
+        {
+            position pos{x, y};
+            case_type type = game_state_->get_case_type(pos);
+            if (type == TUYAU || type == SUPER_TUYAU)
+                ret.push_back(pos);
+        }
+    }
+    return ret;
 }
 
 /// Renvoie la liste des cases contenant un super-tuyau.
