@@ -20,9 +20,25 @@
 #ifndef GAME_STATE_HH
 #define GAME_STATE_HH
 
+#include <unordered_map>
 #include <rules/game-state.hh>
 #include <rules/player.hh>
 #include "constant.hh"
+
+class PlayerInfo
+{
+    public:
+        PlayerInfo(rules::Player_sptr& player);
+        void collect_plasma(double);
+        int get_score() const
+        { return player_->score; }
+        double get_collected_plasma() const
+        { return collected_plasma_; }
+
+    private:
+        rules::Player_sptr player_;
+        double collected_plasma_;
+};
 
 struct Cell
 {
@@ -40,8 +56,9 @@ struct Cell
     // - the player who built a TUYAU;
     // - the one who upgraded one to a SUPER_TUYAU.
     // In the last two cases, this information has no effect on gameplay,
-    // though it might be useful to AI programmers. -1 if not applicable.
-    int owner;
+    // though it might be useful to AI programmers.
+    // 0 if not applicable.
+    unsigned owner;
 };
 
 class GameState : public rules::GameState
@@ -58,7 +75,12 @@ class GameState : public rules::GameState
 
         void increment_turn() { turn_++; }
         int get_turn() const { return turn_; }
-        rules::Player_sptr get_current_player() const;
+
+        unsigned me(unsigned player) const
+        { return (p_[0] == player) ? p_[0] : p_[1]; }
+
+        unsigned opponent(unsigned player) const
+        { return (p_[0] == player) ? p_[1] : p_[0]; }
 
         int get_action_points() const { return action_points_; }
         void decrease_action_points(int delta);
@@ -71,34 +93,37 @@ class GameState : public rules::GameState
         void decrement_vacuum(position);
         void increment_vacuum(position);
 
-        void build_pipe(position);
-        void upgrade_pipe(position);
+        void build_pipe(position, unsigned);
+        void upgrade_pipe(position, unsigned);
         void destroy_pipe(position);
         void clear_rubble(position);
-
-        // Player to which a base cell belongs to.
-        // -1 if not a base cell.
-        int base_cell(position) const;
 
         double get_plasma(position) const;
         void clear_plasma(position);
 
         // Should be called on a TUYAU, a SUPER_TUYAU or a BASE. In the last case,
-        // the score of the owner is increased instead.
+        // the owner collects the plasma.
         void increase_plasma(position, double);
 
-        double get_score_current_player() const;
-        double get_score_opponent() const;
+        int get_score(unsigned player) const
+        { return player_info_.at(player).get_score(); }
+
+        double get_collected_plasma(unsigned player) const
+        { return player_info_.at(player).get_collected_plasma(); }
 
     private:
         // Must be within bounds.
         Cell& cell(position);
-        Cell cell(position) const;
+        const Cell& cell(position) const;
         int map_index(position) const;
         bool in_bounds(position) const;
 
         const int& vacuum_at(position) const;
         int& vacuum_at(position);
+
+        rules::Players_sptr players_;
+        std::array<unsigned, 2> p_;
+        std::unordered_map<unsigned, PlayerInfo> player_info_;
 
         std::vector<position> pulsars_pos_;
         std::vector<pulsar> pulsars_info_;
@@ -111,12 +136,6 @@ class GameState : public rules::GameState
 
         // Base vacuum on four sides (Top, Bottom, Left, Right)
         std::vector<int> vacuums_[4];
-
-        // In GameState, the ID of a player is either 0 or 1; the player whose
-        // turn it is to play is given by the parity of turn_.
-        rules::Player_sptr players_[2];
-
-        double score_[2];
 };
 
 #endif /* !GAME_STATE_HH */

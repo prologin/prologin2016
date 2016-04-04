@@ -271,7 +271,7 @@ std::vector<position> Api::hist_points_aspiration_retires()
 /// Renvoie votre numéro de joueur.
 int Api::moi()
 {
-    return game_state_->get_current_player()->id;
+    return player_->id;
 }
 
 /// Renvoie le numéro de votre adversaire.
@@ -291,12 +291,7 @@ int Api::points_action()
 /// Renvoie -1 si ``id_joueur`` est invalide.
 int Api::score(int id_joueur)
 {
-    if (id_joueur == moi())
-        return game_state_->get_score_current_player();
-    else if (id_joueur == adversaire())
-        return game_state_->get_score_opponent();
-    else
-        return -1;
+    return game_state_->get_score(id_joueur);
 }
 
 /// Renvoie le numéro du tour actuel.
