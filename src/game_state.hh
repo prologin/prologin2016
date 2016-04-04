@@ -115,7 +115,7 @@ class GameState : public rules::GameState
         // Must be within bounds.
         Cell& cell(position);
         const Cell& cell(position) const;
-        int map_index(position) const;
+        int board_index(position) const;
         bool in_bounds(position) const;
 
         const int& vacuum_at(position) const;
@@ -127,7 +127,7 @@ class GameState : public rules::GameState
 
         std::vector<position> pulsars_pos_;
         std::vector<pulsar> pulsars_info_;
-        std::vector<Cell> map_;
+        std::array<Cell, TAILLE_TERRAIN * TAILLE_TERRAIN> board_;
         int turn_;
         int action_points_;
 
@@ -135,7 +135,7 @@ class GameState : public rules::GameState
         bool displaced_vacuum_;
 
         // Base vacuum on four sides (Top, Bottom, Left, Right)
-        std::vector<int> vacuums_[4];
+        std::array<std::array<int, LONGUEUR_BASE>, 4> vacuums_;
 };
 
 #endif /* !GAME_STATE_HH */

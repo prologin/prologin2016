@@ -32,10 +32,9 @@ void PlayerInfo::collect_plasma(double plasma)
     player_->score = collected_plasma_;
 }
 
-GameState::GameState(std::istream& map_stream, rules::Players_sptr players)
+GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
     : rules::GameState()
     , players_(players)
-    , map_(TAILLE_TERRAIN * TAILLE_TERRAIN, {case_type::VIDE, 0, -1, 0})
     , turn_(0)
     , action_points_(NB_POINTS_ACTION)
     , displaced_vacuum_(false)
@@ -50,6 +49,7 @@ GameState::GameState(std::istream& map_stream, rules::Players_sptr players)
         }
     }
 
+    board_.fill({case_type::VIDE, 0, -1, 0});
     const int N = TAILLE_TERRAIN;
     for (int i = 0 ; i < N ; i++)
     {
@@ -64,14 +64,14 @@ GameState::GameState(std::istream& map_stream, rules::Players_sptr players)
     }
 
     for (auto& vacuum : vacuums_)
-        vacuum = std::vector<int>(N - 2 * (N / 3), 1);
+        vacuum.fill(1);
 
-    while (map_stream >> std::ws, !map_stream.eof())
+    while (board_stream >> std::ws, !board_stream.eof())
     {
         position pos;
         pulsar pr;
 
-        map_stream >> pos.x >> pos.y >>
+        board_stream >> pos.x >> pos.y >>
             pr.periode >> pr.puissance >> pr.plasma_total;
 
         pulsars_pos_.push_back(pos);
@@ -184,15 +184,15 @@ void GameState::clear_plasma(position p)
 
 Cell& GameState::cell(position p)
 {
-    return map_[map_index(p)];
+    return board_[board_index(p)];
 }
 
 const Cell& GameState::cell(position p) const
 {
-    return map_[map_index(p)];
+    return board_[board_index(p)];
 }
 
-int GameState::map_index(position p) const
+int GameState::board_index(position p) const
 {
     assert(in_bounds(p));
     return p.x * TAILLE_TERRAIN + p.y;
