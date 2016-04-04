@@ -74,7 +74,7 @@ class GameState : public rules::GameState
         case_type get_case_type(position) const;
 
         void increment_turn() { turn_++; }
-        int get_turn() const { return turn_; }
+        unsigned get_turn() const { return turn_; }
 
         unsigned me(unsigned player) const
         { return (p_[0] == player) ? p_[0] : p_[1]; }
@@ -82,14 +82,14 @@ class GameState : public rules::GameState
         unsigned opponent(unsigned player) const
         { return (p_[0] == player) ? p_[1] : p_[0]; }
 
-        int get_action_points() const { return action_points_; }
-        void decrease_action_points(int delta);
+        unsigned get_action_points() const { return action_points_; }
+        void decrease_action_points(unsigned delta);
         void reset_action_points();
 
         bool get_displaced_vacuum() const { return displaced_vacuum_; }
         void set_displaced_vacuum(bool);
 
-        int get_vacuum(position) const;
+        unsigned get_vacuum(position) const;
         void decrement_vacuum(position);
         void increment_vacuum(position);
 
@@ -118,8 +118,8 @@ class GameState : public rules::GameState
         int board_index(position) const;
         bool in_bounds(position) const;
 
-        const int& vacuum_at(position) const;
-        int& vacuum_at(position);
+        const unsigned& vacuum_at(position) const;
+        unsigned& vacuum_at(position);
 
         rules::Players_sptr players_;
         std::array<unsigned, 2> p_;
@@ -128,14 +128,14 @@ class GameState : public rules::GameState
         std::vector<position> pulsars_pos_;
         std::vector<pulsar> pulsars_info_;
         std::array<Cell, TAILLE_TERRAIN * TAILLE_TERRAIN> board_;
-        int turn_;
-        int action_points_;
+        unsigned turn_;
+        unsigned action_points_;
 
         // True if vacuum was displaced this turn
         bool displaced_vacuum_;
 
         // Base vacuum on four sides (Top, Bottom, Left, Right)
-        std::array<std::array<int, LONGUEUR_BASE>, 4> vacuums_;
+        std::array<std::array<unsigned, LONGUEUR_BASE>, 4> vacuums_;
 };
 
 #endif /* !GAME_STATE_HH */

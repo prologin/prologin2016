@@ -39,7 +39,7 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
     , action_points_(NB_POINTS_ACTION)
     , displaced_vacuum_(false)
 {
-    int pi = 0;
+    unsigned pi = 0;
     for (auto& p : players_->players)
     {
         if (p->type == rules::PLAYER)
@@ -97,7 +97,7 @@ case_type GameState::get_case_type(position pos) const
         return case_type::INTERDIT;
 }
 
-void GameState::decrease_action_points(int delta)
+void GameState::decrease_action_points(unsigned delta)
 {
     action_points_ -= delta;
 }
@@ -113,7 +113,7 @@ void GameState::set_displaced_vacuum(bool b)
     displaced_vacuum_ = b;
 }
 
-int GameState::get_vacuum(position p) const
+unsigned GameState::get_vacuum(position p) const
 {
     return vacuum_at(p);
 }
@@ -204,7 +204,7 @@ bool GameState::in_bounds(position p) const
         0 <= p.y && p.y < TAILLE_TERRAIN;
 }
 
-const int& GameState::vacuum_at(position p) const
+const unsigned& GameState::vacuum_at(position p) const
 {
     assert(cell(p).type == BASE);
     const int offset = TAILLE_TERRAIN / 3;
@@ -218,7 +218,7 @@ const int& GameState::vacuum_at(position p) const
         return vacuums_[3][p.y - offset];
 }
 
-int& GameState::vacuum_at(position p)
+unsigned& GameState::vacuum_at(position p)
 {
-    return const_cast<int&>(static_cast<const GameState&>(*this).vacuum_at(p));
+    return const_cast<unsigned&>(static_cast<const GameState&>(*this).vacuum_at(p));
 }
