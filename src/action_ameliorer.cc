@@ -21,7 +21,7 @@
 
 int ActionAmeliorer::check(const GameState* st) const
 {
-    case_type ct = get_case_type(position_);
+    case_type ct = st->get_case_type(position_);
     if (ct == case_type::INTERDIT)
         return POSITION_INVALIDE;
     if (ct == case_type::SUPER_TUYAU)
