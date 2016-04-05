@@ -265,6 +265,38 @@ void GameState::clear_plasma(position p)
     cell(p).plasma = 0;
 }
 
+matrix<int>& GameState::get_board_distances()
+{
+    if (!board_distances_)
+        compute_board_distances();
+
+    return *board_distances_;
+}
+
+void GameState::reset_board_distances()
+{
+    board_distances_.reset();
+}
+
+std::vector<position> GameState::direction_plasma(position p)
+{
+    assert(1 <= p.x && p.x < TAILLE_TERRAIN - 1 &&
+        1 <= p.y && p.y < TAILLE_TERRAIN - 1);
+    matrix<int>& distances = get_board_distances();
+
+    const position deltas[] = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    const int d = distances[board_index(p)];
+    std::vector<position> directions;
+    if (d != std::numeric_limits<int>::max())
+        for (const auto& delta : deltas)
+        {
+            auto q = p+delta;
+            if (distances[board_index(q)] < d)
+                directions.push_back(q);
+        }
+    return directions;
+}
+
 Cell& GameState::cell(position p)
 {
     return board_[board_index(p)];
@@ -304,19 +336,6 @@ const unsigned& GameState::vacuum_at(position p) const
 unsigned& GameState::vacuum_at(position p)
 {
     return const_cast<unsigned&>(static_cast<const GameState&>(*this).vacuum_at(p));
-}
-
-matrix<int>& GameState::get_board_distances()
-{
-    if (!board_distances_)
-        compute_board_distances();
-
-    return *board_distances_;
-}
-
-void GameState::reset_board_distances()
-{
-    board_distances_.reset();
 }
 
 void GameState::compute_board_distances()

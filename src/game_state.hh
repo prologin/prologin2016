@@ -167,6 +167,11 @@ class GameState : public rules::GameState
         /// Discard the distance array when an action modifies the board.
         void reset_board_distances();
 
+        /// Get the positions to which the plasma at the given position will
+        /// move next turn. Returns an empty vector if the position is not
+        /// a pipe connected to a base.
+        std::vector<position> direction_plasma(position);
+
     private:
         // Must be within bounds.
         Cell& cell(position);
@@ -184,7 +189,7 @@ class GameState : public rules::GameState
         std::unordered_map<unsigned, PlayerInfo> player_info_;
 
         std::unordered_map<position, pulsar> pulsars_;
-        std::array<Cell, TAILLE_TERRAIN * TAILLE_TERRAIN> board_;
+        matrix<Cell> board_;
         unsigned turn_;
         unsigned action_points_;
 
@@ -194,8 +199,9 @@ class GameState : public rules::GameState
         // Base vacuum on four sides (Top, Bottom, Left, Right)
         std::array<std::array<unsigned, LONGUEUR_BASE>, 4> vacuums_;
 
-        std::shared_ptr<matrix<int>>
-            board_distances_;
+        // The lengths of the shortest paths from pipes to 'BASE' cells.
+        // MAX_INT represents cells unreachable from bases.
+        std::shared_ptr<matrix<int>> board_distances_;
 };
 
 #endif /* !GAME_STATE_HH */
