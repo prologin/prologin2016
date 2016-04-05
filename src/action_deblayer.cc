@@ -21,11 +21,18 @@
 
 int ActionDeblayer::check(const GameState* st) const
 {
-    // FIXME
-    return 0;
+    case_type ct = st->get_case_type(position_);
+    if (ct == case_type::INTERDIT)
+        return POSITION_INVALIDE;
+    if (ct != case_type::DEBRIS)
+        return PAS_DE_TUYAU_DETRUIT;
+    if (st->get_action_points() < COUT_DEBLAYAGE)
+        return PA_INSUFFISANTS;
+    return OK;
 }
 
 void ActionDeblayer::apply_on(GameState* st) const
 {
-    // FIXME
+    st->decrease_action_points(COUT_DEBLAYAGE);
+    st->clear_rubble(position_);
 }
