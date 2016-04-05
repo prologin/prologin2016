@@ -280,6 +280,7 @@ function:
   -
     fct_name: puissance_aspiration
     fct_summary: Renvoie la puissance d'aspiration d'une case de base donnée.
+                 Renvoie -1 si la position n'est pas celle d'une base.
     fct_ret_type: int
     fct_arg:
       - [position, position, "Case choisie."]

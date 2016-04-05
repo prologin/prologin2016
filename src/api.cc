@@ -238,10 +238,13 @@ std::vector<position> Api::base_ennemie()
 }
 
 /// Renvoie la puissance d'aspiration d'une case de base donnée.
+/// Renvoie -1 si la position n'est pas celle d'une base.
 int Api::puissance_aspiration(position position)
 {
-    // TODO
-    abort();
+    if (game_state_->get_case_type(position) == BASE)
+        return game_state_->get_vacuum(position);
+    else
+        return -1;
 }
 
 /// Renvoie pour une case donnée la direction de son aspiration (qu'elle

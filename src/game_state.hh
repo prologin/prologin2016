@@ -139,6 +139,7 @@ class GameState : public rules::GameState
         bool get_vacuum_moved() const { return vacuum_moved_; }
         void set_vacuum_moved(bool);
 
+        /// Get the vacuum power of a given position, that must be a BASE
         unsigned get_vacuum(position) const;
         void decrement_vacuum(position);
         void increment_vacuum(position);
