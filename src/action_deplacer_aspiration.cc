@@ -21,11 +21,27 @@
 
 int ActionDeplacerAspiration::check(const GameState* st) const
 {
-    // FIXME
-    return 0;
+    case_type source = st->get_case_type(source_);
+    case_type destination = st->get_case_type(destination_);
+    if (source == case_type::INTERDIT || destination == case_type::INTERDIT)
+        return POSITION_INVALIDE;
+    if (source != case_type::BASE || destination != case_type::BASE)
+        return PAS_DANS_BASE;
+    // TODO check that is is our bases
+    if (st->get_vacuum(source_) == 0)
+        return PE_INSUFFISANTS;
+    if (st->get_vacuum_moved() &&
+            st->get_action_points() < COUT_MODIFICATION_ASPIRATION)
+        return PA_INSUFFISANTS;
+    return OK;
 }
 
 void ActionDeplacerAspiration::apply_on(GameState* st) const
 {
-    // FIXME
+    if (st->get_vacuum_moved())
+        st->decrease_action_points(COUT_MODIFICATION_ASPIRATION);
+    else
+        st->set_vacuum_moved(true);
+    st->decrement_vacuum(source_);
+    st->increment_vacuum(destination_);
 }
