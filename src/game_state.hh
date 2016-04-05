@@ -104,7 +104,10 @@ class GameState : public rules::GameState
 
         /// Get the type of a case at a given position
         /// Return 'INTERDIT' if the position is invalid
-        case_type get_case_type(position) const;
+        case_type get_cell_type(position) const;
+
+        /// Get the "owner" of a case.
+        unsigned get_cell_owner(position) const;
 
         /// Return pulsar info at a given position (it must contain a pulsar).
         pulsar get_pulsar(position) const;

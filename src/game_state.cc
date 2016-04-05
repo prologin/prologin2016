@@ -91,12 +91,17 @@ rules::GameState* GameState::copy() const
     return new GameState(*this);
 }
 
-case_type GameState::get_case_type(position pos) const
+case_type GameState::get_cell_type(position pos) const
 {
     if (in_bounds(pos))
         return cell(pos).type;
     else
         return case_type::INTERDIT;
+}
+
+unsigned GameState::get_cell_owner(position pos) const
+{
+    return in_bounds(pos) ? cell(pos).owner : 0;
 }
 
 pulsar GameState::get_pulsar(position pos) const
@@ -431,7 +436,7 @@ void GameState::compute_board_distances()
         {
             position neighbor = top.second + delta;
             int n = board_index(neighbor);
-            case_type t = get_case_type(neighbor);
+            case_type t = get_cell_type(neighbor);
             // 't == INTERDIT' when 'neighbor' is out of bounds
             if ((t == TUYAU || t == SUPER_TUYAU) &&
                 distances[n] == infinity)

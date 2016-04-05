@@ -106,7 +106,7 @@ erreur Api::deblayer(position position)
 /// Renvoie le type d'une case donnée.
 case_type Api::type_case(position position)
 {
-    return game_state_->get_case_type(position);
+    return game_state_->get_cell_type(position);
 }
 
 /// Renvoie la liste de tous les pulsars présents.
@@ -140,7 +140,7 @@ std::vector<position> Api::liste_tuyaux()
         for (int y = 0; y < TAILLE_TERRAIN; ++y)
         {
             position pos{x, y};
-            case_type type = game_state_->get_case_type(pos);
+            case_type type = game_state_->get_cell_type(pos);
             if (type == TUYAU || type == SUPER_TUYAU)
                 ret.push_back(pos);
         }
@@ -157,7 +157,7 @@ std::vector<position> Api::liste_super_tuyaux()
         for (int y = 0; y < TAILLE_TERRAIN; ++y)
         {
             position pos{x, y};
-            if (game_state_->get_case_type(pos) == SUPER_TUYAU)
+            if (game_state_->get_cell_type(pos) == SUPER_TUYAU)
                 ret.push_back(pos);
         }
     }
@@ -173,7 +173,7 @@ std::vector<position> Api::liste_tuyaux_detruits()
         for (int y = 0; y < TAILLE_TERRAIN; ++y)
         {
             position pos{x, y};
-            if (game_state_->get_case_type(pos) == DEBRIS)
+            if (game_state_->get_cell_type(pos) == DEBRIS)
                 ret.push_back(pos);
         }
     }
@@ -183,31 +183,31 @@ std::vector<position> Api::liste_tuyaux_detruits()
 /// Renvoie vrai si et seulement si la case contient un pulsar.
 bool Api::est_pulsar(position position)
 {
-    return game_state_->get_case_type(position) == case_type::PULSAR;
+    return game_state_->get_cell_type(position) == case_type::PULSAR;
 }
 
 /// Renvoie vrai si et seulement si la case contient un simple tuyau.
 bool Api::est_tuyau(position position)
 {
-    return game_state_->get_case_type(position) == case_type::TUYAU;
+    return game_state_->get_cell_type(position) == case_type::TUYAU;
 }
 
 /// Renvoie vrai si et seulement si la case contient un super tuyau.
 bool Api::est_super_tuyau(position position)
 {
-    return game_state_->get_case_type(position) == case_type::SUPER_TUYAU;
+    return game_state_->get_cell_type(position) == case_type::SUPER_TUYAU;
 }
 
 /// Renvoie vrai si et seulement si la case contient un tuyau détruit non encore déblayé
 bool Api::est_detruit(position position)
 {
-    return game_state_->get_case_type(position) == case_type::DEBRIS;
+    return game_state_->get_cell_type(position) == case_type::DEBRIS;
 }
 
 /// Renvoie vrai si et seulement s'il est possible de construire sur cette case.
 bool Api::est_libre(position position)
 {
-    return game_state_->get_case_type(position) == case_type::VIDE;
+    return game_state_->get_cell_type(position) == case_type::VIDE;
 }
 
 /// Renvoie les informations propres au pulsar à la position donnée.
@@ -241,7 +241,7 @@ std::vector<position> Api::base_ennemie()
 /// Renvoie -1 si la position n'est pas celle d'une base.
 int Api::puissance_aspiration(position position)
 {
-    if (game_state_->get_case_type(position) == BASE)
+    if (game_state_->get_cell_type(position) == BASE)
         return game_state_->get_vacuum(position);
     else
         return -1;
