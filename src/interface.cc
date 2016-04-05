@@ -95,17 +95,6 @@ std::string convert_to_string(std::vector<erreur> in){
     return "[]";
   }
 }
-std::string convert_to_string(std::vector<direction> in){
-  if (in.size()){
-    std::string s = "[" + convert_to_string(in[0]);
-    for (int i = 1, l = in.size(); i < l; i++){
-      s = s + ", " + convert_to_string(in[i]);
-    }
-    return s + "]";
-  }else{
-    return "[]";
-  }
-}
 std::string convert_to_string(case_type in){
   switch (in)
   {
