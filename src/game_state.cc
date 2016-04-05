@@ -20,6 +20,8 @@
 #include "game_state.hh"
 
 #include <cmath>
+#include <limits>
+#include <queue>
 
 PlayerInfo::PlayerInfo(rules::Player_sptr player)
     : player_(std::move(player))
@@ -302,4 +304,62 @@ const unsigned& GameState::vacuum_at(position p) const
 unsigned& GameState::vacuum_at(position p)
 {
     return const_cast<unsigned&>(static_cast<const GameState&>(*this).vacuum_at(p));
+}
+
+matrix<int>& GameState::get_board_distances()
+{
+    if (!board_distances_)
+        compute_board_distances();
+
+    return *board_distances_;
+}
+
+void GameState::compute_board_distances()
+{
+    using elt_t = std::pair<int, position>;
+    // Distances are smaller than 'TAILLE_TERRAIN * TAILLE_TERRAIN'
+    const int infinity = std::numeric_limits<int>::max();
+
+    board_distances_.reset(new matrix<int>);
+    auto& distances = *board_distances_;
+    distances.fill(infinity);
+
+    auto compare =
+        [](const elt_t& p1, const elt_t& p2)
+        { return p1.first > p2.first; };
+
+    std::priority_queue<elt_t, std::vector<elt_t>, decltype(compare)>
+        queue(compare);
+
+    for (unsigned pi : player_ids_)
+    {
+        for (position p : bases_list(pi))
+        {
+            int d = -static_cast<int>(vacuum_at(p));
+            distances[board_index(p)] = d;
+            queue.push({d, p});
+        }
+    }
+
+    // Board cells are visited in order of increasing distances
+    while (!queue.empty())
+    {
+        elt_t top = queue.top();
+        queue.pop();
+        position deltas[] = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+        for (position& delta : deltas)
+        {
+            position neighbor
+                = {top.second.x + delta.x, top.second.y + delta.y};
+            int n = board_index(neighbor);
+            case_type t = get_case_type(neighbor);
+            // 't == INTERDIT' when 'neighbor' is out of bounds
+            if ((t == TUYAU || t == SUPER_TUYAU) &&
+                distances[n] == infinity)
+            {
+                distances[n] = top.first + 1;
+                queue.push({distances[n], neighbor});
+            }
+        }
+    }
 }

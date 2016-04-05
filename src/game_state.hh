@@ -89,6 +89,9 @@ struct Cell
     unsigned owner;
 };
 
+template<typename T>
+using matrix = std::array<T, TAILLE_TERRAIN * TAILLE_TERRAIN>;
+
 namespace std
 {
     template<> struct hash<position>
@@ -172,6 +175,8 @@ class GameState : public rules::GameState
         /// Get a player's total collected plasma. The id must be valid
         double get_collected_plasma(unsigned player_id) const;
 
+        matrix<int>& get_board_distances();
+
     private:
         // Must be within bounds.
         Cell& cell(position);
@@ -181,6 +186,8 @@ class GameState : public rules::GameState
 
         const unsigned& vacuum_at(position) const;
         unsigned& vacuum_at(position);
+
+        void compute_board_distances();
 
         rules::Players_sptr players_;
         std::array<unsigned, 2> player_ids_;
@@ -196,6 +203,9 @@ class GameState : public rules::GameState
 
         // Base vacuum on four sides (Top, Bottom, Left, Right)
         std::array<std::array<unsigned, LONGUEUR_BASE>, 4> vacuums_;
+
+        std::shared_ptr<matrix<int>>
+            board_distances_;
 };
 
 #endif /* !GAME_STATE_HH */
