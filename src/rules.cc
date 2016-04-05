@@ -148,9 +148,10 @@ void Rules::start_of_player_turn(uint32_t /* player_id */)
     api_->game_state()->set_vacuum_moved(false);
 }
 
-void Rules::end_of_player_turn(uint32_t player_id)
+void Rules::end_of_player_turn(uint32_t /* player_id */)
 {
-    // TODO
+    api_->game_state()->move_plasma();
+    api_->game_state()->emit_plasma();
 
     // Clear the list of game states at the end of each turn (half-round)
     // We need the linked list of game states only for undo and history,
