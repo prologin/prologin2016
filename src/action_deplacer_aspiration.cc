@@ -27,7 +27,9 @@ int ActionDeplacerAspiration::check(const GameState* st) const
         return POSITION_INVALIDE;
     if (source != case_type::BASE || destination != case_type::BASE)
         return PAS_DANS_BASE;
-    // TODO check that is is our bases
+    if (st->get_cell_owner(source_) != static_cast<unsigned>(player_id_) ||
+        st->get_cell_owner(destination_) != static_cast<unsigned>(player_id_))
+        return PAS_DANS_BASE;
     if (st->get_vacuum(source_) == 0)
         return PE_INSUFFISANTS;
     if (st->get_vacuum_moved() &&
