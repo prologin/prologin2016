@@ -25,6 +25,8 @@
 #include <rules/player.hh>
 #include "constant.hh"
 
+#include "position.hh"
+
 enum action_type
 {
     BUILD,
@@ -91,22 +93,6 @@ struct Cell
 
 template<typename T>
 using matrix = std::array<T, TAILLE_TERRAIN * TAILLE_TERRAIN>;
-
-namespace std
-{
-    template<> struct hash<position>
-    {
-        size_t operator()(const position& pos) const
-        {
-            return TAILLE_TERRAIN * pos.y + pos.x;
-        }
-    };
-}
-
-inline bool operator==(const position& p1, const position& p2)
-{
-    return p1.x == p2.x && p1.y == p2.y;
-}
 
 class GameState : public rules::GameState
 {

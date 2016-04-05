@@ -354,8 +354,7 @@ void GameState::compute_board_distances()
         queue.pop();
         for (const auto& delta : deltas)
         {
-            position neighbor
-                = {top.second.x + delta.x, top.second.y + delta.y};
+            position neighbor = top.second + delta;
             int n = board_index(neighbor);
             case_type t = get_case_type(neighbor);
             // 't == INTERDIT' when 'neighbor' is out of bounds
