@@ -97,19 +97,6 @@ typedef enum erreur {
   PAS_DE_TUYAU_DETRUIT, /* <- Il n'y a pas de tuyau détruit à déblayer à la position spécifiée. */
 } erreur;
 
-
-///
-// Directions possibles
-//
-typedef enum direction {
-  NORD, /* <- Nord */
-  SUD, /* <- Sud */
-  OUEST, /* <- Ouest */
-  EST, /* <- Est */
-  AUCUNE, /* <- Aucune direction */
-} direction;
-
-
 ///
 // Types de cases
 //

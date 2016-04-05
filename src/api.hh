@@ -121,8 +121,11 @@ public:
     /// Renvoie -1 si la position n'est pas celle d'une base.
     int puissance_aspiration(position position);
 
-    /// Renvoie pour une case donnée la direction de son aspiration (qu'elle contienne un plasma ou non), ou "aucune" si la case n'est pas une case contenant un tuyau ou si elle n'est reliée à aucune base.
-    direction aspiration(position position);
+    /// Renvoie pour une case donnée la liste des cases vers
+    /// lesquelles se propagerait un plasma. Renvoie la liste vide
+    /// si la case n'est pas une case contenant un tuyau ou si elle
+    /// n'est reliée à aucune base.
+    std::vector<position> directions_plasma(position position);
 
     /// Renvoie la valeur du coût de la prochaine modification de vos points d'aspiration.
     int cout_prochaine_modification_aspiration();

@@ -247,10 +247,11 @@ int Api::puissance_aspiration(position position)
         return -1;
 }
 
-/// Renvoie pour une case donnée la direction de son aspiration (qu'elle
-/// contienne un plasma ou non), ou "aucune" si la case n'est pas une case
-/// contenant un tuyau ou si elle n'est reliée à aucune base.
-direction Api::aspiration(position position)
+/// Renvoie pour une case donnée la liste des cases vers
+/// lesquelles se propagerait un plasma. Renvoie la liste vide
+/// si la case n'est pas une case contenant un tuyau ou si elle
+/// n'est reliée à aucune base.
+std::vector<position> Api::directions_plasma(position position)
 {
     // TODO
     abort();

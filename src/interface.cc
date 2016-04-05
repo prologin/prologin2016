@@ -95,17 +95,6 @@ std::string convert_to_string(std::vector<erreur> in){
     return "[]";
   }
 }
-std::string convert_to_string(direction in){
-  switch (in)
-  {
-    case NORD: return "\"nord\"";
-    case SUD: return "\"sud\"";
-    case OUEST: return "\"ouest\"";
-    case EST: return "\"est\"";
-    case AUCUNE: return "\"aucune\"";
-  }
-  return "bad value";
-}
 std::string convert_to_string(std::vector<direction> in){
   if (in.size()){
     std::string s = "[" + convert_to_string(in[0]);
@@ -355,11 +344,13 @@ extern "C" int api_puissance_aspiration(position position)
 }
 
 ///
-// Renvoie pour une case donnée la direction de son aspiration (qu'elle contienne un plasma ou non), ou "aucune" si la case n'est pas une case contenant un tuyau ou si elle n'est reliée à aucune base.
-//
-extern "C" direction api_aspiration(position position)
+// Renvoie pour une case donnée la liste des cases vers
+// lesquelles se propagerait un plasma. Renvoie la liste vide
+// si la case n'est pas une case contenant un tuyau ou si elle
+// n'est reliée à aucune base.
+extern "C" std::vector<position> api_directions_plasma(position position)
 {
-  return api->aspiration(position);
+  return api->directions_plasma(position);
 }
 
 ///
@@ -487,25 +478,6 @@ std::ostream& operator<<(std::ostream& os, erreur v)
   return os;
 }
 extern "C" void api_afficher_erreur(erreur v)
-{
-  std::cerr << v << std::endl;
-}
-
-///
-// Affiche le contenu d'une valeur de type direction
-//
-std::ostream& operator<<(std::ostream& os, direction v)
-{
-  switch (v) {
-  case NORD: os << "NORD"; break;
-  case SUD: os << "SUD"; break;
-  case OUEST: os << "OUEST"; break;
-  case EST: os << "EST"; break;
-  case AUCUNE: os << "AUCUNE"; break;
-  }
-  return os;
-}
-extern "C" void api_afficher_direction(direction v)
 {
   std::cerr << v << std::endl;
 }

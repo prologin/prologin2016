@@ -89,16 +89,6 @@ enum:
                                 à la position spécifiée."]
 
   -
-    enum_name: direction
-    enum_summary: "Directions possibles"
-    enum_field:
-      - [nord, "Nord"]
-      - [sud, "Sud"]
-      - [ouest, "Ouest"]
-      - [est, "Est"]
-      - [aucune, "Aucune direction"]
-
-  -
     enum_name: case_type
     enum_summary: "Types de cases"
     enum_field:
@@ -286,12 +276,12 @@ function:
       - [position, position, "Case choisie."]
 
   -
-    fct_name: aspiration
-    fct_summary: Renvoie pour une case donnée la direction de son aspiration
-                 (qu'elle contienne un plasma ou non), ou "aucune" si la case
-                 n'est pas une case contenant un tuyau ou si elle n'est
-                 reliée à aucune base.
-    fct_ret_type: direction
+    fct_name: directions_plasma
+    fct_summary: Renvoie pour une case donnée la liste des cases vers
+                 lesquelles se propagerait un plasma. Renvoie la liste vide
+                 si la case n'est pas une case contenant un tuyau ou si elle
+                 n'est reliée à aucune base.
+    fct_ret_type: position array
     fct_arg:
       - [position, position, "Case choisie."]
 
