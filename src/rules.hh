@@ -47,9 +47,15 @@ public:
     void apply_action(const rules::IAction_sptr& action) override;
     bool is_finished() override;
 
-protected:
-    // FIXME: Override TurnBasedRules methods here
+    void start_of_turn(uint32_t player_id) override;
+    void start_of_player_turn(uint32_t player_id) override;
+    void start_of_spectator_turn(uint32_t player_id) override;
 
+    void end_of_turn(uint32_t player_id) override;
+    void end_of_player_turn(uint32_t player_id) override;
+    void end_of_spectator_turn(uint32_t player_id) override;
+
+protected:
     f_champion_partie_init champion_partie_init_;
     f_champion_jouer_tour champion_jouer_tour_;
     f_champion_partie_fin champion_partie_fin_;

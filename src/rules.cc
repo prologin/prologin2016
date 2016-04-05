@@ -88,6 +88,36 @@ void Rules::apply_action(const rules::IAction_sptr& action)
     api_->game_state_set(action->apply(api_->game_state()));
 }
 
+void Rules::start_of_turn(uint32_t player_id)
+{
+    // TODO
+}
+
+void Rules::start_of_player_turn(uint32_t player_id)
+{
+    // TODO
+}
+
+void Rules::start_of_spectator_turn(uint32_t player_id)
+{
+    // TODO
+}
+
+void Rules::end_of_turn(uint32_t player_id)
+{
+    // TODO
+}
+
+void Rules::end_of_player_turn(uint32_t player_id)
+{
+    // TODO
+}
+
+void Rules::end_of_spectator_turn(uint32_t player_id)
+{
+    // TODO
+}
+
 bool Rules::is_finished()
 {
     // FIXME
