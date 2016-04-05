@@ -98,7 +98,7 @@ class GameState : public rules::GameState
 {
     public:
         // The input stream consists of simply five integers for every pulsar:
-        // x y periode puissance plasma_total
+        // x y periode puissance nombre_pulsations
         GameState(std::istream&, rules::Players_sptr players);
         rules::GameState* copy() const final override;
 
@@ -175,6 +175,9 @@ class GameState : public rules::GameState
         /// Move plasma at the end of a turn. Plasma that is not connected to
         /// any 'BASE' cell is lost.
         void move_plasma();
+
+        /// Make pulsars produce plasma.
+        void emit_plasma();
 
     private:
         // Must be within bounds.

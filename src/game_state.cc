@@ -78,7 +78,7 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
         pulsar pr;
 
         board_stream >> pos.x >> pos.y >>
-            pr.periode >> pr.puissance >> pr.plasma_total;
+            pr.periode >> pr.puissance >> pr.nombre_pulsations;
 
         cell(pos).type = case_type::PULSAR;
 
@@ -331,6 +331,25 @@ void GameState::move_plasma()
         // Skipped if n_dirs == 0: disconnected plasma disappears.
         for (const auto p : dirs)
             increase_plasma(p, plasma / n_dirs);
+    }
+}
+
+void GameState::emit_plasma()
+{
+    const position deltas[] = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    auto& distances = get_board_distances();
+    for (auto& pulsar : pulsars_)
+    {
+        if (turn_ % pulsar.second.periode != 0 ||
+            pulsar.second.nombre_pulsations == 0)
+            continue;
+        pulsar.second.nombre_pulsations--;
+        for (const auto& delta : deltas)
+        {
+            auto pos = pulsar.first + delta;
+            if (distances[board_index(pos)] != std::numeric_limits<int>::max())
+                increase_plasma(pos, pulsar.second.puissance);
+        }
     }
 }
 

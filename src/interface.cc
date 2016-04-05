@@ -143,13 +143,13 @@ std::string convert_to_string(std::vector<position> in){
 std::string convert_to_string(pulsar in){
   std::string periode = convert_to_string(in.periode);
   std::string puissance = convert_to_string(in.puissance);
-  std::string plasma_total = convert_to_string(in.plasma_total);
+  std::string nombre_pulsations = convert_to_string(in.nombre_pulsations);
   std::string out = "{";
   out += "periode:" + periode;
   out += ", ";
   out += "puissance:" + puissance;
   out += ", ";
-  out += "plasma_total:" + plasma_total;
+  out += "nombre_pulsations:" + nombre_pulsations;
   return out + "}";
 }
 
@@ -519,7 +519,7 @@ std::ostream& operator<<(std::ostream& os, pulsar v)
   os << ", ";
   os << "puissance" << "=" << v.puissance;
   os << ", ";
-  os << "plasma_total" << "=" << v.plasma_total;
+  os << "nombre_pulsations" << "=" << v.nombre_pulsations;
   os << " }";
   return os;
 }

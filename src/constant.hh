@@ -125,8 +125,8 @@ typedef struct position {
 //
 typedef struct pulsar {
   int periode;  /* <- Période de pulsation du pulsar */
-  int puissance;  /* <- Quantité de plasma émise par chaque pulsation */
-  int plasma_total;  /* <- Quantité de plasma restante */
+  int puissance;  /* <- Quantité de plasma émise par chaque pulsation dans chaque direction */
+  int nombre_pulsations;  /* <- Nombre de pulsations restantes */
 } pulsar;
 
 
