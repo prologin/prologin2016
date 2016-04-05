@@ -47,7 +47,6 @@ public:
     void apply_action(const rules::IAction_sptr& action) override;
     bool is_finished() override;
 
-    void at_start() override;
     void at_player_start(rules::ClientMessenger_sptr) override;
     void at_spectator_start(rules::ClientMessenger_sptr) override;
     void at_player_end(rules::ClientMessenger_sptr) override;

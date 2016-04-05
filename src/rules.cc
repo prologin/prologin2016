@@ -88,11 +88,6 @@ void Rules::apply_action(const rules::IAction_sptr& action)
     api_->game_state_set(action->apply(api_->game_state()));
 }
 
-void Rules::at_start()
-{
-    // TODO
-}
-
 void Rules::at_player_start(rules::ClientMessenger_sptr)
 {
     try {
