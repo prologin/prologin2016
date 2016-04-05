@@ -314,11 +314,17 @@ matrix<int>& GameState::get_board_distances()
     return *board_distances_;
 }
 
+void GameState::reset_board_distances()
+{
+    board_distances_.reset();
+}
+
 void GameState::compute_board_distances()
 {
     using elt_t = std::pair<int, position>;
     // Distances are smaller than 'TAILLE_TERRAIN * TAILLE_TERRAIN'
     const int infinity = std::numeric_limits<int>::max();
+    const position deltas[] = {{0,1}, {0,-1}, {1,0}, {-1,0}};
 
     board_distances_.reset(new matrix<int>);
     auto& distances = *board_distances_;
@@ -337,7 +343,7 @@ void GameState::compute_board_distances()
         {
             int d = -static_cast<int>(vacuum_at(p));
             distances[board_index(p)] = d;
-            queue.push({d, p});
+            queue.emplace(d, p);
         }
     }
 
@@ -346,8 +352,7 @@ void GameState::compute_board_distances()
     {
         elt_t top = queue.top();
         queue.pop();
-        position deltas[] = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-        for (position& delta : deltas)
+        for (const auto& delta : deltas)
         {
             position neighbor
                 = {top.second.x + delta.x, top.second.y + delta.y};
@@ -358,7 +363,7 @@ void GameState::compute_board_distances()
                 distances[n] == infinity)
             {
                 distances[n] = top.first + 1;
-                queue.push({distances[n], neighbor});
+                queue.emplace(distances[n], neighbor);
             }
         }
     }

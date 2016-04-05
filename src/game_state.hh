@@ -172,10 +172,14 @@ class GameState : public rules::GameState
         /// Get a player's score. The id must be valid.
         int get_score(unsigned player_id) const;
 
-        /// Get a player's total collected plasma. The id must be valid
+        /// Get a player's total collected plasma. The id must be valid.
         double get_collected_plasma(unsigned player_id) const;
 
+        /// Get the shortest distances from pipes to cells.
         matrix<int>& get_board_distances();
+
+        /// Discard the distance array when an action modifies the board.
+        void reset_board_distances();
 
     private:
         // Must be within bounds.
