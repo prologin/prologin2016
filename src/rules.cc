@@ -127,18 +127,18 @@ void Rules::at_spectator_end(rules::ClientMessenger_sptr)
 
 void Rules::player_turn()
 {
-    sandbox_.execute(champion_jouer_tour_);
-}
-
-void Rules::spectator_turn()
-{
     try {
-        champion_jouer_tour_();
+        sandbox_.execute(champion_jouer_tour_);
     }
     catch (utils::SandboxTimeout)
     {
         FATAL("partie_fin: timeout");
     }
+}
+
+void Rules::spectator_turn()
+{
+    champion_jouer_tour_();
 }
 
 void Rules::start_of_player_turn(uint32_t /* player_id */)
