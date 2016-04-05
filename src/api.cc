@@ -253,8 +253,11 @@ int Api::puissance_aspiration(position position)
 /// n'est reliée à aucune base.
 std::vector<position> Api::directions_plasma(position position)
 {
-    // TODO
-    abort();
+    if (1 <= position.x && position.x < TAILLE_TERRAIN - 1 &&
+        1 <= position.y && position.y < TAILLE_TERRAIN - 1)
+        return game_state_->direction_plasma(position);
+    else
+        return {};
 }
 
 /// Renvoie la valeur du coût de la prochaine modification de vos points d'aspiration.
