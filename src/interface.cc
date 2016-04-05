@@ -349,9 +349,9 @@ extern "C" std::vector<position> api_base_ennemie()
 ///
 // Renvoie la puissance d'aspiration d'une case de base donnée.
 //
-extern "C" std::vector<position> api_energie_aspiration(position position)
+extern "C" int api_puissance_aspiration(position position)
 {
-  return api->energie_aspiration(position);
+  return api->puissance_aspiration(position);
 }
 
 ///

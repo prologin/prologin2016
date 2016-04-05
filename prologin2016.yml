@@ -278,9 +278,9 @@ function:
     fct_arg: []
 
   -
-    fct_name: energie_aspiration
+    fct_name: puissance_aspiration
     fct_summary: Renvoie la puissance d'aspiration d'une case de base donnée.
-    fct_ret_type: position array
+    fct_ret_type: int
     fct_arg:
       - [position, position, "Case choisie."]
 

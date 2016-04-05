@@ -238,7 +238,7 @@ std::vector<position> Api::base_ennemie()
 }
 
 /// Renvoie la puissance d'aspiration d'une case de base donnée.
-std::vector<position> Api::energie_aspiration(position position)
+int Api::puissance_aspiration(position position)
 {
     // TODO
     abort();

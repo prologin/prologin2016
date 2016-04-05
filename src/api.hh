@@ -118,7 +118,7 @@ public:
     std::vector<position> base_ennemie();
 
     /// Renvoie la puissance d'aspiration d'une case de base donnée.
-    std::vector<position> energie_aspiration(position position);
+    int puissance_aspiration(position position);
 
     /// Renvoie pour une case donnée la direction de son aspiration (qu'elle contienne un plasma ou non), ou "aucune" si la case n'est pas une case contenant un tuyau ou si elle n'est reliée à aucune base.
     direction aspiration(position position);
