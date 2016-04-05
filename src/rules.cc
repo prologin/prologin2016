@@ -164,6 +164,5 @@ void Rules::dump_state(std::ostream& out)
 
 bool Rules::is_finished()
 {
-    // FIXME
-    return true;
+    return api_->game_state()->get_turn() > NB_TOURS;
 }
