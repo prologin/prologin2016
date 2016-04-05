@@ -47,13 +47,22 @@ public:
     void apply_action(const rules::IAction_sptr& action) override;
     bool is_finished() override;
 
-    void start_of_turn(uint32_t player_id) override;
-    void start_of_player_turn(uint32_t player_id) override;
-    void start_of_spectator_turn(uint32_t player_id) override;
+    void at_start() override;
+    void at_player_start(rules::ClientMessenger_sptr) override;
+    void at_spectator_start(rules::ClientMessenger_sptr) override;
+    void at_player_end(rules::ClientMessenger_sptr) override;
+    void at_spectator_end(rules::ClientMessenger_sptr) override;
 
-    void end_of_turn(uint32_t player_id) override;
+    void player_turn() override;
+    void spectator_turn() override;
+
+    void start_of_round() override;
+    void end_of_round() override;
+
+    void start_of_player_turn(uint32_t player_id) override;
     void end_of_player_turn(uint32_t player_id) override;
-    void end_of_spectator_turn(uint32_t player_id) override;
+
+    void dump_state(std::ostream& out) override;
 
 protected:
     f_champion_partie_init champion_partie_init_;
