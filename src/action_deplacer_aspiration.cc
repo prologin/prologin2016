@@ -21,8 +21,8 @@
 
 int ActionDeplacerAspiration::check(const GameState* st) const
 {
-    case_type source = st->get_case_type(source_);
-    case_type destination = st->get_case_type(destination_);
+    case_type source = st->get_cell_type(source_);
+    case_type destination = st->get_cell_type(destination_);
     if (source == case_type::INTERDIT || destination == case_type::INTERDIT)
         return POSITION_INVALIDE;
     if (source != case_type::BASE || destination != case_type::BASE)
