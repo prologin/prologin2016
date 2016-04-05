@@ -21,12 +21,27 @@
 
 int ActionDetruire::check(const GameState* st) const
 {
-    // FIXME
-    return 0;
+    case_type ct = st->get_cell_type(position_);
+    if (ct == case_type::INTERDIT)
+        return POSITION_INVALIDE;
+    if (ct != case_type::TUYAU || ct != case_type::SUPER_TUYAU)
+        return DESTRUCTION_IMPOSSIBLE;
+    if (st->get_plasma(position_) > 0)
+        return DESTRUCTION_IMPOSSIBLE; // We could have a better enum
+    unsigned points = st->get_action_points();
+    if (points < COUT_DESTRUCTION_TUYAU)
+        return PA_INSUFFISANTS;
+    if (ct == case_type::SUPER_TUYAU && points < COUT_DESTRUCTION_SUPER_TUYAU)
+        return PA_INSUFFISANTS;
+    return OK;
 }
 
 void ActionDetruire::apply_on(GameState* st) const
 {
-    // FIXME
+    if (st->get_cell_type(position_) == case_type::SUPER_TUYAU)
+        st->decrease_action_points(COUT_DESTRUCTION_SUPER_TUYAU);
+    else
+        st->decrease_action_points(COUT_DESTRUCTION_TUYAU);
+    st->destroy_pipe(position_);
     st->hist_add_destroy(position_, player_id_);
 }
