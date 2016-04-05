@@ -172,6 +172,10 @@ class GameState : public rules::GameState
         /// a pipe connected to a base.
         std::vector<position> direction_plasma(position);
 
+        /// Move plasma at the end of a turn. Plasma that is not connected to
+        /// any 'BASE' cell is lost.
+        void move_plasma();
+
     private:
         // Must be within bounds.
         Cell& cell(position);

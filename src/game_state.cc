@@ -297,6 +297,43 @@ std::vector<position> GameState::direction_plasma(position p)
     return directions;
 }
 
+// Plasmas must be moved in order of increasing distances to bases to avoid
+// moving plasma to a cell with plasma that has not been moved yet.
+void GameState::move_plasma()
+{
+    using elt_t = std::pair<int, position>;
+
+    auto& distances = get_board_distances();
+
+    auto compare =
+        [](const elt_t& p1, const elt_t& p2)
+        { return p1.first > p2.first; };
+
+    std::priority_queue<elt_t, std::vector<elt_t>, decltype(compare)>
+        queue(compare);
+
+    for (int x = 1; x < TAILLE_TERRAIN-1; x++)
+        for (int y = 1; y < TAILLE_TERRAIN-1; y++)
+        {
+            position p{x,y};
+            if (get_plasma(p) > 0)
+                queue.emplace(distances[board_index(p)], p);
+        }
+
+    while (!queue.empty())
+    {
+        auto top = queue.top();
+        queue.pop();
+        const auto dirs = direction_plasma(top.second);
+        const double n_dirs = static_cast<double>(dirs.size());
+        const double plasma = get_plasma(top.second);
+        clear_plasma(top.second);
+        // Skipped if n_dirs == 0: disconnected plasma disappears.
+        for (const auto p : dirs)
+            increase_plasma(p, plasma / n_dirs);
+    }
+}
+
 Cell& GameState::cell(position p)
 {
     return board_[board_index(p)];
