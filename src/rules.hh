@@ -56,9 +56,6 @@ public:
     void player_turn() override;
     void spectator_turn() override;
 
-    void start_of_round() override;
-    void end_of_round() override;
-
     void start_of_player_turn(uint32_t player_id) override;
     void end_of_player_turn(uint32_t player_id) override;
 

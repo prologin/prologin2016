@@ -141,16 +141,6 @@ void Rules::spectator_turn()
     }
 }
 
-void Rules::start_of_round()
-{
-    // TODO (print)
-}
-
-void Rules::end_of_round()
-{
-    // TODO
-}
-
 void Rules::start_of_player_turn(uint32_t player_id)
 {
     // TODO (reset AP)
