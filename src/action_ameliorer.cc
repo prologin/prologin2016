@@ -37,4 +37,5 @@ void ActionAmeliorer::apply_on(GameState* st) const
 {
     st->decrease_action_points(COUT_AMELIORATION_TUYAU);
     st->upgrade_pipe(position_, player_id_);
+    st->hist_add_upgrade(position_, player_id_);
 }

@@ -28,4 +28,5 @@ int ActionDetruire::check(const GameState* st) const
 void ActionDetruire::apply_on(GameState* st) const
 {
     // FIXME
+    st->hist_add_destroy(position_, player_id_);
 }

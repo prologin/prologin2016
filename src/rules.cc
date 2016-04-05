@@ -136,11 +136,12 @@ void Rules::spectator_turn()
     champion_jouer_tour_();
 }
 
-void Rules::start_of_player_turn(uint32_t /* player_id */)
+void Rules::start_of_player_turn(uint32_t player_id)
 {
     api_->game_state()->reset_action_points();
     api_->game_state()->increment_turn();
     api_->game_state()->set_vacuum_moved(false);
+    api_->game_state()->reset_history(player_id);
 }
 
 void Rules::end_of_player_turn(uint32_t /* player_id */)

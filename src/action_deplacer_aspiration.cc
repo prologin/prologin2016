@@ -44,4 +44,5 @@ void ActionDeplacerAspiration::apply_on(GameState* st) const
         st->set_vacuum_moved(true);
     st->decrement_vacuum(source_);
     st->increment_vacuum(destination_);
+    st->hist_add_move_vacuum(source_, destination_, player_id_);
 }

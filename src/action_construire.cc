@@ -35,4 +35,5 @@ void ActionConstruire::apply_on(GameState* st) const
 {
     st->decrease_action_points(COUT_CONSTRUCTION_TUYAU);
     st->build_pipe(position_, player_id_);
+    st->hist_add_build(position_, player_id_);
 }

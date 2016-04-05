@@ -35,4 +35,5 @@ void ActionDeblayer::apply_on(GameState* st) const
 {
     st->decrease_action_points(COUT_DEBLAYAGE);
     st->clear_rubble(position_);
+    st->hist_add_clear(position_, player_id_);
 }
