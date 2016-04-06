@@ -9,12 +9,17 @@
 #include "../game_state.hh"
 
 
-static const position TEST_PULSAR_POSITION = {18,18};
 
 // the format is: <x> <y> <period> <power> <lifetime>
+
+static const position TEST_PULSAR_POSITION = {18,18};
 static const std::string some_map = (
     "18 18 3 5 10\n"
 );
+
+static const int N = TAILLE_TERRAIN;
+static const position TEST_BASE = {N/2,0};
+static const position TEST_EMPTY_CELL = {1,1};
 
 static GameState* make_test_gamestate(std::string map)
 {
@@ -27,7 +32,7 @@ static GameState* make_test_gamestate(std::string map)
 	    rules::Player_sptr(new rules::Player(1, rules::PLAYER)),
 	}
     });
-    return new GameState(map_stream, players);    
+    return new GameState(map_stream, players);
 }
 
 class ActionTest : public ::testing::Test
