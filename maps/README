@@ -2,9 +2,32 @@ Usage of map_editor :
 
 Button GENERATION : Generate a map using the parameter N.
 
-Button SAVE : Save the current map in the current directory using the 'File' name.
+Button SAVE : Save the current map in the current directory using
+the 'File' name.
 
-Button LOAD : Load a map from a file in the current directory whose name is in the 'File' field.
+Button LOAD : Load a map from a file in the current directory
+whose name is in the 'File' field.
 
-Edition of the map : Use ENTER to modify any case, it will switch its content ('pulsar' / 'none' if it's in play ground, else 'base' / 'none').
-                     You can select a case by right clicking, and move with ZQSD keys.
+Button LOAD TYPES : Load the attributs of the pulsars from the
+file TYPES in the current directory.
+
+Button UPDATE : Use the value you modified in the fields for
+the attributs of the pulsars.
+
+Edition of the map : Left click to modify any case. It will get
+the attributs from the check-list at the right.
+
+Format of a map :
+
+N \\ Size of the map
+nb \\ Number of pulsars in the map
+period_1 time_1 power_1 \\ Attributs of pulsar #1
+...
+period_nb time_nb power_nb \\ Attributs of pulsar #nb
+map_line_1 \\ '#' for a pulsar, 'B' for a base and '.' else
+...
+map_line_N
+type_pulsar_1 \\ This part is optional (it's only necessary to
+              \\ load back the map in the editor)
+...
+type_pulsar_5
