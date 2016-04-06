@@ -1,0 +1,10 @@
+Usage of map_editor :
+
+Button GENERATION : Generate a map using the parameter N.
+
+Button SAVE : Save the current map in the current directory using the 'File' name.
+
+Button LOAD : Load a map from a file in the current directory whose name is in the 'File' field.
+
+Edition of the map : Use ENTER to modify any case, it will switch its content ('pulsar' / 'none' if it's in play ground, else 'base' / 'none').
+                     You can select a case by right clicking, and move with ZQSD keys.
