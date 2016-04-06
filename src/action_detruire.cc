@@ -24,7 +24,7 @@ int ActionDetruire::check(const GameState* st) const
     case_type ct = st->get_cell_type(position_);
     if (ct == case_type::INTERDIT)
         return POSITION_INVALIDE;
-    if (ct != case_type::TUYAU || ct != case_type::SUPER_TUYAU)
+    if (ct != case_type::TUYAU && ct != case_type::SUPER_TUYAU)
         return DESTRUCTION_IMPOSSIBLE;
     if (st->get_plasma(position_) > 0)
         return DESTRUCTION_IMPOSSIBLE; // We could have a better enum
