@@ -20,14 +20,6 @@ the attributs from the check-list at the right.
 Format of a map :
 
 N \\ Size of the map
-nb \\ Number of pulsars in the map
-period_1 time_1 power_1 \\ Attributs of pulsar #1
+i_1 j_1 period_1 time_1 power_1 \\ Attributs of pulsar #1
 ...
-period_nb time_nb power_nb \\ Attributs of pulsar #nb
-map_line_1 \\ '#' for a pulsar, 'B' for a base and '.' else
-...
-map_line_N
-type_pulsar_1 \\ This part is optional (it's only necessary to
-              \\ load back the map in the editor)
-...
-type_pulsar_5
+i_nb j_nb period_nb time_nb power_nb \\ Attributs of pulsar #nb

@@ -77,18 +77,6 @@ def click_gauche(event):  # Définit ce qu'il se passe lors de l'appui sur le cl
                 if e_v.get() == 1:
                     type_p = 4
                 type_pulsars[i][j] = type_p
-        elif i + j in [0, N - 1, 2 * N - 2]:
-            return
-        elif i in [0, N - 1]:
-            if grille[i][j] == 'base_1':
-                grille[i][j] = 'none'
-            else:
-                grille[i][j] = 'base_1'
-        else:
-            if grille[i][j] == 'base_2':
-                grille[i][j] = 'none'
-            else:
-                grille[i][j] = 'base_2'
     rafraichir()
 
 
@@ -212,27 +200,12 @@ def start():  # Démarrage de la partie
 
 def save():
     s = str(N) + '\n'
-    nb = 0
-    for i in range(N):
-        for j in range(N):
-            if grille[i][j] == 'pulsar':
-                nb += 1
-    s += str(nb) + '\n'
     for j in range(N):
         for i in range(N):
             if grille[i][j] == 'pulsar':
                 type_p = type_pulsars[i][j]
                 a, b, c = types[type_p]
-                s += str(a) + ' ' + str(b) + ' ' + str(c) + '\n'
-    for j in range(N):
-        for i in range(N):
-            if grille[i][j] in ['base_1', 'base_2']:
-                s += 'B'
-            elif grille[i][j] == 'pulsar':
-                s += '#'
-            else:
-                s += '.'
-        s += '\n'
+                s += str(j) + ' ' + str(i) + ' ' + str(a) + ' ' + str(b) + ' ' + str(c) + '\n'
     fichier = text.get('@0,0', END).split('\n')[0]
     f = open(fichier, 'w')
     f.write(s)
@@ -246,34 +219,29 @@ def load():
     s = f.readlines()
     f.close()
     N = int(s[0])
-    nb = int(s[1])
+    types_found = {}
     text_n.delete('@0,0', END)
     text_n.insert(INSERT, str(N))
     initialiser()
-    for i in range(N):
-        for j in range(N):
-            if s[j + nb + 2][i] == '#':
+    for k in range(1,len(s)):
+        _, _, a, b, c = map(int,s[k].split('\n')[0].split())
+        if (a, b, c) in types_found:
+            types_found[(a, b, c)] += 1
+        else:
+            types_found[(a, b, c)] = 1
+    liste = []
+    for (a, b, c) in types_found:
+        liste += [(-types_found[(a, b, c)], a, b, c)]
+    liste.sort()
+    for k in range(min(5,len(liste))):
+        _, a, b, c = liste[k]
+        types[k] = (a, b, c)
+    for k in range(1,len(s)):
+        j, i, a, b, c = map(int,s[k].split('\n')[0].split())
+        for type_p in range(5):
+            if (a, b, c) == types[type_p]:
                 grille[i][j] = 'pulsar'
-            if s[j + nb + 2][i] == '.':
-                grille[i][j] = 'none'
-            elif i + j not in [0, N - 1, 2 * N - 2] and s[j + nb + 2][i] == 'B':
-                if i in [0, N - 1]:
-                    grille[i][j] = 'base_1'
-                else:
-                    grille[i][j] = 'base_2'
-    for i in range(5):
-        a, b, c = s[i + 2 + nb + N].split('\n')[0].split()
-        types[i] = (a, b, c)
-    k = 0
-    for j in range(N):
-        for i in range(N):
-            if s[j + nb + 2][i] == '#':
-                a, b, c = s[k + 2].split('\n')[0].split()
-                for type_p in range(5):
-                    if types[type_p] == (a, b, c):
-                        type_pulsars[i][j] = type_p
-                        print(type_p)
-                k += 1
+                type_pulsars[i][j] = type_p
     rafraichir()
 
 def a_c():
