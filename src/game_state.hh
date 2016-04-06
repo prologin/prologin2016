@@ -56,6 +56,9 @@ class PlayerInfo
         /// Get this player's score (floor of total collected plasma)
         int get_score() const { return player_->score; }
 
+        /// Get this player's name
+        const std::string& get_name() const { return player_->name; }
+
         /// Get total collected plasma by this player
         double get_collected_plasma() const { return collected_plasma_; }
 
@@ -101,6 +104,8 @@ class GameState : public rules::GameState
         // x y periode puissance nombre_pulsations
         GameState(std::istream&, rules::Players_sptr players);
         rules::GameState* copy() const final override;
+
+        const auto& get_player_info() const { return player_info_; }
 
         /// Get the type of a case at a given position
         /// Return 'INTERDIT' if the position is invalid

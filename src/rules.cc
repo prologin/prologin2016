@@ -155,14 +155,6 @@ void Rules::end_of_player_turn(uint32_t /* player_id */)
     api_->game_state()->clear_old_version();
 }
 
-void Rules::dump_state(std::ostream& out)
-{
-    // TODO
-    // char* line = api_->get_dump();
-    // out << line << std::endl;
-    // free(line);
-}
-
 bool Rules::is_finished()
 {
     return api_->game_state()->get_turn() > NB_TOURS;
