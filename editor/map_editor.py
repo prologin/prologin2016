@@ -209,6 +209,7 @@ def save():
     fichier = text.get('@0,0', END).split('\n')[0]
     f = open(fichier, 'w')
     f.write(s)
+    print(s)
     f.close()
 
 
@@ -293,25 +294,25 @@ def load_types():
     rafraichir()
 
 def update():
-    a = a_l1.get('@0,0', END)
-    b = a_l2.get('@0,0', END)
-    c = a_l3.get('@0,0', END)
+    a = int(a_l1.get('@0,0', END))
+    b = int(a_l2.get('@0,0', END))
+    c = int(a_l3.get('@0,0', END))
     types[0] = (a, b, c)
-    a = b_l1.get('@0,0', END)
-    b = b_l2.get('@0,0', END)
-    c = b_l3.get('@0,0', END)
+    a = int(b_l1.get('@0,0', END))
+    b = int(b_l2.get('@0,0', END))
+    c = int(b_l3.get('@0,0', END))
     types[1] = (a, b, c)
-    a = c_l1.get('@0,0', END)
-    b = c_l2.get('@0,0', END)
-    c = c_l3.get('@0,0', END)
+    a = int(c_l1.get('@0,0', END))
+    b = int(c_l2.get('@0,0', END))
+    c = int(c_l3.get('@0,0', END))
     types[2] = (a, b, c)
-    a = d_l1.get('@0,0', END)
-    b = d_l2.get('@0,0', END)
-    c = d_l3.get('@0,0', END)
+    a = int(d_l1.get('@0,0', END))
+    b = int(d_l2.get('@0,0', END))
+    c = int(d_l3.get('@0,0', END))
     types[3] = (a, b, c)
-    a = e_l1.get('@0,0', END)
-    b = e_l2.get('@0,0', END)
-    c = e_l3.get('@0,0', END)
+    a = int(e_l1.get('@0,0', END))
+    b = int(e_l2.get('@0,0', END))
+    c = int(e_l3.get('@0,0', END))
     types[4] = (a, b, c)
 
 # Création de la fenêtre
