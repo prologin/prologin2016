@@ -194,7 +194,6 @@ class GameState : public rules::GameState
 
         void compute_board_distances();
 
-        rules::Players_sptr players_;
         std::array<unsigned, 2> player_ids_;
         std::unordered_map<unsigned, PlayerInfo> player_info_;
 
