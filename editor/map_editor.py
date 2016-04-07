@@ -209,7 +209,6 @@ def save():
     fichier = text.get('@0,0', END).split('\n')[0]
     f = open(fichier, 'w')
     f.write(s)
-    print(s)
     f.close()
 
 
