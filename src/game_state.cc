@@ -434,11 +434,12 @@ void GameState::compute_board_distances()
         for (const auto& delta : deltas)
         {
             position neighbor = top.second + delta;
-            int n = board_index(neighbor);
             case_type t = get_cell_type(neighbor);
             // 't == INTERDIT' when 'neighbor' is out of bounds
-            if ((t == TUYAU || t == SUPER_TUYAU) &&
-                distances[n] == infinity)
+            if (t != TUYAU && t != SUPER_TUYAU)
+              continue;
+            const int n = board_index(neighbor);
+            if (distances[n] == infinity)
             {
                 distances[n] = top.first + 1;
                 queue.emplace(distances[n], neighbor);
