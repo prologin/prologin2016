@@ -85,8 +85,7 @@ enum:
       - [destruction_impossible, "Il n'y a pas de tuyau à la position
                                   spécifiée."]
       - [pas_de_pulsar, "Il n'y a pas de pulsar à la position spécifiée."]
-      - [pas_de_tuyau_detruit, "Il n'y a pas de tuyau détruit à déblayer
-                                à la position spécifiée."]
+      - [pas_de_debris, "Il n'y a pas de débris à la position spécifiée."]
 
   -
     enum_name: case_type
@@ -200,8 +199,8 @@ function:
     fct_arg: []
 
   -
-    fct_name: liste_tuyaux_detruits
-    fct_summary: Renvoie la liste des tuyaux détruits, non encore déblayés.
+    fct_name: liste_debris
+    fct_summary: Renvoie la liste des cases contenant des débris
     fct_ret_type: position array
     fct_arg: []
 
@@ -227,9 +226,8 @@ function:
       - [position, position, "Case choisie."]
 
   -
-    fct_name: est_detruit
-    fct_summary: Renvoie vrai si et seulement si la case contient un tuyau détruit
-                 non encore déblayé
+    fct_name: est_debris
+    fct_summary: Renvoie vrai si et seulement si la case contient un débris
     fct_ret_type: bool
     fct_arg:
       - [position, position, "Case choisie."]

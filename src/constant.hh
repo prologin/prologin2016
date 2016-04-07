@@ -94,7 +94,7 @@ typedef enum erreur {
   CONSTRUCTION_IMPOSSIBLE, /* <- Il est impossible de construire un tuyau à la position indiquée. */
   DESTRUCTION_IMPOSSIBLE, /* <- Il n'y a pas de tuyau à la position spécifiée. */
   PAS_DE_PULSAR, /* <- Il n'y a pas de pulsar à la position spécifiée. */
-  PAS_DE_TUYAU_DETRUIT, /* <- Il n'y a pas de tuyau détruit à déblayer à la position spécifiée. */
+  PAS_DE_DEBRIS, /* <- Il n'y a pas de débris à la position spécifiée. */
 } erreur;
 
 ///

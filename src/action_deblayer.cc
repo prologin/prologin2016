@@ -25,7 +25,7 @@ int ActionDeblayer::check(const GameState* st) const
     if (ct == case_type::INTERDIT)
         return POSITION_INVALIDE;
     if (ct != case_type::DEBRIS)
-        return PAS_DE_TUYAU_DETRUIT;
+        return PAS_DE_DEBRIS;
     if (st->get_action_points() < COUT_DEBLAYAGE)
         return PA_INSUFFISANTS;
     return OK;

@@ -80,7 +80,7 @@ std::string convert_to_string(erreur in){
     case CONSTRUCTION_IMPOSSIBLE: return "\"construction_impossible\"";
     case DESTRUCTION_IMPOSSIBLE: return "\"destruction_impossible\"";
     case PAS_DE_PULSAR: return "\"pas_de_pulsar\"";
-    case PAS_DE_TUYAU_DETRUIT: return "\"pas_de_tuyau_detruit\"";
+    case PAS_DE_DEBRIS: return "\"pas_de_debris\"";
   }
   return "bad value";
 }
@@ -245,11 +245,11 @@ extern "C" std::vector<position> api_liste_super_tuyaux()
 }
 
 ///
-// Renvoie la liste des tuyaux détruits, non encore déblayés.
+// Renvoie la liste des cases contenant des débris
 //
-extern "C" std::vector<position> api_liste_tuyaux_detruits()
+extern "C" std::vector<position> api_liste_debris()
 {
-  return api->liste_tuyaux_detruits();
+  return api->liste_debris();
 }
 
 ///
@@ -277,11 +277,11 @@ extern "C" bool api_est_super_tuyau(position position)
 }
 
 ///
-// Renvoie vrai si et seulement si la case contient un tuyau détruit non encore déblayé
+// Renvoie vrai si et seulement si la case contient un débris
 //
-extern "C" bool api_est_detruit(position position)
+extern "C" bool api_est_debris(position position)
 {
-  return api->est_detruit(position);
+  return api->est_debris(position);
 }
 
 ///
@@ -462,7 +462,7 @@ std::ostream& operator<<(std::ostream& os, erreur v)
   case CONSTRUCTION_IMPOSSIBLE: os << "CONSTRUCTION_IMPOSSIBLE"; break;
   case DESTRUCTION_IMPOSSIBLE: os << "DESTRUCTION_IMPOSSIBLE"; break;
   case PAS_DE_PULSAR: os << "PAS_DE_PULSAR"; break;
-  case PAS_DE_TUYAU_DETRUIT: os << "PAS_DE_TUYAU_DETRUIT"; break;
+  case PAS_DE_DEBRIS: os << "PAS_DE_DEBRIS"; break;
   }
   return os;
 }

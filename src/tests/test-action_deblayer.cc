@@ -7,8 +7,8 @@
 TEST_F(ActionTest, Deblayer_InvalidCell)
 {
     ActionDeblayer act(TEST_PULSAR_POSITION, PLAYER_1);
-    EXPECT_EQ(PAS_DE_TUYAU_DETRUIT, act.check(st));
-    
+    EXPECT_EQ(PAS_DE_DEBRIS, act.check(st));
+
     ActionDeblayer act2({0,0}, PLAYER_1);
     EXPECT_EQ(POSITION_INVALIDE, act2.check(st));
 }

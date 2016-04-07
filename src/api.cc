@@ -164,8 +164,8 @@ std::vector<position> Api::liste_super_tuyaux()
     return ret;
 }
 
-/// Renvoie la liste des tuyaux détruits, non encore déblayés.
-std::vector<position> Api::liste_tuyaux_detruits()
+/// Renvoie la liste des cases contenant un débris
+std::vector<position> Api::liste_debris()
 {
     std::vector<position> ret;
     for (int x = 0; x < TAILLE_TERRAIN; ++x)
@@ -198,8 +198,8 @@ bool Api::est_super_tuyau(position position)
     return game_state_->get_cell_type(position) == case_type::SUPER_TUYAU;
 }
 
-/// Renvoie vrai si et seulement si la case contient un tuyau détruit non encore déblayé
-bool Api::est_detruit(position position)
+/// Renvoie vrai si et seulement si la case contient un débris
+bool Api::est_debris(position position)
 {
     return game_state_->get_cell_type(position) == case_type::DEBRIS;
 }

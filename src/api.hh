@@ -87,8 +87,8 @@ public:
     /// Renvoie la liste des cases contenant un super-tuyau.
     std::vector<position> liste_super_tuyaux();
 
-    /// Renvoie la liste des tuyaux détruits, non encore déblayés.
-    std::vector<position> liste_tuyaux_detruits();
+    /// Renvoie la liste des cases contenant des débris
+    std::vector<position> liste_debris();
 
     /// Renvoie vrai si et seulement si la case contient un pulsar.
     bool est_pulsar(position position);
@@ -99,8 +99,8 @@ public:
     /// Renvoie vrai si et seulement si la case contient un super tuyau.
     bool est_super_tuyau(position position);
 
-    /// Renvoie vrai si et seulement si la case contient un tuyau détruit non encore déblayé
-    bool est_detruit(position position);
+    /// Renvoie vrai si et seulement si la case contient un tuyau débris
+    bool est_debris(position position);
 
     /// Renvoie vrai si et seulement s'il est possible de construire sur cette case.
     bool est_libre(position position);
