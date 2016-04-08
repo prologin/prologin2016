@@ -43,7 +43,7 @@ propres :
 
 * une période de pulsation *T*;
 * une puissance de pulsation *P*;
-* une durée de vie *D*.
+* un nombre de pulsations restantes *R*.
 
 Tuyau
 =====
@@ -89,7 +89,10 @@ Détruire un tuyau
 -----------------
 
 Vous pouvez dépenser ``COUT_DESTRUCTION_TUYAU`` points d'action pour détruire
-un tuyau, laissant une case de débris à la place.
+un tuyau ou ``COUT_DESTRUCTION_SUPER_TUYAU`` points d'action pour détruire un
+Super-Tuyau™, laissant une case de débris à la place.
+
+Vous ne pouvez pas détruire un tuyau contenant du plasma.
 
 Déblayer des débris
 -------------------
@@ -106,3 +109,36 @@ Cette action est gratuite une fois par tour, et coûte ensuite
 Vous déplacez une unité de puissance d'aspiration d'une de vos cases de base à
 une autre (éventuellement sur le bord opposé).  Bien sûr, vous ne pouvez
 effectuer cette action que si la première case possède au moins une unité.
+
+Plasma
+======
+
+Les pulsars sur la carte pulsent régulièrement du plasma que vous devez
+acheminer à votre base avec des tuyaux pour l'extraire et augmenter votre
+score. La quantité de plasma se mesure en *charges*, un nombre réel positif.
+
+À la fin du tour de chaque joueur, le plasma présent sur la carte se déplace
+en direction des bases les plus proches.
+
+Le plasma dans des tuyaux qui ne sont reliés à aucune base par d'autres
+tuyaux disparaît définitivement. Sinon, les règles ci-dessous s'appliquent.
+
+La distance effective entre un tuyau ``t`` et une base ``b`` est égale à
+``D(t,b)-A(b)``, où ``D(t,b)`` est le nombre minimum de tuyaux reliant
+``t`` à ``b`` et ``A(b)`` est la puissance d'aspiration possédée par la base
+``b``. La distance minimale d'un tuyau est la plus petite distance effective
+entre ce tuyau et n'importe quelle base à laquelle il est relié.
+
+À partir d'un tuyau à distance minimale ``D_min``, le plasma se déplace vers les
+cases voisines à distance minimale ``D_min-1``. Il y en a toujours au moins une.
+Quand il y en a plusieurs, le plasma se divise en quantités égales sur chacune
+de ces cases.
+
+Le plasma avance d'une case s'il se trouve initialement sur un tuyau, deux sur
+un Super-Tuyau™, sans être affecté par d'autres Super-Tuyaux™ sur son trajet.
+
+Enfin, quand la période d'un pulsar ``T`` est un diviseur du nombre de tours
+passés et qu'il lui reste des pulsations (``R > 0``), il pulse, ce qui
+décrémente ``R`` et ajoute ``P`` charges de plasma à chacune des quatre cases
+adjacentes au pulsar. Ce plasma disparaît immédiatement s'il ne se trouve pas
+dans un tuyau relié à une base.
