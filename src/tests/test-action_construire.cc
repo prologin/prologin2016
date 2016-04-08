@@ -15,11 +15,12 @@ TEST_F(ActionTest, Construire_ConstructionImpossible)
     // players shouldn't be able to build pipes on bases
     ActionConstruire act(TEST_BASE, PLAYER_1);
     EXPECT_EQ(CONSTRUCTION_IMPOSSIBLE, act.check(st));
-    EXPECT_EQ(st->get_cell_type(TEST_BASE),BASE);
+    EXPECT_EQ(BASE, st->get_cell_type(TEST_BASE));
 
     // players shouldn't be able to build pipes on pulsars
     ActionConstruire act2(TEST_PULSAR_POSITION, PLAYER_1);
     EXPECT_EQ(CONSTRUCTION_IMPOSSIBLE, act2.check(st));
+    EXPECT_EQ(PULSAR, st->get_cell_type(TEST_PULSAR_POSITION));
 }
 
 TEST_F(ActionTest, Construire_Ok)

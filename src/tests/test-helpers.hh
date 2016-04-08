@@ -19,6 +19,7 @@ static const std::string some_map = (
 
 static const int N = TAILLE_TERRAIN;
 static const position TEST_BASE = {N/2,0};
+static const position TEST_BASE_ALT = {N/2+1,0};
 static const position TEST_EMPTY_CELL = {1,1};
 
 static GameState* make_test_gamestate(std::string map)
