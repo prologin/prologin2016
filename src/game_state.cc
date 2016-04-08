@@ -120,7 +120,7 @@ std::vector<position> GameState::pulsars_list() const
 std::vector<position> GameState::bases_list(unsigned player_id) const
 {
     std::vector<position> bases;
-    bases.resize(TAILLE_TERRAIN * 2 / 3);
+    bases.reserve(TAILLE_TERRAIN * 2 / 3);
     for (unsigned side = 0 ; side < 4 ; ++side)
     {
         if (player_ids_[side / 2] != player_id) // This is not our base
