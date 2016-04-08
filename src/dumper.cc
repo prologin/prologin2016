@@ -96,6 +96,33 @@ static void dump_map(std::ostream& ss, const GameState& st)
     ss << "]";
 }
 
+static void dump_pulsars(std::ostream& ss, const GameState& st)
+{
+    bool is_first = true;
+    ss << "[";
+    for (int i = 0; i < TAILLE_TERRAIN; ++i)
+        for (int j = 0; j < TAILLE_TERRAIN; ++j)
+        {
+            position p{i, j};
+            if (st.get_cell_type(p) == case_type::PULSAR)
+            {
+                if (!is_first)
+                    ss << ", ";
+                ss << "{";
+                is_first = false;
+                pulsar_info pr = st.get_pulsar(p);
+                ss << "\"i\": " << i;
+                ss << ",\"j\": " << j;
+                ss << ",\"period\": " << pr.periode;
+                ss << ",\"power\": " << pr.puissance;
+                ss << ",\"n_pulses\": " << pr.nombre_pulsations;
+
+                ss << "}";
+            }
+        }
+    ss << "]";
+}
+
 static void dump_stream(std::ostream& ss, const GameState& st)
 {
     ss << "{";
@@ -112,6 +139,10 @@ static void dump_stream(std::ostream& ss, const GameState& st)
     ss << ", "
         << "\"map\": ";
     dump_map(ss, st);
+
+    ss << ", "
+       << "\"pulsars\": ";
+    dump_pulsars(ss, st);
 
     ss << "}";
 }
