@@ -523,7 +523,7 @@ std::ostream& operator<<(std::ostream& os, pulsar_info v)
   os << " }";
   return os;
 }
-extern "C" void api_afficher_pulsar(pulsar_info v)
+extern "C" void api_afficher_pulsar_info(pulsar_info v)
 {
   std::cerr << v << std::endl;
 }
