@@ -1,4 +1,5 @@
 import api
+import sys
 
 INF = 1000000
 
@@ -13,9 +14,10 @@ def partie_fin():
 
 def jouer_tour():
     while api.points_action() >= 10:
+        print(api.points_action(), file = sys.stderr)
         if not coup():
             break
-    while api.coup_prochaine_modification_aspiration() <= api.points_action():
+    while api.cout_prochaine_modification_aspiration() <= api.points_action():
         if not bouger_aspiration():
             break
     if api.points_action() >= 30:
@@ -24,9 +26,19 @@ def coup():
     # Récupérer les infos sur la grille
     N = api.TAILLE_TERRAIN
     grille = [[0 for _ in range(N)] for _ in range(N)]
+    print("plasma", api.liste_plasmas(), file = sys.stderr)
+    print("pulsars", [api.info_pulsar(i) for i in api.liste_pulsars()], file = sys.stderr)
     for i in range(N):
         for j in range(N):
-            grille[i][j] == api.type_case((i,j))
+            grille[i][j] = api.type_case((i,j))
+            if api.points_action() != 40:
+                pass
+            elif False:
+                pass
+            elif grille[i][j] == api.case_type.TUYAU: print('T', end = "", file = sys.stderr)
+            elif grille[i][j] == api.case_type.PULSAR: print('#', end = "", file = sys.stderr)
+            else: print('.', end = "", file = sys.stderr)
+        if api.points_action() == 40: print('\n', file = sys.stderr)
 
     # Trouver les cases connexes à la base
     connected = [[False for _ in range(N)] for _ in range(N)]
@@ -34,12 +46,12 @@ def coup():
     l = []
     for i, j in base:
         connected[i][j] = True
-        l.append[(i, j)]
+        l.append((i, j))
     while l != []:
         i, j = l.pop()
         for a, b in [(i - 1, j), (i + 1, j),(i, j - 1), (i, j + 1)]:
             if 0 < a < N - 1 and 0 < b < N - 1:
-                if not connected[a][b] and grille[a][b] in [api.case_type.tuyau, api.case_type.super_tuyau]:
+                if not connected[a][b] and grille[a][b] in [api.case_type.TUYAU, api.case_type.SUPER_TUYAU]:
                     connected[a][b] = True
                     l.append((a, b))
     liste_connected = []
@@ -54,9 +66,11 @@ def coup():
     for i, j in liste_connected:
         for a, b in [(i - 1, j), (i + 1, j),(i, j - 1), (i, j + 1)]:
             if 0 < a < N - 1 and 0 < b < N - 1:
-                if grille[a][b] == api.case_type.vide:
+                if grille[a][b] == api.case_type.VIDE:
                     poss_tuyau.append((a, b))
-                if grille[a][b] == api.case_type.debris:
+                    if (a, b) == (19, 37):
+                        print("poss_tuyau", grille[a][b], api.case_type.TUYAU == 0, api.type_case((a, b)), file = sys.stderr)
+                if grille[a][b] == api.case_type.DEBRIS:
                     poss_tuyau.append((a, b))
     poss = poss_tuyau + poss_deblayer
     if poss == []:
@@ -76,8 +90,9 @@ def coup():
         i, j = cases_to_reach[k]
         dist_min = INF
         for a, b in liste_connected:
-            dist_min = min(dist_min, dist(i, j, a, b)
+            dist_min = min(dist_min, dist(i, j, a, b))
         distance[k] = dist_min
+    # print("distance", distance, file = sys.stderr)
 
     # Heuristique déterminant la valeur d'une pose de tuyau ou d'un déblayage
     value = []
@@ -92,9 +107,11 @@ def coup():
             v += 2
         value.append((v, i, j))
     value.sort()
+    # print(value, file = sys.stderr)
     while value != []:
-        _, i, j = value.pop()
+        _, i, j = value.pop(0)
         if (i, j) in poss_tuyau:
+            print("construction", i, j, file = sys.stderr)
             api.construire((i, j))
             return(True)
         else:
@@ -110,7 +127,7 @@ def bouger_aspiration():
     grille = [[0 for _ in range(N)] for _ in range(N)]
     for i in range(N):
         for j in range(N):
-            grille[i][j] == api.type_case((i,j))
+            grille[i][j] = api.type_case((i,j))
 
     # Trouver les cases connexes à la base
     connected = [[False for _ in range(N)] for _ in range(N)]
@@ -118,12 +135,12 @@ def bouger_aspiration():
     l = []
     for i, j in base:
         connected[i][j] = True
-        l.append[(i, j)]
+        l.append((i, j))
     while l != []:
         i, j = l.pop()
         for a, b in [(i - 1, j), (i + 1, j),(i, j - 1), (i, j + 1)]:
             if 0 < a < N - 1 and 0 < b < N - 1:
-                if not connected[a][b] and grille[a][b] in [api.case_type.tuyau, api.case_type.super_tuyau]:
+                if not connected[a][b] and grille[a][b] in [api.case_type.TUYAU, api.case_type.SUPER_TUYAU]:
                     connected[a][b] = True
                     l.append((a, b))
     liste_connected = []
@@ -137,7 +154,7 @@ def bouger_aspiration():
     for i, j in api.liste_pulsars():
         periode, puissance, nb_pulsations = api.info_pulsar((i, j))
         power = puissance / periode
-        if nb_pulsations * periode >= tour_actuel - 10:
+        if nb_pulsations * periode >= api.tour_actuel() - 10:
             for a, b in [(i - 1, j), (i + 1, j),(i, j - 1), (i, j + 1)]:
                 if (a, b) not in cases_reached and connected[a][b]:
                     cases_reached.append((a, b, power))
@@ -147,11 +164,11 @@ def bouger_aspiration():
     for i, j, p in cases_reached:
         l = [(i, j, p)]
         while l != []:
-            a, b, v = l.pop()
+            a, b, v = l.pop(0)
             for k in range(len(base)):
                 if base[k] == (a, b):
                     importance[k] += v
-            if grille[a][b] in [api.case_type.tuyau, api.case_type.super_tuyau]:
+            if grille[a][b] in [api.case_type.TUYAU, api.case_type.SUPER_TUYAU]:
                 next = api.directions_plasma((a, b))
                 for x, y in next:
                     l.append[(x, y, v / len(next))]
@@ -172,14 +189,14 @@ def detruire():
             min_dist_ma_base = INF
             min_dist_base_ennemie = INF
             for a, b in api.ma_base():
-                min_dist_ma_base = min(min_dist_ma_base, dist(i, j, a, b)
+                min_dist_ma_base = min(min_dist_ma_base, dist(i, j, a, b))
             for a, b in api.base_ennemie():
-                min_dist_base_ennemie = min(min_dist_base_ennemie, dist(i, j, a, b)
+                min_dist_base_ennemie = min(min_dist_base_ennemie, dist(i, j, a, b))
             value = min_dist_base_ennemie - min_dist_ma_base
             liste.append((value, i, j))
     if liste == []:
         return(False)
     liste.sort()
-    _, i, j = liste.pop()
+    _, i, j = liste.pop(0)
     api.detruire((i, j))
     return(True)
