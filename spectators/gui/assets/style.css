@@ -1,0 +1,179 @@
+
+body {
+    background: #333 url('broken_noise.png');
+    margin: 0;
+    padding: 0;
+}
+
+#main {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#main canvas {
+    box-shadow: 0 0 12px rgba(0, 0, 0, .7);
+}
+
+#sidebar {
+    position: absolute;
+    padding: 1em;
+    top: 0;
+    right: 0;
+    color: #dfdfdf;
+    font-family: "Droid Sans", sans-serif;
+}
+
+#controls {
+    margin-top: 80px;
+    width: 100%;
+}
+
+#controls > section {
+    display: flex;
+    align-items: flex-start;
+    align-content: stretch;
+    justify-content: space-around;
+    flex-direction: row;
+    margin: 3em 0;
+}
+
+#controls > section > div {
+    text-align: center;
+    align-self: auto;
+    flex: 0 1 50%;
+    margin: 0 .5em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.brand {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 90px;
+    font-size: 34px;
+    top: 26px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#logo {
+    position: absolute;
+    /*background: url('assets/energy.gif') no-repeat;*/
+    background-size: 64px 64px;
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
+    border-radius: 32px;
+}
+
+#ui-mouse-img {
+    width: 22px;
+    height: 22px;
+    margin: 0 .5em;
+    vertical-align: middle;
+}
+
+#ui-mouse-section {
+    align-self: flex-end;
+}
+
+#ui-game-progress {
+    box-sizing: border-box;
+    height: 16px;
+    width: 100%;
+    border-radius: 3px;
+    border: 1px solid #444;
+    overflow: hidden;
+    background-color: #111;
+}
+
+#ui-game-progress-bar {
+    background: url(platform.center.png) repeat 100% 0;
+    background-size: 16px 16px;
+    height: 16px;
+    transition: all .5s linear;
+}
+
+.ui-player-marker {
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    border-radius: 16px;
+    margin: 0 4px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, .9);
+}
+
+.ui-player-score {
+    margin-top: 15px;
+    font-size: 2em;
+    font-family: monospace;
+}
+
+.ui-player {
+    border-radius: 6px;
+    padding: 1em 0;
+    transition: background .2s linear, color .2s linear;
+}
+
+.ui-minor {
+    color: #888;
+}
+
+.ui-player.active {
+    background: #bbb;
+    color: #333;
+}
+
+#ui-cell-img {
+    width: 32px;
+    height: 32px;
+    margin: 0 4px;
+    display: inline-block;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+}
+
+#ui-cell-type {
+    font-weight: bold;
+    margin: .5em 0;
+}
+
+#ui-cell-props {
+    font-size: 0.8em;
+}
+
+#ui-cell-props dt {
+    float: left;
+    width: 10vw;
+}
+#ui-cell-props dd {
+    margin: 0 0 0 1em;
+    padding: 0;
+    font-weight: bold;
+}
+
+.cell-pipe {
+    background: url(pipes.png) -96px 0;
+}
+
+.cell-super-pipe {
+    background: url(pipes.png) -96px -32px;
+}
+
+.cell-pulsar {
+    background: url(energy.gif);
+    border-radius: 16px;
+    background-size: 32px 32px;
+}
+
+.cell-base {
+    background: url(platform.png) -32px -32px;
+}
+
+.cell-destroyed-pipe {
+    background: url(ashes.png) 0 0;
+}

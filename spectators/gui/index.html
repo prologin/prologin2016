@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prologin 2016</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<section id="main" role="main"></section>
+
+<section id="sidebar" role="status">
+  <div id="logo"></div>
+  <h1 class="brand">Prologin 2016</h1>
+
+  <section id="controls">
+    <section>
+      <div>
+        Tour <span id="ui-turn" class="ui-hl"></span> <span class="ui-minor">sur <span id="ui-turn-max"></span></span>
+      </div>
+      <div>
+        Round <span id="ui-round" class="ui-hl"></span> <span class="ui-minor">sur <span id="ui-round-max" class="ui-minor"></span></span>
+      </div>
+    </section>
+
+    <section style="margin: 0;">
+      <div style="flex: 0 1 80%;">
+        <div id="ui-game-progress">
+          <div id="ui-game-progress-bar" style="width: 0"></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="ui-player player-a">
+        <div class="ui-player-marker"></div>
+        <span class="ui-player-name"></span>
+        <div class="ui-player-score"></div>
+      </div>
+      <div class="ui-player player-b">
+        <div class="ui-player-marker"></div>
+        <span class="ui-player-name"></span>
+        <div class="ui-player-score"></div>
+      </div>
+    </section>
+
+    <section id="ui-mouse-section">
+      <div>
+        <img src="assets/cursor.svg" id="ui-mouse-img"/> <span id="ui-mouse-coords"></span>
+      </div>
+    </section>
+
+    <section id="ui-cell-info">
+      <div style="flex: 0 1 20%;">
+        <span id="ui-cell-img"></span>
+      </div>
+      <div style="flex: 0 1 100%; text-align: left;">
+        <div id="ui-cell-type"></div>
+        <dl id="ui-cell-props"></dl>
+      </div>
+    </section>
+  </section>
+</section>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/phaser.js"></script>
+<script src="js/priority-queue.min.js"></script>
+<script src="js/starfield.js"></script>
+<script src="js/entity.js"></script>
+<script src="js/player.phaser.js"></script>
+</body>
+</html>
