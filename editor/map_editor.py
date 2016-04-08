@@ -199,7 +199,7 @@ def start():  # Démarrage de la partie
 
 
 def save():
-    s = str(N) + '\n'
+    s = ''
     for j in range(N):
         for i in range(N):
             if grille[i][j] == 'pulsar':
@@ -213,17 +213,16 @@ def save():
 
 
 def load():
-    global N, grille
+    global grille
     fichier = text.get('@0,0', END).split('\n')[0]
     f = open(fichier, 'r')
     s = f.readlines()
     f.close()
-    N = int(s[0])
     types_found = {}
     text_n.delete('@0,0', END)
     text_n.insert(INSERT, str(N))
     initialiser()
-    for k in range(1,len(s)):
+    for k in range(len(s)):
         _, _, a, b, c = map(int,s[k].split('\n')[0].split())
         if (a, b, c) in types_found:
             types_found[(a, b, c)] += 1
@@ -236,7 +235,7 @@ def load():
     for k in range(min(5,len(liste))):
         _, a, b, c = liste[k]
         types[k] = (a, b, c)
-    for k in range(1,len(s)):
+    for k in range(len(s)):
         j, i, a, b, c = map(int,s[k].split('\n')[0].split())
         for type_p in range(5):
             if (a, b, c) == types[type_p]:
@@ -349,7 +348,7 @@ button_save.grid(row = 0, column = 6)
 button_save = Button(gui, text = 'LOAD', command = load)
 button_save.grid(row = 0, column = 7)
 
-label_l = Label(gui, text = "PERIOD TIME POWER")
+label_l = Label(gui, text = "PERIOD POWER NB_PULSATIONS")
 label_l.grid(row = 1, column = 8, columnspan = 5)
 
 a_v = IntVar()

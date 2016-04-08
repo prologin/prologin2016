@@ -14,20 +14,21 @@ def partie_fin():
 
 def jouer_tour():
     while api.points_action() >= 10:
-        print(api.points_action(), file = sys.stderr)
+        # print(api.points_action(), file = sys.stderr)
         if not coup():
             break
+    """
     while api.cout_prochaine_modification_aspiration() <= api.points_action():
         if not bouger_aspiration():
             break
     if api.points_action() >= 30:
-        detruire()
+        detruire()"""
 def coup():
     # Récupérer les infos sur la grille
     N = api.TAILLE_TERRAIN
     grille = [[0 for _ in range(N)] for _ in range(N)]
-    print("plasma", api.liste_plasmas(), file = sys.stderr)
-    print("pulsars", [api.info_pulsar(i) for i in api.liste_pulsars()], file = sys.stderr)
+    # print("plasma", api.liste_plasmas(), file = sys.stderr)
+    # print("pulsars", [api.info_pulsar(i) for i in api.liste_pulsars()], file = sys.stderr)
     for i in range(N):
         for j in range(N):
             grille[i][j] = api.type_case((i,j))
@@ -35,10 +36,10 @@ def coup():
                 pass
             elif False:
                 pass
-            elif grille[i][j] == api.case_type.TUYAU: print('T', end = "", file = sys.stderr)
-            elif grille[i][j] == api.case_type.PULSAR: print('#', end = "", file = sys.stderr)
-            else: print('.', end = "", file = sys.stderr)
-        if api.points_action() == 40: print('\n', file = sys.stderr)
+            # elif grille[i][j] == api.case_type.TUYAU: print('T', end = "", file = sys.stderr)
+            # elif grille[i][j] == api.case_type.PULSAR: print('#', end = "", file = sys.stderr)
+            # else: print('.', end = "", file = sys.stderr)
+        # if api.points_action() == 40: print('\n', file = sys.stderr)
 
     # Trouver les cases connexes à la base
     connected = [[False for _ in range(N)] for _ in range(N)]
@@ -68,8 +69,6 @@ def coup():
             if 0 < a < N - 1 and 0 < b < N - 1:
                 if grille[a][b] == api.case_type.VIDE:
                     poss_tuyau.append((a, b))
-                    if (a, b) == (19, 37):
-                        print("poss_tuyau", grille[a][b], api.case_type.TUYAU == 0, api.type_case((a, b)), file = sys.stderr)
                 if grille[a][b] == api.case_type.DEBRIS:
                     poss_tuyau.append((a, b))
     poss = poss_tuyau + poss_deblayer
@@ -111,7 +110,7 @@ def coup():
     while value != []:
         _, i, j = value.pop(0)
         if (i, j) in poss_tuyau:
-            print("construction", i, j, file = sys.stderr)
+            # print("construction", i, j, file = sys.stderr)
             api.construire((i, j))
             return(True)
         else:
@@ -171,7 +170,7 @@ def bouger_aspiration():
             if grille[a][b] in [api.case_type.TUYAU, api.case_type.SUPER_TUYAU]:
                 next = api.directions_plasma((a, b))
                 for x, y in next:
-                    l.append[(x, y, v / len(next))]
+                    l.append((x, y, v / len(next)))
     liste = [(importance[k], k) for k in range(len(base))]
     liste.sort()
     if liste[len(liste)-1][0] > liste[0][0]:
