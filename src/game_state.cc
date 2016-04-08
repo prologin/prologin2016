@@ -55,6 +55,8 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
     }
 
     board_.fill({case_type::VIDE, 0, 0});
+    static_assert(TAILLE_TERRAIN % 3 == 0, "Board size must be multiple of 3");
+    static_assert(TAILLE_TERRAIN / 3 == LONGUEUR_BASE, "Invalid base length");
     const int N = TAILLE_TERRAIN;
     for (int i = 0 ; i < N ; i++)
     {
