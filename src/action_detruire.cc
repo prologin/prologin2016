@@ -44,4 +44,5 @@ void ActionDetruire::apply_on(GameState* st) const
         st->decrease_action_points(COUT_DESTRUCTION_TUYAU);
     st->destroy_pipe(position_);
     st->hist_add_destroy(position_, player_id_);
+    st->reset_board_distances();
 }

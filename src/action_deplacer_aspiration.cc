@@ -47,4 +47,5 @@ void ActionDeplacerAspiration::apply_on(GameState* st) const
     st->decrement_vacuum(source_);
     st->increment_vacuum(destination_);
     st->hist_add_move_vacuum(source_, destination_, player_id_);
+    st->reset_board_distances();
 }
