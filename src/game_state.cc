@@ -168,6 +168,7 @@ void GameState::increment_vacuum(position p)
 
 void GameState::decrement_vacuum(position p)
 {
+    assert(vacuum_at(p) > 0);
     vacuum_at(p)--;
 }
 
