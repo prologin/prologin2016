@@ -272,7 +272,7 @@ void GameState::clear_plasma(position p)
     cell(p).plasma = 0;
 }
 
-matrix<int>& GameState::get_board_distances()
+const matrix<int>& GameState::get_board_distances()
 {
     if (!board_distances_)
         compute_board_distances();
@@ -289,7 +289,7 @@ std::vector<position> GameState::direction_plasma(position p)
 {
     assert(1 <= p.x && p.x < TAILLE_TERRAIN - 1 &&
         1 <= p.y && p.y < TAILLE_TERRAIN - 1);
-    matrix<int>& distances = get_board_distances();
+    const matrix<int>& distances = get_board_distances();
 
     const position deltas[] = {{0,1}, {0,-1}, {1,0}, {-1,0}};
     const int d = distances[board_index(p)];

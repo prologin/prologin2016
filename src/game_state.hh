@@ -170,7 +170,7 @@ class GameState : public rules::GameState
         double get_collected_plasma(unsigned player_id) const;
 
         /// Get the shortest distances from pipes to cells.
-        matrix<int>& get_board_distances();
+        const matrix<int>& get_board_distances();
 
         /// Discard the distance array when an action modifies the board.
         void reset_board_distances();
