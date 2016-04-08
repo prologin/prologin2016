@@ -100,26 +100,20 @@ static void dump_pulsars(std::ostream& ss, const GameState& st)
 {
     bool is_first = true;
     ss << "[";
-    for (int i = 0; i < TAILLE_TERRAIN; ++i)
-        for (int j = 0; j < TAILLE_TERRAIN; ++j)
-        {
-            position p{i, j};
-            if (st.get_cell_type(p) == case_type::PULSAR)
-            {
-                if (!is_first)
-                    ss << ", ";
-                ss << "{";
-                is_first = false;
-                pulsar_info pr = st.get_pulsar(p);
-                ss << "\"i\": " << i;
-                ss << ",\"j\": " << j;
-                ss << ",\"period\": " << pr.periode;
-                ss << ",\"power\": " << pr.puissance;
-                ss << ",\"n_pulses\": " << pr.nombre_pulsations;
-
-                ss << "}";
-            }
-        }
+    for (position p : st.pulsars_list())
+    {
+        if (!is_first)
+            ss << ", ";
+        ss << "{";
+        is_first = false;
+        pulsar_info pr = st.get_pulsar(p);
+        ss << "\"x\": " << p.x;
+        ss << ",\"y\": " << p.y;
+        ss << ",\"period\": " << pr.periode;
+        ss << ",\"power\": " << pr.puissance;
+        ss << ",\"n_pulses\": " << pr.nombre_pulsations;
+        ss << "}";
+    }
     ss << "]";
 }
 
