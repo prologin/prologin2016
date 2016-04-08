@@ -34,12 +34,12 @@ TEST_F(ActionTest, DeplacerAspiration_ActionPoints)
     EXPECT_EQ(PA_INSUFFISANTS, act2.check(st));
     act2.apply_on(st);
 
-    for (int i = 0; i < st->get_vacuum(TEST_BASE) ; i++)
+    for (unsigned i = 0; i < st->get_vacuum(TEST_BASE) ; i++)
     {
 	set_points(st, COUT_MODIFICATION_ASPIRATION);
 	EXPECT_EQ(OK, act.check(st));
 	act.apply_on(st);
-	EXPECT_EQ(0, st->get_action_points());
+	EXPECT_EQ((unsigned)0, st->get_action_points());
     }
     EXPECT_EQ(PE_INSUFFISANTS, act.check(st));
 }
