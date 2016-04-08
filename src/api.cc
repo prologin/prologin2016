@@ -211,7 +211,7 @@ bool Api::est_libre(position position)
 }
 
 /// Renvoie les informations propres au pulsar à la position donnée.
-pulsar Api::info_pulsar(position position)
+pulsar_info Api::info_pulsar(position position)
 {
     if (est_pulsar(position))
         return game_state_->get_pulsar(position);

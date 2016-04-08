@@ -115,7 +115,7 @@ class GameState : public rules::GameState
         unsigned get_cell_owner(position) const;
 
         /// Return pulsar info at a given position (it must contain a pulsar).
-        pulsar get_pulsar(position) const;
+        pulsar_info get_pulsar(position) const;
 
         /// Return the position of all pulsars
         std::vector<position> pulsars_list() const;
@@ -202,7 +202,7 @@ class GameState : public rules::GameState
         std::array<unsigned, 2> player_ids_;
         std::unordered_map<unsigned, PlayerInfo> player_info_;
 
-        std::unordered_map<position, pulsar> pulsars_;
+        std::unordered_map<position, pulsar_info> pulsars_;
         matrix<Cell> board_;
         unsigned turn_;
         unsigned action_points_;

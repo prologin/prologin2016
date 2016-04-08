@@ -109,7 +109,7 @@ struct:
       - [y, int, "Coordonnée en Y"]
 
   -
-    str_name: pulsar
+    str_name: pulsar_info
     str_summary: Représente un pulsar existant.
     str_tuple: no
     str_field:
@@ -128,7 +128,7 @@ function:
     fct_ret_type: erreur
     fct_action: yes
     fct_arg:
-      - [position, position, "Case choisie."]
+      - [pos, position, "Case choisie."]
 
   -
     fct_name: ameliorer
@@ -136,7 +136,7 @@ function:
     fct_ret_type: erreur
     fct_action: yes
     fct_arg:
-      - [position, position, "Case choisie."]
+      - [pos, position, "Case choisie."]
 
   -
     fct_name: detruire
@@ -144,7 +144,7 @@ function:
     fct_ret_type: erreur
     fct_action: yes
     fct_arg:
-      - [position, position, "Case choisie."]
+      - [pos, position, "Case choisie."]
 
   -
     fct_name: deplacer_aspiration
@@ -162,7 +162,7 @@ function:
     fct_ret_type: erreur
     fct_action: yes
     fct_arg:
-      - [position, position, "Case choisie."]
+      - [pos, position, "Case choisie."]
 
 
 # Fonctions de query sur les pulsars / les tuyaux / le terrain
@@ -172,7 +172,7 @@ function:
     fct_summary: Renvoie le type d'une case donnée.
     fct_ret_type: case_type
     fct_arg:
-      - [position, position, "Case choisie."]
+      - [pos, position, "Case choisie."]
 
   -
     fct_name: liste_pulsars
@@ -209,28 +209,28 @@ function:
     fct_summary: Renvoie vrai si et seulement si la case contient un pulsar.
     fct_ret_type: bool
     fct_arg:
-      - [position, position, "Case choisie."]
+      - [pos, position, "Case choisie."]
 
   -
     fct_name: est_tuyau
     fct_summary: Renvoie vrai si et seulement si la case contient un simple tuyau.
     fct_ret_type: bool
     fct_arg:
-      - [position, position, "Case choisie."]
+      - [pos, position, "Case choisie."]
 
   -
     fct_name: est_super_tuyau
     fct_summary: Renvoie vrai si et seulement si la case contient un super tuyau.
     fct_ret_type: bool
     fct_arg:
-      - [position, position, "Case choisie."]
+      - [pos, position, "Case choisie."]
 
   -
     fct_name: est_debris
     fct_summary: Renvoie vrai si et seulement si la case contient un débris
     fct_ret_type: bool
     fct_arg:
-      - [position, position, "Case choisie."]
+      - [pos, position, "Case choisie."]
 
   -
     fct_name: est_libre
@@ -238,21 +238,21 @@ function:
                  cette case.
     fct_ret_type: bool
     fct_arg:
-      - [position, position, "Case choisie."]
+      - [pos, position, "Case choisie."]
 
   -
     fct_name: info_pulsar
     fct_summary: Renvoie les informations propres au pulsar à la position donnée.
-    fct_ret_type: pulsar
+    fct_ret_type: pulsar_info
     fct_arg:
-      - [position, position, "Case choisie."]
+      - [pos, position, "Case choisie."]
 
   -
     fct_name: charges_presentes
     fct_summary: Renvoie la quantité de plasma sur une case donnée.
     fct_ret_type: double
     fct_arg:
-      - [position, position, "Case choisie."]
+      - [pos, position, "Case choisie."]
 
   -
     fct_name: ma_base
@@ -272,7 +272,7 @@ function:
                  Renvoie -1 si la position n'est pas celle d'une base.
     fct_ret_type: int
     fct_arg:
-      - [position, position, "Case choisie."]
+      - [pos, position, "Case choisie."]
 
   -
     fct_name: directions_plasma
@@ -282,7 +282,7 @@ function:
                  n'est reliée à aucune base.
     fct_ret_type: position array
     fct_arg:
-      - [position, position, "Case choisie."]
+      - [pos, position, "Case choisie."]
 
   -
     fct_name: cout_prochaine_modification_aspiration

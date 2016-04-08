@@ -123,11 +123,11 @@ typedef struct position {
 ///
 // Représente un pulsar existant.
 //
-typedef struct pulsar {
+typedef struct pulsar_info {
   int periode;  /* <- Période de pulsation du pulsar */
   int puissance;  /* <- Quantité de plasma émise par chaque pulsation dans chaque direction */
   int nombre_pulsations;  /* <- Nombre de pulsations restantes */
-} pulsar;
+} pulsar_info;
 
 
 

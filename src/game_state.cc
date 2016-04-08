@@ -76,7 +76,7 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
     while (board_stream >> std::ws, !board_stream.eof())
     {
         position pos;
-        pulsar pr;
+        pulsar_info pr;
 
         board_stream >> pos.x >> pos.y >>
             pr.periode >> pr.puissance >> pr.nombre_pulsations;
@@ -105,7 +105,7 @@ unsigned GameState::get_cell_owner(position pos) const
     return in_bounds(pos) ? cell(pos).owner : 0;
 }
 
-pulsar GameState::get_pulsar(position pos) const
+pulsar_info GameState::get_pulsar(position pos) const
 {
     return pulsars_.at(pos);
 }
@@ -137,6 +137,7 @@ std::vector<position> GameState::bases_list(unsigned player_id) const
             }
         }
     }
+
     return bases;
 }
 

@@ -140,7 +140,7 @@ std::string convert_to_string(std::vector<position> in){
     return "[]";
   }
 }
-std::string convert_to_string(pulsar in){
+std::string convert_to_string(pulsar_info in){
   std::string periode = convert_to_string(in.periode);
   std::string puissance = convert_to_string(in.puissance);
   std::string nombre_pulsations = convert_to_string(in.nombre_pulsations);
@@ -153,7 +153,7 @@ std::string convert_to_string(pulsar in){
   return out + "}";
 }
 
-std::string convert_to_string(std::vector<pulsar> in){
+std::string convert_to_string(std::vector<pulsar_info> in){
   if (in.size()){
     std::string s = "[" + convert_to_string(in[0]);
     for (int i = 1, l = in.size(); i < l; i++){
@@ -167,25 +167,25 @@ std::string convert_to_string(std::vector<pulsar> in){
 ///
 // Construit un tuyau sur une case donnée.
 //
-extern "C" erreur api_construire(position position)
+extern "C" erreur api_construire(position pos)
 {
-  return api->construire(position);
+  return api->construire(pos);
 }
 
 ///
 // Améliore un tuyau en super-tuyau.
 //
-extern "C" erreur api_ameliorer(position position)
+extern "C" erreur api_ameliorer(position pos)
 {
-  return api->ameliorer(position);
+  return api->ameliorer(pos);
 }
 
 ///
 // Détruit un tuyau sur une case donnée.
 //
-extern "C" erreur api_detruire(position position)
+extern "C" erreur api_detruire(position pos)
 {
-  return api->detruire(position);
+  return api->detruire(pos);
 }
 
 ///
@@ -199,17 +199,17 @@ extern "C" erreur api_deplacer_aspiration(position source, position destination)
 ///
 // Déblaye une case de débris.
 //
-extern "C" erreur api_deblayer(position position)
+extern "C" erreur api_deblayer(position pos)
 {
-  return api->deblayer(position);
+  return api->deblayer(pos);
 }
 
 ///
 // Renvoie le type d'une case donnée.
 //
-extern "C" case_type api_type_case(position position)
+extern "C" case_type api_type_case(position pos)
 {
-  return api->type_case(position);
+  return api->type_case(pos);
 }
 
 ///
@@ -255,57 +255,57 @@ extern "C" std::vector<position> api_liste_debris()
 ///
 // Renvoie vrai si et seulement si la case contient un pulsar.
 //
-extern "C" bool api_est_pulsar(position position)
+extern "C" bool api_est_pulsar(position pos)
 {
-  return api->est_pulsar(position);
+  return api->est_pulsar(pos);
 }
 
 ///
 // Renvoie vrai si et seulement si la case contient un simple tuyau.
 //
-extern "C" bool api_est_tuyau(position position)
+extern "C" bool api_est_tuyau(position pos)
 {
-  return api->est_tuyau(position);
+  return api->est_tuyau(pos);
 }
 
 ///
 // Renvoie vrai si et seulement si la case contient un super tuyau.
 //
-extern "C" bool api_est_super_tuyau(position position)
+extern "C" bool api_est_super_tuyau(position pos)
 {
-  return api->est_super_tuyau(position);
+  return api->est_super_tuyau(pos);
 }
 
 ///
 // Renvoie vrai si et seulement si la case contient un débris
 //
-extern "C" bool api_est_debris(position position)
+extern "C" bool api_est_debris(position pos)
 {
-  return api->est_debris(position);
+  return api->est_debris(pos);
 }
 
 ///
 // Renvoie vrai si et seulement s'il est possible de construire sur cette case.
 //
-extern "C" bool api_est_libre(position position)
+extern "C" bool api_est_libre(position pos)
 {
-  return api->est_libre(position);
+  return api->est_libre(pos);
 }
 
 ///
 // Renvoie les informations propres au pulsar à la position donnée.
 //
-extern "C" pulsar api_info_pulsar(position position)
+extern "C" pulsar_info api_info_pulsar(position pos)
 {
-  return api->info_pulsar(position);
+  return api->info_pulsar(pos);
 }
 
 ///
 // Renvoie la quantité de plasma sur une case donnée.
 //
-extern "C" double api_charges_presentes(position position)
+extern "C" double api_charges_presentes(position pos)
 {
-  return api->charges_presentes(position);
+  return api->charges_presentes(pos);
 }
 
 ///
@@ -327,9 +327,9 @@ extern "C" std::vector<position> api_base_ennemie()
 ///
 // Renvoie la puissance d'aspiration d'une case de base donnée.
 //
-extern "C" int api_puissance_aspiration(position position)
+extern "C" int api_puissance_aspiration(position pos)
 {
-  return api->puissance_aspiration(position);
+  return api->puissance_aspiration(pos);
 }
 
 ///
@@ -337,9 +337,9 @@ extern "C" int api_puissance_aspiration(position position)
 // lesquelles se propagerait un plasma. Renvoie la liste vide
 // si la case n'est pas une case contenant un tuyau ou si elle
 // n'est reliée à aucune base.
-extern "C" std::vector<position> api_directions_plasma(position position)
+extern "C" std::vector<position> api_directions_plasma(position pos)
 {
-  return api->directions_plasma(position);
+  return api->directions_plasma(pos);
 }
 
 ///
@@ -512,7 +512,7 @@ extern "C" void api_afficher_position(position v)
 ///
 // Affiche le contenu d'une valeur de type pulsar
 //
-std::ostream& operator<<(std::ostream& os, pulsar v)
+std::ostream& operator<<(std::ostream& os, pulsar_info v)
 {
   os << "{ ";
   os << "periode" << "=" << v.periode;
@@ -523,7 +523,7 @@ std::ostream& operator<<(std::ostream& os, pulsar v)
   os << " }";
   return os;
 }
-extern "C" void api_afficher_pulsar(pulsar v)
+extern "C" void api_afficher_pulsar(pulsar_info v)
 {
   std::cerr << v << std::endl;
 }

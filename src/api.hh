@@ -106,7 +106,7 @@ public:
     bool est_libre(position position);
 
     /// Renvoie les informations propres au pulsar à la position donnée.
-    pulsar info_pulsar(position position);
+    pulsar_info info_pulsar(position position);
 
     /// Renvoie la quantité de plasma sur une case donnée.
     double charges_presentes(position position);
