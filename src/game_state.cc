@@ -81,6 +81,7 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
         board_stream >> pos.x >> pos.y >>
             pr.periode >> pr.puissance >> pr.nombre_pulsations;
 
+        CHECK(in_bounds(pos) && "Wrong position in map");
         cell(pos).type = case_type::PULSAR;
 
         pulsars_.emplace(pos, pr);
