@@ -2,6 +2,25 @@
 
 #include "test-helpers.hh"
 
+TEST_F(ApiTest, Api_HistPointAspirationRetires)
+{
+    int player_index = 0;
+    auto& player = players[player_index];
+    auto& other = players[(player_index + 1) % 2];
+    std::vector<position> expected;
+    EXPECT_EQ(expected, other.api->hist_points_aspiration_retires());
+    auto bases = player.api->ma_base();
+    auto move = [&](int base_id) {
+        set_points(st, COUT_MODIFICATION_ASPIRATION);
+        player.api->deplacer_aspiration(bases[base_id], bases[0]);
+        expected.push_back(bases[base_id]);
+    };
+    move(1);
+    move(2);
+    other.api->game_state_set(player.api->game_state());
+    EXPECT_EQ(expected, other.api->hist_points_aspiration_retires());
+}
+
 TEST_F(ApiTest, Api_Moi)
 {
     for (auto& player : players)
