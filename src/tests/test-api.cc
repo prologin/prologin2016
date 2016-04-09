@@ -31,3 +31,29 @@ TEST_F(ApiTest, Api_PointsAction)
         }
     }
 }
+
+TEST_F(ApiTest, Api_Score)
+{
+    auto check_score = [this](int value, int index) {
+        int player_id = players[index].id;
+        EXPECT_EQ(value, players[index].api->score(player_id));
+        EXPECT_EQ(value, players[(index + 1) % 2].api->score(player_id));
+    };
+    for (int player_index : {0, 1})
+    {
+        PlayerInfo info = st->get_player_info().at(players[player_index].id);
+        check_score(0, player_index);
+        info.collect_plasma(0.3);
+        check_score(0, player_index);
+        info.collect_plasma(0.7);
+        check_score(1, player_index);
+        info.collect_plasma(7.8);
+        check_score(8, player_index);
+        info.collect_plasma(15.3);
+        check_score(24, player_index);
+        info.collect_plasma(24.7);
+        check_score(48, player_index);
+        info.collect_plasma(0.25);
+        check_score(49, player_index);
+    }
+}
