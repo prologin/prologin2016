@@ -69,3 +69,18 @@ TEST_F(ApiTest, Api_TourActuel)
         st->increment_turn();
     }
 }
+
+TEST_F(ApiTest, Api_Annuler)
+{
+    for (auto& player : players)
+    {
+        EXPECT_FALSE(player.api->annuler());
+        position pos{1, 1};
+        EXPECT_TRUE(player.api->est_libre(pos));
+        set_points(st, COUT_CONSTRUCTION_TUYAU);
+        EXPECT_EQ(OK, player.api->construire(pos));
+        EXPECT_TRUE(player.api->est_tuyau(pos));
+        EXPECT_TRUE(player.api->annuler());
+        EXPECT_TRUE(player.api->est_libre(pos));
+    }
+}
