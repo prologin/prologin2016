@@ -5,6 +5,7 @@
 
 #include <gtest/gtest.h>
 
+#include "../api.hh"
 #include "../constant.hh"
 #include "../game_state.hh"
 
@@ -22,17 +23,21 @@ static const position TEST_BASE = {N/2,0};
 static const position TEST_BASE_ALT = {N/2+1,0};
 static const position TEST_EMPTY_CELL = {1,1};
 
-static GameState* make_test_gamestate(std::string map)
+static rules::Players_sptr make_players(int id1, int id2)
+{
+    /* Create two players (no spectator).  */
+    return rules::Players_sptr(new rules::Players {
+        std::vector<rules::Player_sptr> {
+            rules::Player_sptr(new rules::Player(id1, rules::PLAYER)),
+        rules::Player_sptr(new rules::Player(id2, rules::PLAYER)),
+    }
+    });
+}
+
+static GameState* make_test_gamestate(std::string map,
+        const rules::Players_sptr& players)
 {
     std::istringstream map_stream(map);
-
-    /* Create two players (no spectator).  */
-    rules::Players_sptr players(new rules::Players {
-        std::vector<rules::Player_sptr> {
-            rules::Player_sptr(new rules::Player(0, rules::PLAYER)),
-	    rules::Player_sptr(new rules::Player(1, rules::PLAYER)),
-	}
-    });
     return new GameState(map_stream, players);
 }
 
@@ -42,7 +47,7 @@ protected:
     virtual void SetUp()
     {
         utils::Logger::get().level() = utils::Logger::DEBUG_LEVEL;
-        st = make_test_gamestate(some_map);
+        st = make_test_gamestate(some_map, make_players(PLAYER_1, PLAYER_2));
     }
 
     virtual void TearDown()
@@ -54,6 +59,40 @@ protected:
 
     const int PLAYER_1 = 0;
     const int PLAYER_2 = 1;
+};
+
+class ApiTest : public ::testing::Test
+{
+protected:
+    virtual void SetUp()
+    {
+        // Players values are not 0 and 1, because that would be too simple
+        int player_id_1 = 1337;
+        int player_id_2 = 42;
+        utils::Logger::get().level() = utils::Logger::DEBUG_LEVEL;
+        auto players_ptr = make_players(player_id_1, player_id_2);
+        st = make_test_gamestate(some_map, players_ptr);
+        players[0].id = player_id_1;
+        players[0].api = new Api(st, players_ptr->players[0]);
+        players[1].id = player_id_2;
+        players[1].api = new Api(st, players_ptr->players[1]);
+    }
+
+    virtual void TearDown()
+    {
+        delete st;
+        delete players[0].api;
+        delete players[1].api;
+    }
+
+    GameState* st;
+
+    struct Player
+    {
+        int id;
+        Api* api;
+    };
+    std::array<Player, 2> players;
 };
 
 
