@@ -58,16 +58,15 @@ static void dump_players(std::ostream& ss, const GameState& st)
             ss << ", ";
         is_first = false;
         ss << "\"" << player_info.first << "\": {"
-           << "\"name\": \"" << p.get_name() << "\","
-           << "\"name\": ";
+           << "\"name\": \"" << p.get_name() << "\""
+           << ", \"name\": ";
         dump_binary(
             ss,
             reinterpret_cast<const uint8_t *>(p.get_name().c_str()),
             p.get_name().size()
         );
-        ss << ", "
-           << "\"collected_plasma\": \"" << p.get_collected_plasma() << "\","
-           << "\"score\": " << p.get_score()
+        ss << ", \"collected_plasma\": \"" << p.get_collected_plasma() << "\""
+           << ", \"score\": " << p.get_score()
            << "}";
     }
     ss << "}";
@@ -86,10 +85,10 @@ static void dump_map(std::ostream& ss, const GameState& st)
 
             position p{i, j};
             ss << "{"
-               << "\"type\": \"" << st.get_cell_type(p) << "\","
-               << "\"owner\": " << st.get_cell_owner(p) << ","
-               << "\"plasma\": " << st.get_plasma(p)
-               << "\"vacuum\": " <<
+               << "\"type\": \"" << st.get_cell_type(p) << "\""
+               << ", \"owner\": " << st.get_cell_owner(p)
+               << ", \"plasma\": " << st.get_plasma(p)
+               << ", \"vacuum\": " <<
                    (st.get_cell_type(p) == BASE ? st.get_vacuum(p) : 0)
                << "}";
         }
@@ -108,10 +107,10 @@ static void dump_pulsars(std::ostream& ss, const GameState& st)
         is_first = false;
         pulsar_info pr = st.get_pulsar(p);
         ss << "\"x\": " << p.x;
-        ss << ",\"y\": " << p.y;
-        ss << ",\"period\": " << pr.periode;
-        ss << ",\"power\": " << pr.puissance;
-        ss << ",\"n_pulses\": " << pr.nombre_pulsations;
+        ss << ", \"y\": " << p.y;
+        ss << ", \"period\": " << pr.periode;
+        ss << ", \"power\": " << pr.puissance;
+        ss << ", \"n_pulses\": " << pr.nombre_pulsations;
         ss << "}";
     }
     ss << "]";
@@ -126,16 +125,13 @@ static void dump_stream(std::ostream& ss, const GameState& st)
         << NB_TOURS
         << "] ";
 
-    ss << ", "
-       << "\"players\": ";
+    ss << ", \"players\": ";
     dump_players(ss, st);
 
-    ss << ", "
-        << "\"map\": ";
+    ss << ", \"map\": ";
     dump_map(ss, st);
 
-    ss << ", "
-       << "\"pulsars\": ";
+    ss << ", \"pulsars\": ";
     dump_pulsars(ss, st);
 
     ss << "}";
