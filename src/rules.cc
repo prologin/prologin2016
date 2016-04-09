@@ -95,7 +95,7 @@ void Rules::at_player_start(rules::ClientMessenger_sptr)
     }
     catch (utils::SandboxTimeout)
     {
-        FATAL("partie_init: timeout");
+        FATAL("player_start: timeout");
     }
 }
 
@@ -111,7 +111,7 @@ void Rules::at_player_end(rules::ClientMessenger_sptr)
     }
     catch (utils::SandboxTimeout)
     {
-        FATAL("partie_fin: timeout");
+        FATAL("player_end: timeout");
     }
 }
 
@@ -127,7 +127,7 @@ void Rules::player_turn()
     }
     catch (utils::SandboxTimeout)
     {
-        FATAL("partie_fin: timeout");
+        FATAL("player_turn: timeout");
     }
 }
 
