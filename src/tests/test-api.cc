@@ -18,3 +18,16 @@ TEST_F(ApiTest, Api_Adversaire)
         EXPECT_EQ(expected, players[player_index].api->adversaire());
     }
 }
+
+TEST_F(ApiTest, Api_PointsAction)
+{
+    for (auto& player : players)
+    {
+        for (unsigned value : {0, 4, 10, 30, 40})
+        {
+            set_points(st, value);
+            ASSERT_EQ(true, player.api->points_action() >= 0);
+            EXPECT_EQ(value, (unsigned)player.api->points_action());
+        }
+    }
+}
