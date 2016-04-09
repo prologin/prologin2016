@@ -57,3 +57,15 @@ TEST_F(ApiTest, Api_Score)
         check_score(49, player_index);
     }
 }
+
+TEST_F(ApiTest, Api_TourActuel)
+{
+    for (int turn = 1; turn < NB_TOURS + 1; ++turn)
+    {
+        for (auto& player : players)
+        {
+            EXPECT_EQ(turn, player.api->tour_actuel());
+        }
+        st->increment_turn();
+    }
+}
