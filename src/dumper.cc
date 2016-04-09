@@ -90,7 +90,7 @@ static void dump_map(std::ostream& ss, const GameState& st)
                << "\"owner\": " << st.get_cell_owner(p) << ","
                << "\"plasma\": " << st.get_plasma(p)
                << "\"vacuum\": " <<
-                   (st.get_cell_type(p) == BASE ? 0 : st.get_vacuum(p))
+                   (st.get_cell_type(p) == BASE ? st.get_vacuum(p) : 0)
                << "}";
         }
     ss << "]";
