@@ -34,11 +34,11 @@ static rules::Players_sptr make_players(int id1, int id2)
     });
 }
 
-static GameState* make_test_gamestate(std::string map,
+static GameStateWrapper make_test_gamestate(std::string map,
         const rules::Players_sptr& players)
 {
     std::istringstream map_stream(map);
-    return new GameState(map_stream, players);
+    return GameStateWrapper(new GameState(map_stream, players));
 }
 
 class ActionTest : public ::testing::Test
@@ -80,12 +80,11 @@ protected:
 
     virtual void TearDown()
     {
-        delete st;
         delete players[0].api;
         delete players[1].api;
     }
 
-    GameState* st;
+    GameStateWrapper st = GameStateWrapper(nullptr);
 
     struct Player
     {

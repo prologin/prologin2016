@@ -39,7 +39,7 @@ Rules::Rules(const rules::Options opt)
     if (!ifs.is_open())
         FATAL("Cannot open file: %s", opt.map_file.c_str());
 
-    GameState* game_state = new GameState(ifs, opt.players);
+    GameStateWrapper game_state(new GameState(ifs, opt.players));
     api_ = std::make_unique<Api>(game_state, opt.player);
     register_actions();
 }

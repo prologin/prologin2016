@@ -28,6 +28,25 @@
 #include "game_state.hh"
 #include "constant.hh"
 
+class GameStateWrapper
+{
+    struct SharedState
+    {
+        GameState* game_state;
+        SharedState(GameState* game_state) : game_state(game_state) {}
+    };
+    std::shared_ptr<SharedState> ptr;
+public:
+    explicit GameStateWrapper(GameState* game_state)
+        : ptr(std::make_shared<SharedState>(game_state))
+    {
+    }
+    operator GameState*() const { return ptr->game_state; }
+    GameStateWrapper& operator=(GameState* g) { ptr->game_state = g; return *this; }
+    GameState* operator->() const { return ptr->game_state; }
+    GameState& operator*() const { return *ptr->game_state; }
+};
+
 /*!
 ** The methods of this class are exported through 'interface.cc'
 ** to be called by the clients
@@ -36,7 +55,7 @@ class Api
 {
 
 public:
-    Api(GameState* game_state, rules::Player_sptr player);
+    Api(const GameStateWrapper& game_state, rules::Player_sptr player);
     virtual ~Api() { }
 
     const rules::Player_sptr player() const { return player_; }
@@ -51,7 +70,7 @@ public:
     }
 
 private:
-    GameState* game_state_;
+    GameStateWrapper game_state_;
     rules::Player_sptr player_;
     rules::Actions actions_;
 

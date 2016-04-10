@@ -25,9 +25,9 @@
 // global used in interface.cc
 Api* api;
 
-Api::Api(GameState* game_state, rules::Player_sptr player)
+Api::Api(const GameStateWrapper& game_state, rules::Player_sptr player)
     : game_state_(game_state),
-      player_(player)
+      player_(std::move(player))
 {
     api = this;
 }
@@ -371,6 +371,6 @@ bool Api::annuler()
     if (!game_state_->can_cancel())
         return false;
     actions_.cancel();
-    game_state_ = rules::cancel(game_state_);
+    game_state_ = rules::cancel(game_state_.operator GameState*());
     return true;
 }
