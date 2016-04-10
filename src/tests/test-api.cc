@@ -2,6 +2,29 @@
 
 #include "test-helpers.hh"
 
+
+TEST_F(ApiTest, Api_PuissanceApiration)
+{
+    for (int i = 0; i < TAILLE_TERRAIN; ++i)
+    {
+        int p = i >= TAILLE_TERRAIN / 3 && i < TAILLE_TERRAIN * 2 / 3 ? 1 : -1;
+        EXPECT_EQ(p, players[0].api->puissance_aspiration({0, i}));
+    }
+    position pos{TAILLE_TERRAIN / 2, 0};
+    EXPECT_EQ(1, players[0].api->puissance_aspiration(pos));
+    st->increment_vacuum(pos);
+    EXPECT_EQ(2, players[0].api->puissance_aspiration(pos));
+    st->increment_vacuum(pos);
+    EXPECT_EQ(3, players[0].api->puissance_aspiration(pos));
+    pos.x += 1;
+    EXPECT_EQ(1, players[0].api->puissance_aspiration(pos));
+}
+
+TEST_F(ApiTest, Api_DirectionsPlasma)
+{
+    // TODO
+}
+
 TEST_F(ApiTest, Api_CoutProchaineModificationAspiration)
 {
     for (auto& player : players)
