@@ -4,6 +4,22 @@
 
 #include <algorithm>
 
+TEST_F(ApiTest, Api_TypeCase)
+{
+    EXPECT_EQ(VIDE, players[0].api->type_case({1, 1}));
+    st->build_pipe({1, 1}, players[0].id);
+    EXPECT_EQ(TUYAU, players[0].api->type_case({1, 1}));
+    st->upgrade_pipe({1, 1}, players[0].id);
+    EXPECT_EQ(SUPER_TUYAU, players[0].api->type_case({1, 1}));
+    st->destroy_pipe({1, 1});
+    EXPECT_EQ(DEBRIS, players[0].api->type_case({1, 1}));
+    st->clear_rubble({1, 1});
+    EXPECT_EQ(VIDE, players[0].api->type_case({1, 1}));
+
+    EXPECT_EQ(INTERDIT, players[0].api->type_case({0, 1}));
+    EXPECT_EQ(BASE, players[0].api->type_case({0, TAILLE_TERRAIN / 2}));
+}
+
 TEST_F(ApiTest, Api_ListePulsars)
 {
     std::vector<position> expected;
