@@ -17,7 +17,6 @@ TEST_F(ApiTest, Api_HistPointAspirationRetires)
     };
     move(1);
     move(2);
-    other.api->game_state_set(player.api->game_state());
     EXPECT_EQ(expected, other.api->hist_points_aspiration_retires());
 }
 
