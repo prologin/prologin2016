@@ -2,6 +2,28 @@
 
 #include "test-helpers.hh"
 
+TEST_F(ApiTest, Api_HistTuyauxDetruits)
+{
+    for (int player_index : {0, 1})
+    {
+        auto& player = players[player_index];
+        auto& other = players[(player_index + 1) % 2];
+        std::vector<position> expected;
+        EXPECT_EQ(expected, other.api->hist_tuyaux_detruits());
+        auto build_destroy = [&](position pos) {
+            set_points(st, COUT_CONSTRUCTION_TUYAU);
+            EXPECT_EQ(OK, player.api->construire(pos));
+            set_points(st, COUT_DESTRUCTION_TUYAU);
+            EXPECT_EQ(OK, player.api->detruire(pos));
+            expected.push_back(pos);
+            EXPECT_EQ(expected, other.api->hist_tuyaux_detruits());
+        };
+        build_destroy({1, 1 + player_index * 2});
+        build_destroy({2, 1 + player_index * 2});
+        build_destroy({1, 2 + player_index * 2});
+    }
+}
+
 TEST_F(ApiTest, Api_HistTuyauxAmeliores)
 {
     for (int player_index : {0, 1})
