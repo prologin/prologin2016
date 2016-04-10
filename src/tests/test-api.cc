@@ -4,6 +4,19 @@
 
 #include <algorithm>
 
+TEST_F(ApiTest, Api_ChargesPresentes)
+{
+    for (int i = 1; i < TEST_PULSAR_POSITION.x; ++i)
+        st->build_pipe({i, TEST_PULSAR_POSITION.y}, players[0].id);
+    auto pulsar = st->get_pulsar(TEST_PULSAR_POSITION);
+    while ((int)st->get_turn() != pulsar.periode)
+        st->increment_turn();
+    position pos{TEST_PULSAR_POSITION.x - 1, TEST_PULSAR_POSITION.y};
+    EXPECT_EQ(0, players[0].api->charges_presentes(pos));
+    st->emit_plasma();
+    EXPECT_EQ(pulsar.puissance, players[0].api->charges_presentes(pos));
+}
+
 TEST_F(ApiTest, Api_BasesListes)
 {
     EXPECT_EQ(players[0].api->ma_base(), players[1].api->base_ennemie());
