@@ -4,6 +4,29 @@
 
 #include <algorithm>
 
+TEST_F(ApiTest, Api_ListePlasmas)
+{
+    std::vector<position> expected;
+    EXPECT_EQ(expected, players[0].api->liste_plasmas());
+    for (int i = 1; i < TEST_PULSAR_POSITION.x; ++i)
+        st->build_pipe({i, TEST_PULSAR_POSITION.y}, players[0].id);
+    auto pulsar = st->get_pulsar(TEST_PULSAR_POSITION);
+    while ((int)st->get_turn() != pulsar.periode)
+        st->increment_turn();
+    st->emit_plasma();
+    position pos{TEST_PULSAR_POSITION.x - 1, TEST_PULSAR_POSITION.y};
+    expected.push_back(pos);
+    EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
+                players[0].api->liste_plasmas().begin()));
+    st->build_pipe({pos.x, pos.y - 1}, players[0].id);
+    st->build_pipe({pos.x + 1, pos.y - 1}, players[0].id);
+    st->reset_board_distances();
+    st->emit_plasma();
+    expected.push_back({pos.x + 1, pos.y - 1});
+    EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
+                players[0].api->liste_plasmas().begin()));
+}
+
 TEST_F(ApiTest, Api_ListeTuyaux)
 {
     std::vector<position> expected;
