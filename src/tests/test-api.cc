@@ -206,7 +206,42 @@ TEST_F(ApiTest, Api_PuissanceApiration)
 
 TEST_F(ApiTest, Api_DirectionsPlasma)
 {
-    // TODO
+    position pos{1, TAILLE_TERRAIN / 2};
+    std::vector<position> expected;
+    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
+    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    players[0].api->construire(pos);
+    expected.push_back({0, TAILLE_TERRAIN / 2});
+    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
+    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    players[0].api->construire({pos.x, pos.y + 1});
+    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
+
+    expected.clear();
+    pos = position{TAILLE_TERRAIN - 3, TAILLE_TERRAIN / 2};
+    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
+    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    players[0].api->construire(pos);
+    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
+    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    players[0].api->construire({pos.x, pos.y + 1});
+    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
+    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    players[0].api->construire({pos.x + 1, pos.y + 1});
+    expected.push_back({pos.x, pos.y + 1});
+    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
+    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    players[0].api->construire({pos.x, pos.y - 1});
+    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
+    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    players[0].api->construire({pos.x + 1, pos.y - 1});
+    expected.push_back({pos.x, pos.y - 1});
+    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
+    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    players[0].api->construire({pos.x + 1, pos.y});
+    expected.clear();
+    expected.push_back({pos.x + 1, pos.y});
+    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
 }
 
 TEST_F(ApiTest, Api_CoutProchaineModificationAspiration)
