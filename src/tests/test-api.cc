@@ -4,6 +4,21 @@
 
 #include <algorithm>
 
+TEST_F(ApiTest, Api_ListeTuyaux)
+{
+    std::vector<position> expected;
+    EXPECT_EQ(expected, players[0].api->liste_tuyaux());
+    auto build = [&](position pos) {
+        st->build_pipe(pos, players[0].id);
+        expected.push_back(pos);
+        EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
+                    players[0].api->liste_tuyaux().begin()));
+    };
+    build({1, 1});
+    build({2, 1});
+    build({1, 2});
+}
+
 TEST_F(ApiTest, Api_ListeSuperTuyaux)
 {
     std::vector<position> expected;
