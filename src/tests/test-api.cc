@@ -4,6 +4,24 @@
 
 #include <algorithm>
 
+TEST_F(ApiTest, Api_ListeSuperTuyaux)
+{
+    std::vector<position> expected;
+    EXPECT_EQ(expected, players[0].api->liste_super_tuyaux());
+    auto build_upgrade = [&](position pos) {
+        st->build_pipe(pos, players[0].id);
+        EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
+                    players[0].api->liste_super_tuyaux().begin()));
+        st->upgrade_pipe(pos, players[0].id);
+        expected.push_back(pos);
+        EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
+                    players[0].api->liste_super_tuyaux().begin()));
+    };
+    build_upgrade({1, 1});
+    build_upgrade({2, 1});
+    build_upgrade({1, 2});
+}
+
 TEST_F(ApiTest, Api_ListeDebris)
 {
     std::vector<position> expected;
