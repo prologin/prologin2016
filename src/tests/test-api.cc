@@ -4,6 +4,18 @@
 
 #include <algorithm>
 
+TEST_F(ApiTest, Api_InfoPulsar)
+{
+    auto pulsar = st->get_pulsar(TEST_PULSAR_POSITION);
+    for (auto& player : players)
+    {
+        auto p = player.api->info_pulsar(TEST_PULSAR_POSITION);
+        EXPECT_EQ(pulsar.puissance, p.puissance);
+        EXPECT_EQ(pulsar.periode, p.periode);
+        EXPECT_EQ(pulsar.nombre_pulsations, p.nombre_pulsations);
+    }
+}
+
 TEST_F(ApiTest, Api_ChargesPresentes)
 {
     for (int i = 1; i < TEST_PULSAR_POSITION.x; ++i)
