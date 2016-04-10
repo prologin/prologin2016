@@ -2,6 +2,27 @@
 
 #include "test-helpers.hh"
 
+#include <algorithm>
+
+TEST_F(ApiTest, Api_BasesListes)
+{
+    EXPECT_EQ(players[0].api->ma_base(), players[1].api->base_ennemie());
+    EXPECT_EQ(players[1].api->ma_base(), players[0].api->base_ennemie());
+    std::vector<position> b1 = players[0].api->ma_base();
+    std::vector<position> b2 = players[1].api->ma_base();
+    for (int i = 0; i < TAILLE_TERRAIN; ++i)
+    {
+        if (!(i >= TAILLE_TERRAIN / 3 && i < TAILLE_TERRAIN * 2 / 3))
+            continue;
+        position borders[4] = {{0, i}, {i, 0},
+            {TAILLE_TERRAIN - 1, i}, {i, TAILLE_TERRAIN - 1}};
+        for (position pos : borders)
+        {
+            EXPECT_TRUE(std::find(b1.begin(), b1.end(), pos) != b1.end() ||
+                    std::find(b2.begin(), b2.end(), pos) != b2.end());
+        }
+    }
+}
 
 TEST_F(ApiTest, Api_PuissanceApiration)
 {
