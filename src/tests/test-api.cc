@@ -4,6 +4,24 @@
 
 #include <algorithm>
 
+TEST_F(ApiTest, Api_ListeDebris)
+{
+    std::vector<position> expected;
+    EXPECT_EQ(expected, players[0].api->liste_debris());
+    auto build_destroy = [&](position pos) {
+        st->build_pipe(pos, players[0].id);
+        EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
+                    players[0].api->liste_debris().begin()));
+        st->destroy_pipe(pos);
+        expected.push_back(pos);
+        EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
+                    players[0].api->liste_debris().begin()));
+    };
+    build_destroy({1, 1});
+    build_destroy({2, 1});
+    build_destroy({1, 2});
+}
+
 TEST_F(ApiTest, Api_EstPulsar)
 {
     EXPECT_FALSE(players[0].api->est_pulsar({1, 1}));
