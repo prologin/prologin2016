@@ -25,6 +25,8 @@ int ActionDeplacerAspiration::check(const GameState* st) const
     case_type destination = st->get_cell_type(destination_);
     if (source == case_type::INTERDIT || destination == case_type::INTERDIT)
         return POSITION_INVALIDE;
+    if (source_ == destination_)
+        return POSITION_INVALIDE; // We may want to add a new enum field
     if (source != case_type::BASE || destination != case_type::BASE)
         return PAS_DANS_BASE;
     if (st->get_cell_owner(source_) != static_cast<unsigned>(player_id_) ||
