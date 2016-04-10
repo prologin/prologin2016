@@ -4,6 +4,12 @@
 
 #include <algorithm>
 
+TEST_F(ApiTest, Api_EstPulsar)
+{
+    EXPECT_FALSE(players[0].api->est_pulsar({1, 1}));
+    EXPECT_TRUE(players[0].api->est_pulsar(TEST_PULSAR_POSITION));
+}
+
 TEST_F(ApiTest, Api_EstTuyau)
 {
     EXPECT_FALSE(players[0].api->est_tuyau({1, 1}));
