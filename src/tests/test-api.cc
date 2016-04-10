@@ -2,6 +2,30 @@
 
 #include "test-helpers.hh"
 
+TEST_F(ApiTest, Api_HistDebrisDeblayes)
+{
+    for (int player_index : {0, 1})
+    {
+        auto& player = players[player_index];
+        auto& other = players[(player_index + 1) % 2];
+        std::vector<position> expected;
+        EXPECT_EQ(expected, other.api->hist_debris_deblayes());
+        auto build_destroy_clear = [&](position pos) {
+            set_points(st, COUT_CONSTRUCTION_TUYAU);
+            EXPECT_EQ(OK, player.api->construire(pos));
+            set_points(st, COUT_DESTRUCTION_TUYAU);
+            EXPECT_EQ(OK, player.api->detruire(pos));
+            set_points(st, COUT_DEBLAYAGE);
+            EXPECT_EQ(OK, player.api->deblayer(pos));
+            expected.push_back(pos);
+            EXPECT_EQ(expected, other.api->hist_debris_deblayes());
+        };
+        build_destroy_clear({1, 1});
+        build_destroy_clear({2, 1});
+        build_destroy_clear({1, 2});
+    }
+}
+
 TEST_F(ApiTest, Api_HistPointAspirationAjoutes)
 {
     for (int player_index : {0, 1})
