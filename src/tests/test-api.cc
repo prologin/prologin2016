@@ -4,6 +4,14 @@
 
 #include <algorithm>
 
+TEST_F(ApiTest, Api_EstLibre)
+{
+    EXPECT_TRUE(players[0].api->est_libre({1, 1}));
+    EXPECT_FALSE(players[0].api->est_libre({0, TAILLE_TERRAIN / 2}));
+    st->build_pipe({1, 1}, players[0].id);
+    EXPECT_FALSE(players[0].api->est_libre({1, 1}));
+}
+
 TEST_F(ApiTest, Api_InfoPulsar)
 {
     auto pulsar = st->get_pulsar(TEST_PULSAR_POSITION);
