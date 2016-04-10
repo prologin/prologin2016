@@ -4,6 +4,13 @@
 
 #include <algorithm>
 
+TEST_F(ApiTest, Api_ListePulsars)
+{
+    std::vector<position> expected;
+    expected.push_back(TEST_PULSAR_POSITION);
+    EXPECT_EQ(expected, players[0].api->liste_pulsars());
+}
+
 TEST_F(ApiTest, Api_ListePlasmas)
 {
     std::vector<position> expected;
