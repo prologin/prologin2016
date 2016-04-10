@@ -2,6 +2,24 @@
 
 #include "test-helpers.hh"
 
+TEST_F(ApiTest, Api_CoutProchaineModificationAspiration)
+{
+    for (auto& player : players)
+    {
+        EXPECT_EQ(0, player.api->cout_prochaine_modification_aspiration());
+        st->set_vacuum_moved(true);
+        EXPECT_EQ(COUT_MODIFICATION_ASPIRATION,
+                player.api->cout_prochaine_modification_aspiration());
+        st->set_vacuum_moved(false);
+        EXPECT_EQ(0, player.api->cout_prochaine_modification_aspiration());
+        auto bases = player.api->ma_base();
+        player.api->deplacer_aspiration(bases[0], bases[1]);
+        EXPECT_EQ(COUT_MODIFICATION_ASPIRATION,
+                player.api->cout_prochaine_modification_aspiration());
+        st->set_vacuum_moved(false);
+    }
+}
+
 TEST_F(ApiTest, Api_HistTuyauxConstruits)
 {
     for (int player_index : {0, 1})
