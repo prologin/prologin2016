@@ -28,6 +28,20 @@
 #include "game_state.hh"
 #include "constant.hh"
 
+/// A shared pointer to the current game state
+/**
+ * Stechec2 works with the game state as a chained link. Only the head is really
+ * relevant, but the rest of the chain is used for undo.
+ * The system is made so that the Api class owns the GameState, but the pointed
+ * GameState object will keep changing since at each change we will get a new
+ * head for the list.
+ * But with this it is impossible to maintain, outside of the Api class, a
+ * pointer to the current GameState. Or to have several Api classes sharing the
+ * same GameState. This is annoying for unit tests for example.
+ * This class encapsulate the GameState for that purpose, with minimum of code
+ * changed.
+ * The ideal solution would be a good build in Stechec2 ownership semantics.
+ */
 class GameStateWrapper
 {
     struct SharedState
