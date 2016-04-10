@@ -4,6 +4,15 @@
 
 #include <algorithm>
 
+TEST_F(ApiTest, Api_EstDebris)
+{
+    EXPECT_FALSE(players[0].api->est_debris({1, 1}));
+    st->build_pipe({1, 1}, players[0].id);
+    EXPECT_FALSE(players[0].api->est_debris({1, 1}));
+    st->destroy_pipe({1, 1});
+    EXPECT_TRUE(players[0].api->est_debris({1, 1}));
+}
+
 TEST_F(ApiTest, Api_EstLibre)
 {
     EXPECT_TRUE(players[0].api->est_libre({1, 1}));
