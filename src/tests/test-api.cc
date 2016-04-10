@@ -2,6 +2,26 @@
 
 #include "test-helpers.hh"
 
+TEST_F(ApiTest, Api_HistPointAspirationAjoutes)
+{
+    int player_index = 0;
+    auto& player = players[player_index];
+    auto& other = players[(player_index + 1) % 2];
+    std::vector<position> expected;
+    EXPECT_EQ(expected, other.api->hist_points_aspiration_ajoutes());
+    auto bases = player.api->ma_base();
+    auto move = [&](int base_id) {
+        set_points(st, COUT_MODIFICATION_ASPIRATION);
+        expected.push_back(bases[base_id]);
+        st->increment_vacuum(bases[0]); // let's cheat a bit
+        return player.api->deplacer_aspiration(bases[0], bases[base_id]);
+    };
+    EXPECT_EQ(OK, move(1));
+    EXPECT_EQ(OK, move(2));
+    EXPECT_EQ(OK, move(5));
+    EXPECT_EQ(expected, other.api->hist_points_aspiration_ajoutes());
+}
+
 TEST_F(ApiTest, Api_HistPointAspirationRetires)
 {
     int player_index = 0;
@@ -10,13 +30,16 @@ TEST_F(ApiTest, Api_HistPointAspirationRetires)
     std::vector<position> expected;
     EXPECT_EQ(expected, other.api->hist_points_aspiration_retires());
     auto bases = player.api->ma_base();
-    auto move = [&](int base_id) {
+    auto move = [&](int base_id, int to = 0) {
         set_points(st, COUT_MODIFICATION_ASPIRATION);
-        player.api->deplacer_aspiration(bases[base_id], bases[0]);
         expected.push_back(bases[base_id]);
+        return player.api->deplacer_aspiration(bases[base_id], bases[to]);
     };
-    move(1);
-    move(2);
+    EXPECT_EQ(OK, move(1));
+    EXPECT_EQ(OK, move(0, 1));
+    EXPECT_EQ(OK, move(2));
+    EXPECT_EQ(OK, move(5));
+    EXPECT_EQ(OK, move(0, 1));
     EXPECT_EQ(expected, other.api->hist_points_aspiration_retires());
 }
 
