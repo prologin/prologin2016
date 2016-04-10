@@ -4,6 +4,15 @@
 
 #include <algorithm>
 
+TEST_F(ApiTest, Api_EstTuyau)
+{
+    EXPECT_FALSE(players[0].api->est_tuyau({1, 1}));
+    st->build_pipe({1, 1}, players[0].id);
+    EXPECT_TRUE(players[0].api->est_tuyau({1, 1}));
+    st->upgrade_pipe({1, 1}, players[0].id);
+    EXPECT_FALSE(players[0].api->est_tuyau({1, 1}));
+}
+
 TEST_F(ApiTest, Api_EstSuperTuyau)
 {
     EXPECT_FALSE(players[0].api->est_super_tuyau({1, 1}));
