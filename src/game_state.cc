@@ -194,7 +194,6 @@ void GameState::destroy_pipe(position p)
 {
     Cell& c = cell(p);
     assert(c.type == TUYAU || c.type == SUPER_TUYAU);
-    assert(c.plasma == 0);
     c.type = DEBRIS;
     c.owner = 0;
 }
@@ -447,13 +446,14 @@ void GameState::compute_board_distances()
             position neighbor = top.second + delta;
             case_type t = get_cell_type(neighbor);
             // 't == INTERDIT' when 'neighbor' is out of bounds
-            if (t != TUYAU && t != SUPER_TUYAU)
+            if (t != TUYAU && t != SUPER_TUYAU && t != DEBRIS)
               continue;
             const int n = board_index(neighbor);
             if (distances[n] == infinity)
             {
                 distances[n] = top.first + 1;
-                queue.emplace(distances[n], neighbor);
+                if (t != DEBRIS)
+                    queue.emplace(distances[n], neighbor);
             }
         }
     }

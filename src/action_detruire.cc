@@ -26,8 +26,6 @@ int ActionDetruire::check(const GameState* st) const
         return POSITION_INVALIDE;
     if (ct != case_type::TUYAU && ct != case_type::SUPER_TUYAU)
         return DESTRUCTION_IMPOSSIBLE;
-    if (st->get_plasma(position_) > 0)
-        return DESTRUCTION_IMPOSSIBLE; // We could have a better enum
     unsigned points = st->get_action_points();
     if (points < COUT_DESTRUCTION_TUYAU)
         return PA_INSUFFISANTS;
