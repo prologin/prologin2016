@@ -22,6 +22,7 @@
 #include <cmath>
 #include <limits>
 #include <queue>
+#include <stack>
 
 PlayerInfo::PlayerInfo(rules::Player_sptr player)
     : player_(std::move(player))
@@ -306,40 +307,45 @@ std::vector<position> GameState::direction_plasma(position p)
     return directions;
 }
 
-// Plasmas must be moved in order of increasing distances to bases to avoid
-// moving plasma to a cell with plasma that has not been moved yet.
 void GameState::move_plasma()
 {
-    using elt_t = std::pair<int, position>;
-
-    auto& distances = get_board_distances();
-
-    auto compare =
-        [](const elt_t& p1, const elt_t& p2)
-        { return p1.first > p2.first; };
-
-    std::priority_queue<elt_t, std::vector<elt_t>, decltype(compare)>
-        queue(compare);
+    // Move all plasma out of the board into this stack.
+    // Every element is one plasma cloud described by its remaining number of
+    // steps, its position, and its charge.
+    std::stack<std::tuple<unsigned, position, double>> plasmas;
 
     for (int x = 1; x < TAILLE_TERRAIN-1; x++)
         for (int y = 1; y < TAILLE_TERRAIN-1; y++)
         {
             position p{x,y};
-            if (get_plasma(p) > 0)
-                queue.emplace(distances[board_index(p)], p);
+            const double plasma = get_plasma(p);
+            if (plasma > 0)
+            {
+                clear_plasma(p);
+                const unsigned steps
+                    = (cell(p).type == SUPER_TUYAU)
+                    ? VITESSE_TUYAU * MULTIPLICATEUR_VITESSE_SUPER_TUYAU
+                    : VITESSE_TUYAU;
+                plasmas.emplace(steps, p, plasma);
+            }
         }
 
-    while (!queue.empty())
+    while (!plasmas.empty())
     {
-        auto top = queue.top();
-        queue.pop();
-        const auto dirs = direction_plasma(top.second);
+        const auto top = plasmas.top();
+        plasmas.pop();
+        const int steps = std::get<0>(top);
+        const position pos = std::get<1>(top);
+        const auto dirs = direction_plasma(pos);
         const double n_dirs = static_cast<double>(dirs.size());
-        const double plasma = get_plasma(top.second);
-        clear_plasma(top.second);
-        // Skipped if n_dirs == 0: disconnected plasma disappears.
+        if (n_dirs == 0)
+            continue; // Disconnected plasma disappears.
+        const double plasma = std::get<2>(top) / n_dirs;
         for (const auto p : dirs)
-            increase_plasma(p, plasma / n_dirs);
+            if (steps == 1 || cell(p).type == BASE)
+                increase_plasma(p, plasma);
+            else
+                plasmas.emplace(steps-1, p, plasma);
     }
 }
 
