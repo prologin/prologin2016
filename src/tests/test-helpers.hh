@@ -2,12 +2,14 @@
 #define TEST_HELPERS_HH
 
 #include <sstream>
+#include <fstream>
 
 #include <gtest/gtest.h>
 
 #include "../api.hh"
 #include "../constant.hh"
 #include "../game_state.hh"
+#include "../rules.hh"
 
 
 
@@ -94,6 +96,34 @@ protected:
     std::array<Player, 2> players;
 };
 
+class RulesTest : public ::testing::Test
+{
+protected:
+    virtual void SetUp()
+    {
+        // Players values are not 0 and 1, because that would be too simple
+        int player_id_1 = 1337;
+        int player_id_2 = 42;
+        utils::Logger::get().level() = utils::Logger::DEBUG_LEVEL;
+        auto players_ptr = make_players(player_id_1, player_id_2);
+        rules::Options opt;
+        if (!std::ifstream("map.txt").good())
+        {
+            std::ofstream map("map.txt");
+            map << some_map;
+        }
+        opt.map_file = "map.txt";
+        opt.players = std::move(players_ptr);
+        rules = new Rules(opt);
+    }
+
+    virtual void TearDown()
+    {
+        delete rules;
+    }
+
+    Rules* rules;
+};
 
 // Set a given number of action points to a given player
 static inline void set_points(GameState* st, unsigned pts)
