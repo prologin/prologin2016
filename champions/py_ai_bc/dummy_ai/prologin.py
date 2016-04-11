@@ -12,17 +12,41 @@ def partie_init():
 def partie_fin():
     pass
 
+def print_map():
+    N = api.TAILLE_TERRAIN
+    for i in range(N):
+        for j in range(N):
+            c = api.type_case((i,j))
+            if api.charges_presentes((i,j)) > 0.0:
+                print('*', end = '', file = sys.stderr)
+            elif c == api.case_type.TUYAU:
+                print('T', end = '', file = sys.stderr)
+            elif c == api.case_type.SUPER_TUYAU:
+                print('S', end = '', file = sys.stderr)
+            elif c == api.case_type.PULSAR:
+                print('#', end = '', file = sys.stderr)
+            elif c == api.case_type.BASE:
+                print('B', end = '', file = sys.stderr)
+            elif c == api.case_type.DEBRIS:
+                print('D', end = '', file = sys.stderr)
+            else:
+                print('.', end = '', file = sys.stderr)
+        print('', file = sys.stderr)
+    print()
+    print()
+    print()
+
 def jouer_tour():
+    # print_map()
     while api.points_action() >= 10:
         # print(api.points_action(), file = sys.stderr)
         if not coup():
             break
-    """
     while api.cout_prochaine_modification_aspiration() <= api.points_action():
         if not bouger_aspiration():
             break
     if api.points_action() >= 30:
-        detruire()"""
+        detruire()
 def coup():
     # Récupérer les infos sur la grille
     N = api.TAILLE_TERRAIN
@@ -70,7 +94,7 @@ def coup():
                 if grille[a][b] == api.case_type.VIDE:
                     poss_tuyau.append((a, b))
                 if grille[a][b] == api.case_type.DEBRIS:
-                    poss_tuyau.append((a, b))
+                    poss_deblayer.append((a, b))
     poss = poss_tuyau + poss_deblayer
     if poss == []:
         return(False)
@@ -82,6 +106,8 @@ def coup():
             if (a, b) not in cases_to_reach and not connected[a][b]:
                 cases_to_reach.append((a, b))
     nb_cases = len(cases_to_reach)
+    if nb_cases == 0:
+        return(False)
 
     # Trouver les distances de ces cases à la partie connectée
     distance = [0 for _ in range(nb_cases)]
@@ -111,12 +137,16 @@ def coup():
         _, i, j = value.pop(0)
         if (i, j) in poss_tuyau:
             # print("construction", i, j, file = sys.stderr)
-            api.construire((i, j))
-            return(True)
+            erreur = api.construire((i, j))
+            if erreur != api.erreur.OK:
+                print('Construire', erreur, api.type_case((i, j)), file = sys.stderr)
+            return(erreur == api.erreur.OK)
         else:
-            if api.points_action >= 20:
-                api.deblayer((i, j))
-                return(True)
+            if api.points_action() >= 20:
+                erreur = api.deblayer((i, j))
+                if erreur != api.erreur.OK:
+                    print("déblayer", erreur, file = sys.stderr)
+                return(api.erreur.OK)
     return(False)
 
 def bouger_aspiration():
@@ -173,9 +203,11 @@ def bouger_aspiration():
                     l.append((x, y, v / len(next)))
     liste = [(importance[k], k) for k in range(len(base))]
     liste.sort()
-    if liste[len(liste)-1][0] > liste[0][0]:
-        api.deplacer_aspiration(base[liste[0][1]], base[liste[len(liste)-1][1]])
-        return(True)
+    while api.puissance_aspiration(base[liste[0][1]]) == 0:
+         liste.pop(0)
+    if liste[len(liste)-1][0] > liste[0][0] and len(liste) > 1:
+        erreur = api.deplacer_aspiration(base[liste[0][1]], base[liste[len(liste)-1][1]])
+        return(erreur == api.erreur.OK)
     return(False)
 
 def detruire():
@@ -197,5 +229,7 @@ def detruire():
         return(False)
     liste.sort()
     _, i, j = liste.pop(0)
-    api.detruire((i, j))
+    erreur = api.detruire((i, j))
+    if erreur != api.erreur.OK:
+        print('Détruire', erreur, file = sys.stderr)
     return(True)
