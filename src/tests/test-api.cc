@@ -472,7 +472,7 @@ TEST_F(ApiTest, Api_Score)
 
 TEST_F(ApiTest, Api_TourActuel)
 {
-    for (int turn = 1; turn < NB_TOURS + 1; ++turn)
+    for (int turn = 0; turn < NB_TOURS; ++turn)
     {
         for (auto& player : players)
         {

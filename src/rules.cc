@@ -157,5 +157,5 @@ void Rules::end_of_player_turn(uint32_t /* player_id */)
 
 bool Rules::is_finished()
 {
-    return api_->game_state()->get_turn() > NB_TOURS;
+    return api_->game_state()->get_turn() >= NB_TOURS;
 }

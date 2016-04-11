@@ -41,7 +41,7 @@ void PlayerInfo::collect_plasma(double plasma)
 
 GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
     : rules::GameState()
-    , turn_(1)
+    , turn_(0)
     , action_points_(NB_POINTS_ACTION)
     , vacuum_moved_(false)
 {
