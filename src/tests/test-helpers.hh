@@ -101,9 +101,8 @@ class RulesTest : public ::testing::Test
 protected:
     virtual void SetUp()
     {
-        // Players values are not 0 and 1, because that would be too simple
-        int player_id_1 = 1337;
-        int player_id_2 = 42;
+        int player_id_1 = 1;
+        int player_id_2 = 2;
         utils::Logger::get().level() = utils::Logger::DEBUG_LEVEL;
         auto players_ptr = make_players(player_id_1, player_id_2);
         rules::Options opt;
