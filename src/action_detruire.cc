@@ -31,6 +31,8 @@ int ActionDetruire::check(const GameState* st) const
         return PA_INSUFFISANTS;
     if (ct == case_type::SUPER_TUYAU && points < COUT_DESTRUCTION_SUPER_TUYAU)
         return PA_INSUFFISANTS;
+    if (st->get_player_info().at(player_id_).get_collected_plasma() < CHARGE_DESTRUCTION)
+        return CHARGE_INSUFFISANTE;
     return OK;
 }
 
@@ -40,6 +42,7 @@ void ActionDetruire::apply_on(GameState* st) const
         st->decrease_action_points(COUT_DESTRUCTION_SUPER_TUYAU);
     else
         st->decrease_action_points(COUT_DESTRUCTION_TUYAU);
+    st->decrease_plasma(player_id_, CHARGE_DESTRUCTION);
     st->destroy_pipe(position_);
     st->hist_add_destroy(position_, player_id_);
     st->reset_board_distances();

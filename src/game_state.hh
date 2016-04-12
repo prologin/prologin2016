@@ -107,6 +107,9 @@ class GameState : public rules::GameState
 
         const auto& get_player_info() const { return player_info_; }
 
+        // Decrease the amount of plasma of a player.
+        void decrease_plasma(unsigned, double);
+
         /// Get the type of a case at a given position
         /// Return 'INTERDIT' if the position is invalid
         case_type get_cell_type(position) const;

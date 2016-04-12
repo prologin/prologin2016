@@ -44,6 +44,12 @@ constant:
                  super-tuyau.
 
   -
+    cst_name: CHARGE_DESTRUCTION
+    cst_val: 2
+    cst_comment: Charge en plasma nécessaire pour la destruction d'un tuyau ou
+                 d'un super-tuyau.
+
+  -
     cst_name: COUT_MODIFICATION_ASPIRATION
     cst_val: 10
     cst_comment: Nombre de points d'action que coûte le déplacement d'un point
@@ -86,6 +92,8 @@ enum:
                                   spécifiée."]
       - [pas_de_pulsar, "Il n'y a pas de pulsar à la position spécifiée."]
       - [pas_de_debris, "Il n'y a pas de débris à la position spécifiée."]
+      - [charge_insuffisante, "Vous ne possédez pas assez de plasma pour
+                               lancer une destruction."]
 
   -
     enum_name: case_type

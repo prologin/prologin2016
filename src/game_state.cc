@@ -34,7 +34,6 @@ PlayerInfo::PlayerInfo(rules::Player_sptr player)
 
 void PlayerInfo::collect_plasma(double plasma)
 {
-    assert(plasma > 0);
     collected_plasma_ += plasma;
     player_->score = std::floor(collected_plasma_);
 }
@@ -92,6 +91,11 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
 rules::GameState* GameState::copy() const
 {
     return new GameState(*this);
+}
+
+void GameState::decrease_plasma(unsigned player_id, double quantity)
+{
+    player_info_.at(player_id).collect_plasma(-quantity);
 }
 
 case_type GameState::get_cell_type(position pos) const
