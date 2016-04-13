@@ -208,7 +208,7 @@ function:
 
   -
     fct_name: liste_debris
-    fct_summary: Renvoie la liste des cases contenant des débris
+    fct_summary: Renvoie la liste des cases contenant des débris.
     fct_ret_type: position array
     fct_arg: []
 
@@ -235,7 +235,7 @@ function:
 
   -
     fct_name: est_debris
-    fct_summary: Renvoie vrai si et seulement si la case contient un débris
+    fct_summary: Renvoie vrai si et seulement si la case contient un débris.
     fct_ret_type: bool
     fct_arg:
       - [pos, position, "Case choisie."]
