@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# coding: iso-8859-1
 from _api import *
 
 # Taille du terrain (longueur et largeur).

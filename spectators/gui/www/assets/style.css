@@ -1,14 +1,78 @@
 
 body {
     background: #333 url('broken_noise.png');
+    color: #dfdfdf;
     margin: 0;
     padding: 0;
+    font-family: "Droid Sans", sans-serif;
 }
 
 #main {
     position: absolute;
     top: 0;
     left: 0;
+}
+
+#main, #sidebar {
+    display: none;
+}
+
+.splash {
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 2em;
+    font-style: italic;
+    text-align: center;
+    background: #333 url('broken_noise.png') repeat;
+}
+
+.splash p {
+    margin: 5em 0;
+    padding: 0;
+}
+
+#sp-waiting {
+    display: none !important; /* fixme */
+}
+
+#sp-gameover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, .8);
+}
+
+#sp-gameover > div {
+    flex: 0 0 auto;
+}
+
+#sp-gameover .go-player {
+    font-size: 3em;
+}
+
+#sp-gameover .go-player-score {
+    font-family: monospace;
+}
+
+#sp-gameover .go-player.winner {
+    font-size: 3.5em;
+    font-weight: bold;
+}
+
+#sp-gameover .separator {
+    width: 50%;
+    height: 2px;
+    padding: 0;
+    margin: 1.5em 0;
+    background: #dedede;
 }
 
 #main canvas {
@@ -20,8 +84,6 @@ body {
     padding: 1em;
     top: 0;
     right: 0;
-    color: #dfdfdf;
-    font-family: "Droid Sans", sans-serif;
 }
 
 #controls {
@@ -150,6 +212,7 @@ body {
     float: left;
     width: 10vw;
 }
+
 #ui-cell-props dd {
     margin: 0 0 0 1em;
     padding: 0;
@@ -175,5 +238,25 @@ body {
 }
 
 .cell-destroyed-pipe {
-    background: url(ashes.png) 0 0;
+    background: url(debris.png) 0 0;
+}
+
+#ui-game-timeline li {
+    opacity: .5;
+}
+
+#ui-game-timeline.ui-tl-1 li:nth-child(1) {
+    opacity: 1;
+}
+
+#ui-game-timeline.ui-tl-2 li:nth-child(1), #ui-game-timeline.ui-tl-2 li:nth-child(2) {
+    opacity: 1;
+}
+
+#ui-game-timeline.ui-tl-3 li:nth-child(1), #ui-game-timeline.ui-tl-3 li:nth-child(2), #ui-game-timeline.ui-tl-3 li:nth-child(3) {
+    opacity: 1;
+}
+
+#ui-game-timeline.ui-tl-4 li:nth-child(1), #ui-game-timeline.ui-tl-4 li:nth-child(2), #ui-game-timeline.ui-tl-4 li:nth-child(3), #ui-game-timeline.ui-tl-4 li:nth-child(4) {
+    opacity: 1;
 }

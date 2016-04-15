@@ -7,6 +7,26 @@
 </head>
 <body>
 
+<section id="sp-waiting" class="splash">
+  <p>En attente d'un joueur…</p>
+</section>
+
+<section id="sp-connecting" class="splash">
+  <p>Connexion à l'échec…</p>
+</section>
+
+<section id="sp-gameover" class="splash">
+  <div class="go-player player-a">
+    <div class="go-player-name"></div>
+    <div class="go-player-score"></div>
+  </div>
+  <div class="separator"></div>
+  <div class="go-player player-b">
+    <div class="go-player-name"></div>
+    <div class="go-player-score"></div>
+  </div>
+</section>
+
 <section id="main" role="main"></section>
 
 <section id="sidebar" role="status">
@@ -16,10 +36,12 @@
   <section id="controls">
     <section>
       <div>
-        Tour <span id="ui-turn" class="ui-hl"></span> <span class="ui-minor">sur <span id="ui-turn-max"></span></span>
+        Tour <span id="ui-turn" class="ui-hl"></span> <span class="ui-minor">sur <span
+        id="ui-turn-max"></span></span>
       </div>
       <div>
-        Round <span id="ui-round" class="ui-hl"></span> <span class="ui-minor">sur <span id="ui-round-max" class="ui-minor"></span></span>
+        Round <span id="ui-round" class="ui-hl"></span> <span class="ui-minor">sur <span
+        id="ui-round-max" class="ui-minor"></span></span>
       </div>
     </section>
 
@@ -28,6 +50,16 @@
         <div id="ui-game-progress">
           <div id="ui-game-progress-bar" style="width: 0"></div>
         </div>
+      </div>
+    </section>
+
+    <section style="margin: 0;">
+      <div style="flex: 0 1 80%;">
+        <ol id="ui-game-timeline">
+          <li>Jouer</li>
+          <li>Déplacement du plasma</li>
+          <li>Éruption des pulsars</li>
+        </ol>
       </div>
     </section>
 
@@ -46,7 +78,8 @@
 
     <section id="ui-mouse-section">
       <div>
-        <img src="assets/cursor.svg" id="ui-mouse-img"/> <span id="ui-mouse-coords"></span>
+        <img src="assets/cursor.svg" id="ui-mouse-img"/> <span
+        id="ui-mouse-coords"></span>
       </div>
     </section>
 
