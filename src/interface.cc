@@ -1,20 +1,13 @@
 /*
-** This file is part of Prologin2016, a rules library for stechec2.
-**
-** Copyright (c) 2016 Association Prologin <info@prologin.org>
-**
-** Prologin2016 is free software: you can redistribute it and/or modify
+** Stechec project is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
-** the Free Software Foundation, either version 3 of the License, or
+** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
 **
-** Prologin2016 is distributed in the hope that it will be useful,
-** but WITHOUT ANY WARRANTY; without even the implied warranty of
-** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-** GNU General Public License for more details.
+** The complete GNU General Public Licence Notice can be found as the
+** `NOTICE' file in the root directory.
 **
-** You should have received a copy of the GNU General Public License
-** along with Prologin2016.  If not, see <http://www.gnu.org/licenses/>.
+** Copyright (C) 2016 Prologin
 */
 
 #include "api.hh"
@@ -81,6 +74,7 @@ std::string convert_to_string(erreur in){
     case DESTRUCTION_IMPOSSIBLE: return "\"destruction_impossible\"";
     case PAS_DE_PULSAR: return "\"pas_de_pulsar\"";
     case PAS_DE_DEBRIS: return "\"pas_de_debris\"";
+    case CHARGE_INSUFFISANTE: return "\"charge_insuffisante\"";
   }
   return "bad value";
 }
@@ -164,291 +158,217 @@ std::string convert_to_string(std::vector<pulsar_info> in){
     return "[]";
   }
 }
-///
-// Construit un tuyau sur une case donnée.
-//
+/// Construit un tuyau sur une case donnée.
 extern "C" erreur api_construire(position pos)
 {
   return api->construire(pos);
 }
 
-///
-// Améliore un tuyau en super-tuyau.
-//
+/// Améliore un tuyau en super-tuyau.
 extern "C" erreur api_ameliorer(position pos)
 {
   return api->ameliorer(pos);
 }
 
-///
-// Détruit un tuyau sur une case donnée.
-//
+/// Détruit un tuyau sur une case donnée.
 extern "C" erreur api_detruire(position pos)
 {
   return api->detruire(pos);
 }
 
-///
-// Déplace un point d'aspiration d'un point de la base vers l'autre.
-//
+/// Déplace un point d'aspiration d'un point de la base vers l'autre.
 extern "C" erreur api_deplacer_aspiration(position source, position destination)
 {
   return api->deplacer_aspiration(source, destination);
 }
 
-///
-// Déblaye une case de débris.
-//
+/// Déblaye une case de débris.
 extern "C" erreur api_deblayer(position pos)
 {
   return api->deblayer(pos);
 }
 
-///
-// Renvoie le type d'une case donnée.
-//
+/// Renvoie le type d'une case donnée.
 extern "C" case_type api_type_case(position pos)
 {
   return api->type_case(pos);
 }
 
-///
-// Renvoie la liste de tous les pulsars présents.
-//
+/// Renvoie la liste de tous les pulsars présents.
 extern "C" std::vector<position> api_liste_pulsars()
 {
   return api->liste_pulsars();
 }
 
-///
-// Renvoie la liste des cases contenant du plasma.
-//
+/// Renvoie la liste des cases contenant du plasma.
 extern "C" std::vector<position> api_liste_plasmas()
 {
   return api->liste_plasmas();
 }
 
-///
-// Renvoie la liste des cases contenant un tuyau (ou super-tuyau).
-//
+/// Renvoie la liste des cases contenant un tuyau (ou super-tuyau).
 extern "C" std::vector<position> api_liste_tuyaux()
 {
   return api->liste_tuyaux();
 }
 
-///
-// Renvoie la liste des cases contenant un super-tuyau.
-//
+/// Renvoie la liste des cases contenant un super-tuyau.
 extern "C" std::vector<position> api_liste_super_tuyaux()
 {
   return api->liste_super_tuyaux();
 }
 
-///
-// Renvoie la liste des cases contenant des débris
-//
+/// Renvoie la liste des cases contenant des débris.
 extern "C" std::vector<position> api_liste_debris()
 {
   return api->liste_debris();
 }
 
-///
-// Renvoie vrai si et seulement si la case contient un pulsar.
-//
+/// Renvoie vrai si et seulement si la case contient un pulsar.
 extern "C" bool api_est_pulsar(position pos)
 {
   return api->est_pulsar(pos);
 }
 
-///
-// Renvoie vrai si et seulement si la case contient un simple tuyau.
-//
+/// Renvoie vrai si et seulement si la case contient un simple tuyau.
 extern "C" bool api_est_tuyau(position pos)
 {
   return api->est_tuyau(pos);
 }
 
-///
-// Renvoie vrai si et seulement si la case contient un super tuyau.
-//
+/// Renvoie vrai si et seulement si la case contient un super tuyau.
 extern "C" bool api_est_super_tuyau(position pos)
 {
   return api->est_super_tuyau(pos);
 }
 
-///
-// Renvoie vrai si et seulement si la case contient un débris
-//
+/// Renvoie vrai si et seulement si la case contient un débris.
 extern "C" bool api_est_debris(position pos)
 {
   return api->est_debris(pos);
 }
 
-///
-// Renvoie vrai si et seulement s'il est possible de construire sur cette case.
-//
+/// Renvoie vrai si et seulement s'il est possible de construire sur cette case.
 extern "C" bool api_est_libre(position pos)
 {
   return api->est_libre(pos);
 }
 
-///
-// Renvoie les informations propres au pulsar à la position donnée.
-//
+/// Renvoie les informations propres au pulsar à la position donnée.
 extern "C" pulsar_info api_info_pulsar(position pos)
 {
   return api->info_pulsar(pos);
 }
 
-///
-// Renvoie la quantité de plasma sur une case donnée.
-//
+/// Renvoie la quantité de plasma sur une case donnée.
 extern "C" double api_charges_presentes(position pos)
 {
   return api->charges_presentes(pos);
 }
 
-///
-// Renvoie la liste des cases composant votre base.
-//
+/// Renvoie la liste des cases composant votre base.
 extern "C" std::vector<position> api_ma_base()
 {
   return api->ma_base();
 }
 
-///
-// Renvoie la liste des cases composant la base de votre ennemi.
-//
+/// Renvoie la liste des cases composant la base de votre ennemi.
 extern "C" std::vector<position> api_base_ennemie()
 {
   return api->base_ennemie();
 }
 
-///
-// Renvoie la puissance d'aspiration d'une case de base donnée.
-//
+/// Renvoie la puissance d'aspiration d'une case de base donnée. Renvoie -1 si la position n'est pas celle d'une base.
 extern "C" int api_puissance_aspiration(position pos)
 {
   return api->puissance_aspiration(pos);
 }
 
-///
-// Renvoie pour une case donnée la liste des cases vers
-// lesquelles se propagerait un plasma. Renvoie la liste vide
-// si la case n'est pas une case contenant un tuyau ou si elle
-// n'est reliée à aucune base.
+/// Renvoie pour une case donnée la liste des cases vers lesquelles se propagerait un plasma. Renvoie la liste vide si la case n'est pas une case contenant un tuyau ou si elle n'est reliée à aucune base.
 extern "C" std::vector<position> api_directions_plasma(position pos)
 {
   return api->directions_plasma(pos);
 }
 
-///
-// Renvoie la valeur du coût de la prochaine modification de vos points d'aspiration.
-//
+/// Renvoie la valeur du coût de la prochaine modification de vos points d'aspiration.
 extern "C" int api_cout_prochaine_modification_aspiration()
 {
   return api->cout_prochaine_modification_aspiration();
 }
 
-///
-// Renvoie la liste des tuyaux construits par votre adversaire au dernier tour.
-//
+/// Renvoie la liste des tuyaux construits par votre adversaire au dernier tour.
 extern "C" std::vector<position> api_hist_tuyaux_construits()
 {
   return api->hist_tuyaux_construits();
 }
 
-///
-// Renvoie la liste des tuyaux détruits par votre adversaire au dernier tour.
-//
+/// Renvoie la liste des tuyaux détruits par votre adversaire au dernier tour.
 extern "C" std::vector<position> api_hist_tuyaux_detruits()
 {
   return api->hist_tuyaux_detruits();
 }
 
-///
-// Renvoie la liste des tuyaux améliorés par votre adversaire au dernier tour.
-//
+/// Renvoie la liste des tuyaux améliorés par votre adversaire au dernier tour.
 extern "C" std::vector<position> api_hist_tuyaux_ameliores()
 {
   return api->hist_tuyaux_ameliores();
 }
 
-///
-// Renvoie la liste des débris déblayés par votre adversaire au dernier tour.
-//
+/// Renvoie la liste des débris déblayés par votre adversaire au dernier tour.
 extern "C" std::vector<position> api_hist_debris_deblayes()
 {
   return api->hist_debris_deblayes();
 }
 
-///
-// Renvoie la liste des cases de base de votre adversaire qui ont reçu un point d'aspiration (une même case peut apparaître plusieurs fois).
-//
+/// Renvoie la liste des cases de base de votre adversaire qui ont reçu un point d'aspiration (une même case peut apparaître plusieurs fois).
 extern "C" std::vector<position> api_hist_points_aspiration_ajoutes()
 {
   return api->hist_points_aspiration_ajoutes();
 }
 
-///
-// Renvoie la liste des cases de base de votre adversaire qui ont perdu un point d'aspiration (une même case peut apparaître plusieurs fois).
-//
+/// Renvoie la liste des cases de base de votre adversaire qui ont perdu un point d'aspiration (une même case peut apparaître plusieurs fois).
 extern "C" std::vector<position> api_hist_points_aspiration_retires()
 {
   return api->hist_points_aspiration_retires();
 }
 
-///
-// Renvoie votre numéro de joueur.
-//
+/// Renvoie votre numéro de joueur.
 extern "C" int api_moi()
 {
   return api->moi();
 }
 
-///
-// Renvoie le numéro de votre adversaire.
-//
+/// Renvoie le numéro de votre adversaire.
 extern "C" int api_adversaire()
 {
   return api->adversaire();
 }
 
-///
-// Indique votre nombre de points d'actions restants pour ce tour-ci.
-//
+/// Indique votre nombre de points d'actions restants pour ce tour-ci.
 extern "C" int api_points_action()
 {
   return api->points_action();
 }
 
-///
-// Renvoie le score du joueur désigné par le numéro ``id_joueur``.
-//
+/// Renvoie le score du joueur désigné par le numéro ``id_joueur``. Renvoie -1 si ``id_joueur`` est invalide.
 extern "C" int api_score(int id_joueur)
 {
   return api->score(id_joueur);
 }
 
-///
-// Renvoie le numéro du tour actuel.
-//
+/// Renvoie le numéro du tour actuel.
 extern "C" int api_tour_actuel()
 {
   return api->tour_actuel();
 }
 
-///
-// Annule la dernière action. Renvoie ``false`` quand il n'y a pas d'action à annuler ce tour-ci.
-//
+/// Annule la dernière action. Renvoie ``false`` quand il n'y a pas d'action à annuler ce tour-ci.
 extern "C" bool api_annuler()
 {
   return api->annuler();
 }
 
-///
-// Affiche le contenu d'une valeur de type erreur
-//
+/// Affiche le contenu d'une valeur de type erreur
 std::ostream& operator<<(std::ostream& os, erreur v)
 {
   switch (v) {
@@ -463,6 +383,7 @@ std::ostream& operator<<(std::ostream& os, erreur v)
   case DESTRUCTION_IMPOSSIBLE: os << "DESTRUCTION_IMPOSSIBLE"; break;
   case PAS_DE_PULSAR: os << "PAS_DE_PULSAR"; break;
   case PAS_DE_DEBRIS: os << "PAS_DE_DEBRIS"; break;
+  case CHARGE_INSUFFISANTE: os << "CHARGE_INSUFFISANTE"; break;
   }
   return os;
 }
@@ -471,9 +392,7 @@ extern "C" void api_afficher_erreur(erreur v)
   std::cerr << v << std::endl;
 }
 
-///
-// Affiche le contenu d'une valeur de type case_type
-//
+/// Affiche le contenu d'une valeur de type case_type
 std::ostream& operator<<(std::ostream& os, case_type v)
 {
   switch (v) {
@@ -492,9 +411,7 @@ extern "C" void api_afficher_case_type(case_type v)
   std::cerr << v << std::endl;
 }
 
-///
-// Affiche le contenu d'une valeur de type position
-//
+/// Affiche le contenu d'une valeur de type position
 std::ostream& operator<<(std::ostream& os, position v)
 {
   os << "{ ";
@@ -509,9 +426,7 @@ extern "C" void api_afficher_position(position v)
   std::cerr << v << std::endl;
 }
 
-///
-// Affiche le contenu d'une valeur de type pulsar
-//
+/// Affiche le contenu d'une valeur de type pulsar_info
 std::ostream& operator<<(std::ostream& os, pulsar_info v)
 {
   os << "{ ";

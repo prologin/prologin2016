@@ -1,20 +1,13 @@
 /*
-** This file is part of Prologin2016, a rules library for stechec2.
-**
-** Copyright (c) 2016 Association Prologin <info@prologin.org>
-**
-** Prologin2016 is free software: you can redistribute it and/or modify
+** Stechec project is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
-** the Free Software Foundation, either version 3 of the License, or
+** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
 **
-** Prologin2016 is distributed in the hope that it will be useful,
-** but WITHOUT ANY WARRANTY; without even the implied warranty of
-** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-** GNU General Public License for more details.
+** The complete GNU General Public Licence Notice can be found as the
+** `NOTICE' file in the root directory.
 **
-** You should have received a copy of the GNU General Public License
-** along with Prologin2016.  If not, see <http://www.gnu.org/licenses/>.
+** Copyright (C) 2016 Prologin
 */
 
 #include <cstdlib>
