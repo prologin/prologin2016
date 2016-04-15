@@ -34,3 +34,13 @@ TEST_F(ActionTest, Ameliorer_EmptyCell)
     EXPECT_EQ(AMELIORATION_IMPOSSIBLE, act2.check(st));
     EXPECT_EQ(SUPER_TUYAU, st->get_cell_type(TEST_EMPTY_CELL));
 }
+
+
+TEST_F(ActionTest, Ameliorer_NotEnoughActionPoints)
+{
+    set_points(st, COUT_AMELIORATION_TUYAU - 1);
+    ActionConstruire act(TEST_EMPTY_CELL, PLAYER_1);
+    ActionAmeliorer  act2(TEST_EMPTY_CELL, PLAYER_1);
+
+    EXPECT_EQ(PA_INSUFFISANTS, act.check(st));
+}
