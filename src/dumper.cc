@@ -58,11 +58,9 @@ static void dump_players(std::ostream& ss, const GameState& st)
         is_first = false;
         ss << "\"" << player_info.first << "\": {"
            << "\"name\": \"" << p.get_name() << "\""
-           << ", \"name\": ";
-        dump_binary(ss, reinterpret_cast<const uint8_t*>(p.get_name().c_str()),
-                    p.get_name().size());
-        ss << ", \"collected_plasma\": \"" << p.get_collected_plasma() << "\""
-           << ", \"score\": " << p.get_score() << "}";
+           << ", \"collected_plasma\": \"" << p.get_collected_plasma() << "\""
+           << ", \"score\": " << p.get_score()
+           << "}";
     }
     ss << "}";
 }
