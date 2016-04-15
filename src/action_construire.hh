@@ -29,7 +29,11 @@
 class ActionConstruire : public rules::Action<GameState>
 {
 public:
-    ActionConstruire(position position, int player_id) : position_(position), player_id_(player_id) {}
+    ActionConstruire(position position, int player_id)
+        : position_(position)
+        , player_id_(player_id)
+    {
+    }
     ActionConstruire() {} // for register_action()
 
     int check(const GameState* st) const override;

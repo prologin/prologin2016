@@ -29,7 +29,11 @@
 class ActionAmeliorer : public rules::Action<GameState>
 {
 public:
-    ActionAmeliorer(position position, int player_id) : position_(position), player_id_(player_id) {}
+    ActionAmeliorer(position position, int player_id)
+        : position_(position)
+        , player_id_(player_id)
+    {
+    }
     ActionAmeliorer() {} // for register_action()
 
     int check(const GameState* st) const override;

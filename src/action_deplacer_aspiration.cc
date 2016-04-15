@@ -35,7 +35,7 @@ int ActionDeplacerAspiration::check(const GameState* st) const
     if (st->get_vacuum(source_) == 0)
         return PE_INSUFFISANTS;
     if (st->get_vacuum_moved() &&
-            st->get_action_points() < COUT_MODIFICATION_ASPIRATION)
+        st->get_action_points() < COUT_MODIFICATION_ASPIRATION)
         return PA_INSUFFISANTS;
     return OK;
 }

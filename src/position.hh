@@ -19,9 +19,9 @@
 
 #pragma once
 
-# include "constant.hh"
-# include <cstdlib>
-# include <functional>
+#include "constant.hh"
+#include <cstdlib>
+#include <functional>
 
 inline bool operator==(const position& a, const position& b)
 {
@@ -40,17 +40,17 @@ inline bool operator<(const position& a, const position& b)
 
 inline position operator-(position a)
 {
-    return { -a.x, -a.y };
+    return {-a.x, -a.y};
 }
 
-inline position &operator+=(position &lhs, position rhs)
+inline position& operator+=(position& lhs, position rhs)
 {
     lhs.y += rhs.y;
     lhs.x += rhs.x;
     return lhs;
 }
 
-inline position &operator-=(position &lhs, position rhs)
+inline position& operator-=(position& lhs, position rhs)
 {
     return lhs += -rhs;
 }
@@ -72,13 +72,12 @@ inline int distance(const position& a, const position& b)
 
 namespace std
 {
-    template <>
-    struct hash<position>
+template <> struct hash<position>
+{
+    std::size_t operator()(const position& p) const
     {
-        std::size_t operator()(const position& p) const
-        {
-            std::size_t s = std::hash<int>()(p.y) + 0x9e3779b9;
-            return s ^ (std::hash<int>()(p.x) + (s << 6) + (s >> 2));
-        }
-    };
+        std::size_t s = std::hash<int>()(p.y) + 0x9e3779b9;
+        return s ^ (std::hash<int>()(p.x) + (s << 6) + (s >> 2));
+    }
+};
 }

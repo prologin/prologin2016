@@ -26,12 +26,11 @@
 Api* api;
 
 Api::Api(const GameStateWrapper& game_state, rules::Player_sptr player)
-    : game_state_(game_state),
-      player_(std::move(player))
+    : game_state_(game_state)
+    , player_(std::move(player))
 {
     api = this;
 }
-
 
 /// Construit un tuyau sur une case donnée.
 erreur Api::construire(position position)
@@ -78,7 +77,8 @@ erreur Api::detruire(position position)
 /// Déplace un point d'aspiration d'un point de la base vers l'autre.
 erreur Api::deplacer_aspiration(position source, position destination)
 {
-    rules::IAction_sptr action(new ActionDeplacerAspiration(source, destination, player_->id));
+    rules::IAction_sptr action(
+        new ActionDeplacerAspiration(source, destination, player_->id));
 
     erreur err;
     if ((err = static_cast<erreur>(action->check(game_state_))) != OK)
@@ -253,14 +253,15 @@ int Api::puissance_aspiration(position position)
 /// n'est reliée à aucune base.
 std::vector<position> Api::directions_plasma(position position)
 {
-    if (1 <= position.x && position.x < TAILLE_TERRAIN - 1 &&
-        1 <= position.y && position.y < TAILLE_TERRAIN - 1)
+    if (1 <= position.x && position.x < TAILLE_TERRAIN - 1 && 1 <= position.y &&
+        position.y < TAILLE_TERRAIN - 1)
         return game_state_->direction_plasma(position);
     else
         return {};
 }
 
-/// Renvoie la valeur du coût de la prochaine modification de vos points d'aspiration.
+/// Renvoie la valeur du coût de la prochaine modification de vos points
+/// d'aspiration.
 int Api::cout_prochaine_modification_aspiration()
 {
     if (game_state_->get_vacuum_moved()) // Already used, full cost
@@ -365,7 +366,8 @@ int Api::tour_actuel()
     return game_state_->get_turn();
 }
 
-/// Annule la dernière action. Renvoie ``false`` quand il n'y a pas d'action à annuler ce tour-ci.
+/// Annule la dernière action. Renvoie ``false`` quand il n'y a pas d'action à
+/// annuler ce tour-ci.
 bool Api::annuler()
 {
     if (!game_state_->can_cancel())

@@ -29,7 +29,13 @@
 class ActionDeplacerAspiration : public rules::Action<GameState>
 {
 public:
-    ActionDeplacerAspiration(position source, position destination, int player_id) : source_(source), destination_(destination), player_id_(player_id) {}
+    ActionDeplacerAspiration(position source, position destination,
+                             int player_id)
+        : source_(source)
+        , destination_(destination)
+        , player_id_(player_id)
+    {
+    }
     ActionDeplacerAspiration() {} // for register_action()
 
     int check(const GameState* st) const override;

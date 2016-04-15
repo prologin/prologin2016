@@ -58,10 +58,10 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
     static_assert(TAILLE_TERRAIN % 3 == 0, "Board size must be multiple of 3");
     static_assert(TAILLE_TERRAIN / 3 == LONGUEUR_BASE, "Invalid base length");
     const int N = TAILLE_TERRAIN;
-    for (int i = 0 ; i < N ; i++)
+    for (int i = 0; i < N; i++)
     {
-        position wall[] = {{i, 0}, {i, N-1}, {0, i}, {N-1, i}};
-        for (unsigned j = 0 ; j < 4 ; j++)
+        position wall[] = {{i, 0}, {i, N - 1}, {0, i}, {N - 1, i}};
+        for (unsigned j = 0; j < 4; j++)
         {
             if (N / 3 <= i && i < N - N / 3)
                 cell(wall[j]) = {case_type::BASE, 0, player_ids_[j / 2]};
@@ -78,8 +78,8 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
         position pos;
         pulsar_info pr;
 
-        board_stream >> pos.x >> pos.y >>
-            pr.periode >> pr.puissance >> pr.nombre_pulsations;
+        board_stream >> pos.x >> pos.y >> pr.periode >> pr.puissance >>
+            pr.nombre_pulsations;
 
         CHECK(in_bounds(pos) && "Wrong position in map");
         cell(pos).type = case_type::PULSAR;
@@ -129,7 +129,7 @@ std::vector<position> GameState::bases_list(unsigned player_id) const
 {
     std::vector<position> bases;
     bases.reserve(TAILLE_TERRAIN * 2 / 3);
-    for (unsigned side = 0 ; side < 4 ; ++side)
+    for (unsigned side = 0; side < 4; ++side)
     {
         if (player_ids_[side / 2] != player_id) // This is not our base
             continue;
@@ -137,8 +137,10 @@ std::vector<position> GameState::bases_list(unsigned player_id) const
         {
             if (TAILLE_TERRAIN / 3 <= i && i < 2 * TAILLE_TERRAIN / 3)
             {
-                position wall[] = {{i, 0}, {i, TAILLE_TERRAIN - 1},
-                    {0, i}, {TAILLE_TERRAIN - 1, i}};
+                position wall[] = {{i, 0},
+                                   {i, TAILLE_TERRAIN - 1},
+                                   {0, i},
+                                   {TAILLE_TERRAIN - 1, i}};
                 bases.push_back(wall[side]);
             }
         }
@@ -229,7 +231,8 @@ void GameState::hist_add_clear(position p, unsigned player)
     player_info_.at(player).add_action({CLEAR, p});
 }
 
-void GameState::hist_add_move_vacuum(position src, position dest, unsigned player)
+void GameState::hist_add_move_vacuum(position src, position dest,
+                                     unsigned player)
 {
     player_info_.at(player).add_action({DECR_VACUUM, src});
     player_info_.at(player).add_action({INCR_VACUUM, dest});
@@ -293,17 +296,17 @@ void GameState::reset_board_distances()
 
 std::vector<position> GameState::direction_plasma(position p)
 {
-    assert(1 <= p.x && p.x < TAILLE_TERRAIN - 1 &&
-        1 <= p.y && p.y < TAILLE_TERRAIN - 1);
+    assert(1 <= p.x && p.x < TAILLE_TERRAIN - 1 && 1 <= p.y &&
+           p.y < TAILLE_TERRAIN - 1);
     const matrix<int>& distances = get_board_distances();
 
-    const position deltas[] = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    const position deltas[] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
     const int d = distances[board_index(p)];
     std::vector<position> directions;
     if (d != std::numeric_limits<int>::max())
         for (const auto& delta : deltas)
         {
-            auto q = p+delta;
+            auto q = p + delta;
             if (distances[board_index(q)] < d)
                 directions.push_back(q);
         }
@@ -317,18 +320,18 @@ void GameState::move_plasma()
     // steps, its position, and its charge.
     std::stack<std::tuple<unsigned, position, double>> plasmas;
 
-    for (int x = 1; x < TAILLE_TERRAIN-1; x++)
-        for (int y = 1; y < TAILLE_TERRAIN-1; y++)
+    for (int x = 1; x < TAILLE_TERRAIN - 1; x++)
+        for (int y = 1; y < TAILLE_TERRAIN - 1; y++)
         {
-            position p{x,y};
+            position p{x, y};
             const double plasma = get_plasma(p);
             if (plasma > 0)
             {
                 clear_plasma(p);
-                const unsigned steps
-                    = (cell(p).type == SUPER_TUYAU)
-                    ? VITESSE_TUYAU * MULTIPLICATEUR_VITESSE_SUPER_TUYAU
-                    : VITESSE_TUYAU;
+                const unsigned steps =
+                    (cell(p).type == SUPER_TUYAU)
+                        ? VITESSE_TUYAU * MULTIPLICATEUR_VITESSE_SUPER_TUYAU
+                        : VITESSE_TUYAU;
                 plasmas.emplace(steps, p, plasma);
             }
         }
@@ -348,13 +351,13 @@ void GameState::move_plasma()
             if (steps == 1 || cell(p).type == BASE)
                 increase_plasma(p, plasma);
             else
-                plasmas.emplace(steps-1, p, plasma);
+                plasmas.emplace(steps - 1, p, plasma);
     }
 }
 
 void GameState::emit_plasma()
 {
-    const position deltas[] = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    const position deltas[] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
     auto& distances = get_board_distances();
     for (auto& pulsar : pulsars_)
     {
@@ -389,8 +392,7 @@ int GameState::board_index(position p) const
 
 bool GameState::in_bounds(position p) const
 {
-    return 0 <= p.x && p.x < TAILLE_TERRAIN &&
-        0 <= p.y && p.y < TAILLE_TERRAIN;
+    return 0 <= p.x && p.x < TAILLE_TERRAIN && 0 <= p.y && p.y < TAILLE_TERRAIN;
 }
 
 const unsigned& GameState::vacuum_at(position p) const
@@ -409,7 +411,8 @@ const unsigned& GameState::vacuum_at(position p) const
 
 unsigned& GameState::vacuum_at(position p)
 {
-    return const_cast<unsigned&>(static_cast<const GameState&>(*this).vacuum_at(p));
+    return const_cast<unsigned&>(
+        static_cast<const GameState&>(*this).vacuum_at(p));
 }
 
 void GameState::compute_board_distances()
@@ -417,18 +420,19 @@ void GameState::compute_board_distances()
     using elt_t = std::pair<int, position>;
     // Distances are smaller than 'TAILLE_TERRAIN * TAILLE_TERRAIN'
     const int infinity = std::numeric_limits<int>::max();
-    const position deltas[] = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    const position deltas[] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
     board_distances_.reset(new matrix<int>);
     auto& distances = *board_distances_;
     distances.fill(infinity);
 
-    auto compare =
-        [](const elt_t& p1, const elt_t& p2)
-        { return p1.first > p2.first; };
+    auto compare = [](const elt_t& p1, const elt_t& p2)
+    {
+        return p1.first > p2.first;
+    };
 
-    std::priority_queue<elt_t, std::vector<elt_t>, decltype(compare)>
-        queue(compare);
+    std::priority_queue<elt_t, std::vector<elt_t>, decltype(compare)> queue(
+        compare);
 
     for (unsigned pi : player_ids_)
     {
@@ -451,7 +455,7 @@ void GameState::compute_board_distances()
             case_type t = get_cell_type(neighbor);
             // 't == INTERDIT' when 'neighbor' is out of bounds
             if (t != TUYAU && t != SUPER_TUYAU && t != DEBRIS)
-              continue;
+                continue;
             const int n = board_index(neighbor);
             if (distances[n] == infinity)
             {

@@ -6,7 +6,7 @@
 
 TEST_F(ActionTest, Construire_InvalidPosition)
 {
-    ActionConstruire act({0,0}, PLAYER_1);
+    ActionConstruire act({0, 0}, PLAYER_1);
     EXPECT_EQ(POSITION_INVALIDE, act.check(st));
 }
 
@@ -40,7 +40,7 @@ TEST_F(ActionTest, Construire_Ok)
 TEST_F(ActionTest, Construire_NoMoreActionPoints)
 {
     set_points(st, COUT_CONSTRUCTION_TUYAU - 1);
-    ActionConstruire act({1,1}, PLAYER_1);
+    ActionConstruire act({1, 1}, PLAYER_1);
 
     EXPECT_EQ(PA_INSUFFISANTS, act.check(st));
 }

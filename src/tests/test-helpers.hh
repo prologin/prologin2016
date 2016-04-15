@@ -11,33 +11,28 @@
 #include "../game_state.hh"
 #include "../rules.hh"
 
-
-
 // the format is: <x> <y> <period> <power> <lifetime>
 
-static const position TEST_PULSAR_POSITION = {18,18};
-static const std::string some_map = (
-    "18 18 3 5 10\n"
-);
+static const position TEST_PULSAR_POSITION = {18, 18};
+static const std::string some_map = ("18 18 3 5 10\n");
 
 static const int N = TAILLE_TERRAIN;
-static const position TEST_BASE = {N/2,0};
-static const position TEST_BASE_ALT = {N/2+1,0};
-static const position TEST_EMPTY_CELL = {1,1};
+static const position TEST_BASE = {N / 2, 0};
+static const position TEST_BASE_ALT = {N / 2 + 1, 0};
+static const position TEST_EMPTY_CELL = {1, 1};
 
 static rules::Players_sptr make_players(int id1, int id2)
 {
     /* Create two players (no spectator).  */
-    return rules::Players_sptr(new rules::Players {
-        std::vector<rules::Player_sptr> {
+    return rules::Players_sptr(
+        new rules::Players{std::vector<rules::Player_sptr>{
             rules::Player_sptr(new rules::Player(id1, rules::PLAYER)),
-        rules::Player_sptr(new rules::Player(id2, rules::PLAYER)),
-    }
-    });
+            rules::Player_sptr(new rules::Player(id2, rules::PLAYER)),
+        }});
 }
 
 static GameStateWrapper make_test_gamestate(std::string map,
-        const rules::Players_sptr& players)
+                                            const rules::Players_sptr& players)
 {
     std::istringstream map_stream(map);
     return GameStateWrapper(new GameState(map_stream, players));
@@ -52,10 +47,7 @@ protected:
         st = make_test_gamestate(some_map, make_players(PLAYER_1, PLAYER_2));
     }
 
-    virtual void TearDown()
-    {
-        delete st;
-    }
+    virtual void TearDown() { delete st; }
 
     GameState* st;
 
@@ -116,10 +108,7 @@ protected:
         rules = new Rules(opt);
     }
 
-    virtual void TearDown()
-    {
-        delete rules;
-    }
+    virtual void TearDown() { delete rules; }
 
     Rules* rules;
 };

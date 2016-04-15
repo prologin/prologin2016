@@ -59,25 +59,27 @@ TEST_F(ApiTest, Api_ListePlasmas)
     position pos{TEST_PULSAR_POSITION.x - 1, TEST_PULSAR_POSITION.y};
     expected.push_back(pos);
     EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
-                players[0].api->liste_plasmas().begin()));
+                                    players[0].api->liste_plasmas().begin()));
     st->build_pipe({pos.x, pos.y - 1}, players[0].id);
     st->build_pipe({pos.x + 1, pos.y - 1}, players[0].id);
     st->reset_board_distances();
     st->emit_plasma();
     expected.push_back({pos.x + 1, pos.y - 1});
     EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
-                players[0].api->liste_plasmas().begin()));
+                                    players[0].api->liste_plasmas().begin()));
 }
 
 TEST_F(ApiTest, Api_ListeTuyaux)
 {
     std::vector<position> expected;
     EXPECT_EQ(expected, players[0].api->liste_tuyaux());
-    auto build = [&](position pos) {
+    auto build = [&](position pos)
+    {
         st->build_pipe(pos, players[0].id);
         expected.push_back(pos);
-        EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
-                    players[0].api->liste_tuyaux().begin()));
+        EXPECT_TRUE(
+            std::is_permutation(expected.begin(), expected.end(),
+                                players[0].api->liste_tuyaux().begin()));
     };
     build({1, 1});
     build({2, 1});
@@ -88,14 +90,17 @@ TEST_F(ApiTest, Api_ListeSuperTuyaux)
 {
     std::vector<position> expected;
     EXPECT_EQ(expected, players[0].api->liste_super_tuyaux());
-    auto build_upgrade = [&](position pos) {
+    auto build_upgrade = [&](position pos)
+    {
         st->build_pipe(pos, players[0].id);
-        EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
-                    players[0].api->liste_super_tuyaux().begin()));
+        EXPECT_TRUE(
+            std::is_permutation(expected.begin(), expected.end(),
+                                players[0].api->liste_super_tuyaux().begin()));
         st->upgrade_pipe(pos, players[0].id);
         expected.push_back(pos);
-        EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
-                    players[0].api->liste_super_tuyaux().begin()));
+        EXPECT_TRUE(
+            std::is_permutation(expected.begin(), expected.end(),
+                                players[0].api->liste_super_tuyaux().begin()));
     };
     build_upgrade({1, 1});
     build_upgrade({2, 1});
@@ -106,14 +111,17 @@ TEST_F(ApiTest, Api_ListeDebris)
 {
     std::vector<position> expected;
     EXPECT_EQ(expected, players[0].api->liste_debris());
-    auto build_destroy = [&](position pos) {
+    auto build_destroy = [&](position pos)
+    {
         st->build_pipe(pos, players[0].id);
-        EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
-                    players[0].api->liste_debris().begin()));
+        EXPECT_TRUE(
+            std::is_permutation(expected.begin(), expected.end(),
+                                players[0].api->liste_debris().begin()));
         st->destroy_pipe(pos);
         expected.push_back(pos);
-        EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
-                    players[0].api->liste_debris().begin()));
+        EXPECT_TRUE(
+            std::is_permutation(expected.begin(), expected.end(),
+                                players[0].api->liste_debris().begin()));
     };
     build_destroy({1, 1});
     build_destroy({2, 1});
@@ -196,12 +204,12 @@ TEST_F(ApiTest, Api_BasesListes)
     {
         if (!(i >= TAILLE_TERRAIN / 3 && i < TAILLE_TERRAIN * 2 / 3))
             continue;
-        position borders[4] = {{0, i}, {i, 0},
-            {TAILLE_TERRAIN - 1, i}, {i, TAILLE_TERRAIN - 1}};
+        position borders[4] = {
+            {0, i}, {i, 0}, {TAILLE_TERRAIN - 1, i}, {i, TAILLE_TERRAIN - 1}};
         for (position pos : borders)
         {
             EXPECT_TRUE(std::find(b1.begin(), b1.end(), pos) != b1.end() ||
-                    std::find(b2.begin(), b2.end(), pos) != b2.end());
+                        std::find(b2.begin(), b2.end(), pos) != b2.end());
         }
     }
 }
@@ -270,13 +278,13 @@ TEST_F(ApiTest, Api_CoutProchaineModificationAspiration)
         EXPECT_EQ(0, player.api->cout_prochaine_modification_aspiration());
         st->set_vacuum_moved(true);
         EXPECT_EQ(COUT_MODIFICATION_ASPIRATION,
-                player.api->cout_prochaine_modification_aspiration());
+                  player.api->cout_prochaine_modification_aspiration());
         st->set_vacuum_moved(false);
         EXPECT_EQ(0, player.api->cout_prochaine_modification_aspiration());
         auto bases = player.api->ma_base();
         player.api->deplacer_aspiration(bases[0], bases[1]);
         EXPECT_EQ(COUT_MODIFICATION_ASPIRATION,
-                player.api->cout_prochaine_modification_aspiration());
+                  player.api->cout_prochaine_modification_aspiration());
         st->set_vacuum_moved(false);
     }
 }
@@ -289,7 +297,8 @@ TEST_F(ApiTest, Api_HistTuyauxConstruits)
         auto& other = players[(player_index + 1) % 2];
         std::vector<position> expected;
         EXPECT_EQ(expected, other.api->hist_tuyaux_construits());
-        auto build = [&](position pos) {
+        auto build = [&](position pos)
+        {
             set_points(st, COUT_CONSTRUCTION_TUYAU);
             EXPECT_EQ(OK, player.api->construire(pos));
             expected.push_back(pos);
@@ -309,7 +318,8 @@ TEST_F(ApiTest, Api_HistTuyauxDetruits)
         auto& other = players[(player_index + 1) % 2];
         std::vector<position> expected;
         EXPECT_EQ(expected, other.api->hist_tuyaux_detruits());
-        auto build_destroy = [&](position pos) {
+        auto build_destroy = [&](position pos)
+        {
             set_points(st, COUT_CONSTRUCTION_TUYAU);
             EXPECT_EQ(OK, player.api->construire(pos));
             set_points(st, COUT_DESTRUCTION_TUYAU);
@@ -332,7 +342,8 @@ TEST_F(ApiTest, Api_HistTuyauxAmeliores)
         auto& other = players[(player_index + 1) % 2];
         std::vector<position> expected;
         EXPECT_EQ(expected, other.api->hist_tuyaux_ameliores());
-        auto build_upgrade = [&](position pos) {
+        auto build_upgrade = [&](position pos)
+        {
             set_points(st, COUT_CONSTRUCTION_TUYAU);
             EXPECT_EQ(OK, player.api->construire(pos));
             set_points(st, COUT_AMELIORATION_TUYAU);
@@ -354,7 +365,8 @@ TEST_F(ApiTest, Api_HistDebrisDeblayes)
         auto& other = players[(player_index + 1) % 2];
         std::vector<position> expected;
         EXPECT_EQ(expected, other.api->hist_debris_deblayes());
-        auto build_destroy_clear = [&](position pos) {
+        auto build_destroy_clear = [&](position pos)
+        {
             set_points(st, COUT_CONSTRUCTION_TUYAU);
             EXPECT_EQ(OK, player.api->construire(pos));
             set_points(st, COUT_DESTRUCTION_TUYAU);
@@ -380,7 +392,8 @@ TEST_F(ApiTest, Api_HistPointAspirationAjoutes)
         std::vector<position> expected;
         EXPECT_EQ(expected, other.api->hist_points_aspiration_ajoutes());
         auto bases = player.api->ma_base();
-        auto move = [&](int base_id) {
+        auto move = [&](int base_id)
+        {
             set_points(st, COUT_MODIFICATION_ASPIRATION);
             expected.push_back(bases[base_id]);
             st->increment_vacuum(bases[0]); // let's cheat a bit
@@ -402,7 +415,8 @@ TEST_F(ApiTest, Api_HistPointAspirationRetires)
         std::vector<position> expected;
         EXPECT_EQ(expected, other.api->hist_points_aspiration_retires());
         auto bases = player.api->ma_base();
-        auto move = [&](int base_id, int to = 0) {
+        auto move = [&](int base_id, int to = 0)
+        {
             set_points(st, COUT_MODIFICATION_ASPIRATION);
             expected.push_back(bases[base_id]);
             return player.api->deplacer_aspiration(bases[base_id], bases[to]);
@@ -448,7 +462,8 @@ TEST_F(ApiTest, Api_PointsAction)
 
 TEST_F(ApiTest, Api_Score)
 {
-    auto check_score = [this](int value, int index) {
+    auto check_score = [this](int value, int index)
+    {
         int player_id = players[index].id;
         EXPECT_EQ(value, players[index].api->score(player_id));
         EXPECT_EQ(value, players[(index + 1) % 2].api->score(player_id));

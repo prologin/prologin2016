@@ -29,7 +29,11 @@
 class ActionDeblayer : public rules::Action<GameState>
 {
 public:
-    ActionDeblayer(position position, int player_id) : position_(position), player_id_(player_id) {}
+    ActionDeblayer(position position, int player_id)
+        : position_(position)
+        , player_id_(player_id)
+    {
+    }
     ActionDeblayer() {} // for register_action()
 
     int check(const GameState* st) const override;

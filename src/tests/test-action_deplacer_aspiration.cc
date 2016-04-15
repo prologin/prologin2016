@@ -1,14 +1,15 @@
 #include "../actions.hh"
 #include "test-helpers.hh"
 
-// ActionDeplacerAspiration(position source, position destination, int player_id)
+// ActionDeplacerAspiration(position source, position destination, int
+// player_id)
 
 TEST_F(ActionTest, DeplacerAspiration_InvalidPosition)
 {
-    ActionDeplacerAspiration act(TEST_BASE, {1,1}, PLAYER_1);
+    ActionDeplacerAspiration act(TEST_BASE, {1, 1}, PLAYER_1);
     EXPECT_EQ(PAS_DANS_BASE, act.check(st));
 
-    ActionDeplacerAspiration act2({1,1}, TEST_BASE, PLAYER_1);
+    ActionDeplacerAspiration act2({1, 1}, TEST_BASE, PLAYER_1);
     EXPECT_EQ(PAS_DANS_BASE, act2.check(st));
 
     ActionDeplacerAspiration act3(TEST_BASE, TEST_BASE, PLAYER_2);
@@ -41,7 +42,7 @@ TEST_F(ActionTest, DeplacerAspiration_ActionPoints)
     EXPECT_EQ(PA_INSUFFISANTS, act2.check(st));
     act2.apply_on(st);
 
-    for (unsigned i = 0; i < st->get_vacuum(TEST_BASE) ; i++)
+    for (unsigned i = 0; i < st->get_vacuum(TEST_BASE); i++)
     {
         set_points(st, COUT_MODIFICATION_ASPIRATION);
         EXPECT_EQ(OK, act.check(st));

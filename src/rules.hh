@@ -62,6 +62,7 @@ public:
 
     /// Get game state for tests purpose
     GameState* get_game_state() const { return api_->game_state(); }
+
 protected:
     f_champion_partie_init champion_partie_init_;
     f_champion_jouer_tour champion_jouer_tour_;

@@ -35,10 +35,9 @@ static void dump_binary(std::ostream& ss, const uint8_t bytes[], unsigned size)
         else if (bytes[i] == '\\')
             ss << "\\\\";
         else if (0x20 <= bytes[i] && bytes[i] <= 0x7e)
-            ss << (char) bytes[i];
+            ss << (char)bytes[i];
         else
-            ss << "\\u00"
-               << hextable[bytes[i] >> 4]
+            ss << "\\u00" << hextable[bytes[i] >> 4]
                << hextable[bytes[i] & 0x0f];
     }
     ss << "\"";
@@ -60,14 +59,10 @@ static void dump_players(std::ostream& ss, const GameState& st)
         ss << "\"" << player_info.first << "\": {"
            << "\"name\": \"" << p.get_name() << "\""
            << ", \"name\": ";
-        dump_binary(
-            ss,
-            reinterpret_cast<const uint8_t *>(p.get_name().c_str()),
-            p.get_name().size()
-        );
+        dump_binary(ss, reinterpret_cast<const uint8_t*>(p.get_name().c_str()),
+                    p.get_name().size());
         ss << ", \"collected_plasma\": \"" << p.get_collected_plasma() << "\""
-           << ", \"score\": " << p.get_score()
-           << "}";
+           << ", \"score\": " << p.get_score() << "}";
     }
     ss << "}";
 }
@@ -87,10 +82,8 @@ static void dump_map(std::ostream& ss, const GameState& st)
             ss << "{"
                << "\"type\": \"" << st.get_cell_type(p) << "\""
                << ", \"owner\": " << st.get_cell_owner(p)
-               << ", \"plasma\": " << st.get_plasma(p)
-               << ", \"vacuum\": " <<
-                   (st.get_cell_type(p) == BASE ? st.get_vacuum(p) : 0)
-               << "}";
+               << ", \"plasma\": " << st.get_plasma(p) << ", \"vacuum\": "
+               << (st.get_cell_type(p) == BASE ? st.get_vacuum(p) : 0) << "}";
         }
     ss << "]";
 }
@@ -120,10 +113,7 @@ static void dump_stream(std::ostream& ss, const GameState& st)
 {
     ss << "{";
     // - "turn": [current turn, number of turns]
-    ss << "\"turn\": ["
-        << st.get_turn() << ", "
-        << NB_TOURS
-        << "] ";
+    ss << "\"turn\": [" << st.get_turn() << ", " << NB_TOURS << "] ";
 
     ss << ", \"players\": ";
     dump_players(ss, st);
@@ -141,7 +131,6 @@ void Rules::dump_state(std::ostream& ss)
 {
     dump_stream(ss, *api_->game_state());
 }
-
 
 // from api.cc
 extern Api* api;

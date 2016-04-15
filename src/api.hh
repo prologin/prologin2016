@@ -47,16 +47,24 @@ class GameStateWrapper
     struct SharedState
     {
         GameState* game_state;
-        SharedState(GameState* game_state) : game_state(game_state) {}
+        SharedState(GameState* game_state)
+            : game_state(game_state)
+        {
+        }
     };
     std::shared_ptr<SharedState> ptr;
+
 public:
     explicit GameStateWrapper(GameState* game_state)
         : ptr(std::make_shared<SharedState>(game_state))
     {
     }
     operator GameState*() const { return ptr->game_state; }
-    GameStateWrapper& operator=(GameState* g) { ptr->game_state = g; return *this; }
+    GameStateWrapper& operator=(GameState* g)
+    {
+        ptr->game_state = g;
+        return *this;
+    }
     GameState* operator->() const { return ptr->game_state; }
     GameState& operator*() const { return *ptr->game_state; }
 };
@@ -67,10 +75,9 @@ public:
 */
 class Api
 {
-
 public:
     Api(const GameStateWrapper& game_state, rules::Player_sptr player);
-    virtual ~Api() { }
+    virtual ~Api() {}
 
     const rules::Player_sptr player() const { return player_; }
     void player_set(rules::Player_sptr player) { player_ = player; }
@@ -79,7 +86,8 @@ public:
 
     const GameState* game_state() const { return game_state_; }
     GameState* game_state() { return game_state_; }
-    void game_state_set(rules::GameState* gs) {
+    void game_state_set(rules::GameState* gs)
+    {
         game_state_ = dynamic_cast<GameState*>(gs);
     }
 
@@ -89,7 +97,6 @@ private:
     rules::Actions actions_;
 
 public:
-
     /// Construit un tuyau sur une case donnée.
     erreur construire(position position);
 
@@ -135,7 +142,8 @@ public:
     /// Renvoie vrai si et seulement si la case contient un tuyau débris.
     bool est_debris(position position);
 
-    /// Renvoie vrai si et seulement s'il est possible de construire sur cette case.
+    /// Renvoie vrai si et seulement s'il est possible de construire sur cette
+    /// case.
     bool est_libre(position position);
 
     /// Renvoie les informations propres au pulsar à la position donnée.
@@ -160,25 +168,32 @@ public:
     /// n'est reliée à aucune base.
     std::vector<position> directions_plasma(position position);
 
-    /// Renvoie la valeur du coût de la prochaine modification de vos points d'aspiration.
+    /// Renvoie la valeur du coût de la prochaine modification de vos points
+    /// d'aspiration.
     int cout_prochaine_modification_aspiration();
 
-    /// Renvoie la liste des tuyaux construits par votre adversaire au dernier tour.
+    /// Renvoie la liste des tuyaux construits par votre adversaire au dernier
+    /// tour.
     std::vector<position> hist_tuyaux_construits();
 
-    /// Renvoie la liste des tuyaux détruits par votre adversaire au dernier tour.
+    /// Renvoie la liste des tuyaux détruits par votre adversaire au dernier
+    /// tour.
     std::vector<position> hist_tuyaux_detruits();
 
-    /// Renvoie la liste des tuyaux améliorés par votre adversaire au dernier tour.
+    /// Renvoie la liste des tuyaux améliorés par votre adversaire au dernier
+    /// tour.
     std::vector<position> hist_tuyaux_ameliores();
 
-    /// Renvoie la liste des débris déblayés par votre adversaire au dernier tour.
+    /// Renvoie la liste des débris déblayés par votre adversaire au dernier
+    /// tour.
     std::vector<position> hist_debris_deblayes();
 
-    /// Renvoie la liste des cases de base de votre adversaire qui ont reçu un point d'aspiration (une même case peut apparaître plusieurs fois).
+    /// Renvoie la liste des cases de base de votre adversaire qui ont reçu un
+    /// point d'aspiration (une même case peut apparaître plusieurs fois).
     std::vector<position> hist_points_aspiration_ajoutes();
 
-    /// Renvoie la liste des cases de base de votre adversaire qui ont perdu un point d'aspiration (une même case peut apparaître plusieurs fois).
+    /// Renvoie la liste des cases de base de votre adversaire qui ont perdu un
+    /// point d'aspiration (une même case peut apparaître plusieurs fois).
     std::vector<position> hist_points_aspiration_retires();
 
     /// Renvoie votre numéro de joueur.
@@ -197,10 +212,9 @@ public:
     /// Renvoie le numéro du tour actuel.
     int tour_actuel();
 
-    /// Annule la dernière action. Renvoie ``false`` quand il n'y a pas d'action à annuler ce tour-ci.
+    /// Annule la dernière action. Renvoie ``false`` quand il n'y a pas d'action
+    /// à annuler ce tour-ci.
     bool annuler();
-
 };
-
 
 #endif /* !API_HH_ */

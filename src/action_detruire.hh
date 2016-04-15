@@ -29,7 +29,11 @@
 class ActionDetruire : public rules::Action<GameState>
 {
 public:
-    ActionDetruire(position position, int player_id) : position_(position), player_id_(player_id) {}
+    ActionDetruire(position position, int player_id)
+        : position_(position)
+        , player_id_(player_id)
+    {
+    }
     ActionDetruire() {} // for register_action()
 
     int check(const GameState* st) const override;
