@@ -313,6 +313,7 @@ TEST_F(ApiTest, Api_HistTuyauxDetruits)
             set_points(st, COUT_CONSTRUCTION_TUYAU);
             EXPECT_EQ(OK, player.api->construire(pos));
             set_points(st, COUT_DESTRUCTION_TUYAU);
+            st->decrease_plasma(player.id, -CHARGE_DESTRUCTION);
             EXPECT_EQ(OK, player.api->detruire(pos));
             expected.push_back(pos);
             EXPECT_EQ(expected, other.api->hist_tuyaux_detruits());
@@ -357,6 +358,7 @@ TEST_F(ApiTest, Api_HistDebrisDeblayes)
             set_points(st, COUT_CONSTRUCTION_TUYAU);
             EXPECT_EQ(OK, player.api->construire(pos));
             set_points(st, COUT_DESTRUCTION_TUYAU);
+            st->decrease_plasma(player.id, -CHARGE_DESTRUCTION);
             EXPECT_EQ(OK, player.api->detruire(pos));
             set_points(st, COUT_DEBLAYAGE);
             EXPECT_EQ(OK, player.api->deblayer(pos));
