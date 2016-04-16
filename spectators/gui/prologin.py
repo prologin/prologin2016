@@ -51,7 +51,7 @@ class Server:
         return self.ws
 
     async def on_shutdown(self, *args):
-        if self.ws.prepared:
+        if self.ws.prepared and not self.ws.closed:
             await self.ws.close(code=999, message="Server shutdown")
 
     def send(self, cmd, **kwargs):
@@ -103,8 +103,7 @@ class Server:
     def end_game(self):
         print("end_game")
         self.send('end')
-        self.event_ready.clear()
-        self.event_ready.wait()
+        self.ws.close(code=1)
 
 
 logging.basicConfig(level=logging.DEBUG)

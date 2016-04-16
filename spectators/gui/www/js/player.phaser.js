@@ -7,7 +7,7 @@
 Phaser.Game.prototype.showDebugHeader = () => null;
 
 const gs = 20, baseZoneMargin = 1.5 * gs, spriteScale = gs / 32;
-var ticksPerState = 11;
+var ticksPerState = 30;
 
 const Direction = {
   N: new Phaser.Point(0, -1),
@@ -32,7 +32,7 @@ Direction.NAMES = ['N', 'E', 'S', 'W']; // order is important
 
 const DisplayMode = {NORMAL: 0, HEATMAP: 1};
 const Orientation = {H: 0, V: 1};
-const Players = [{uiid: 'a', color: 0xff71b0}, {uiid: 'b', color: 0x8aff73}];
+const Players = [{name: 'a', color: 0xff71b0}, {name: 'b', color: 0x8aff73}];
 
 const TurnState = {
   TURN_BEGINS: 0,
@@ -144,6 +144,10 @@ class Network {
     };
   }
 
+  disconnect() {
+    this.socket.close();
+  }
+
   hello() {
     gameManager.showWaiting(true);
     this.send('ready');
@@ -171,6 +175,11 @@ class Network {
       return;
     }
 
+    if (msg.c === 'end') {
+      gameManager.endGame();
+      return;
+    }
+
     if (msg.c === 'turn') {
       // minus one because fuck logic
       let state = msg.state, thisTurn = state.turn[0];
@@ -183,11 +192,14 @@ class Network {
       nextMap = state.map;
       nextPlayers = [];
 
+      let uiid = 0;
       for (let pid in state.players) {
         if (state.players.hasOwnProperty(pid)) {
           let player = state.players[pid];
           player.pid = parseInt(pid);
+          player.ui = Players[uiid];
           nextPlayers.push(player);
+          uiid++;
         }
       }
       nextPlayers.sort((a, b) => a.pid - b.pid);
@@ -217,7 +229,7 @@ class Network {
       gameManager.updateUi();
       gameManager.showWaiting(false);
 
-      if (turn < gameManager.maxTurn && (autoForward || game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)))
+      if (autoForward || game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
         gameManager.moveForward();
 
       return;
@@ -251,6 +263,7 @@ function buildPipeGraph() {
   let stack = [], cluster = 0;
 
   board.iterate(PlayerBase, base => {
+    base.baseDistance = -base.vacuumForce;
     queue.queue([-base.vacuumForce, base.p, {
       x: base.p.x,
       y: base.p.y
@@ -358,7 +371,8 @@ function buildPipeGraph() {
 
 class GameManager {
   constructor(n, maxTurn) {
-    const baseN = parseInt(n / 3);
+    this.n = n;
+    this.baseN = parseInt(n / 3);
     const innerSize = n * gs, outerSize = innerSize + baseZoneMargin * 2;
 
     let that = this;
@@ -367,6 +381,7 @@ class GameManager {
     this.destroyed = [];
     this.updated = [];
     this.movingForward = false;
+    this.gameEnded = false;
 
     game = new Phaser.Game(outerSize, outerSize, Phaser.CANVAS, 'main', {
       preload: preload,
@@ -377,7 +392,7 @@ class GameManager {
     var energyGraphics;
 
     var ui = this.ui = {};
-    this.maxTurn = maxTurn + 1; // FIXME: fuck logic
+    this.maxTurn = maxTurn;
     this.tick = 0;
 
     function updateUiCellProps(cell) {
@@ -452,16 +467,6 @@ class GameManager {
       ui.spWaitingPlayer.hide();
       ui.spGameOver.hide();
 
-      for (let player of Players) {
-        let $player = $('.ui-player.player-' + player.uiid);
-        let color = '#' + player.color.toString(16);
-        ui.players.push($player);
-        $player.find('.ui-player-marker').css('backgroundColor', color);
-        let $goPlayer = $('.go-player.player-' + player.uiid);
-        ui.goPlayers.push($goPlayer);
-        $goPlayer.css('color', color);
-      }
-
       // load assets
       game.load.path = 'assets/';
       game.load.image('pixel.energy', 'pixel.energy.png');
@@ -516,12 +521,6 @@ class GameManager {
       mouseCell.blendMode = Phaser.blendModes.LIGHTEN;
       mouseCell.drawRect(0, 0, gs, gs);
       mouseCell.endFill();
-
-      let baseCenter = Math.floor(n / 2 - baseN / 2);
-      PlayerBase.build(0, Players[0].color, baseCenter, 0, baseN, Orientation.H, false);
-      PlayerBase.build(0, Players[0].color, baseCenter, n - 1, baseN, Orientation.H, true);
-      PlayerBase.build(1, Players[1].color, 0, baseCenter, baseN, Orientation.V, false);
-      PlayerBase.build(1, Players[1].color, n - 1, baseCenter, baseN, Orientation.V, true);
 
       /* Keyboard press */
       game.input.keyboard.addKey(Phaser.Keyboard.M).onDown.add(() => {
@@ -692,7 +691,6 @@ class GameManager {
 
       that.tick++;
       if (that.tick === ticksPerState + 1) {
-        console.log('ended state', turnState, 'for turn', turn);
         that.tick = 0;
         that.movingForward = false;
 
@@ -726,7 +724,7 @@ class GameManager {
               e.gravity = 0;
               e.makeParticles('brick');
               e.explode(800, 10);
-              a.onComplete.add(() => { console.log('destroy emitter', e); e.destroy(); });
+              a.onComplete.add(() => e.destroy());
               s.animations.play('explode', 15, false, true);
             }
             board.set(entity);
@@ -766,7 +764,7 @@ class GameManager {
   }
 
   moveForward() {
-    if (this.movingForward || turn >= this.maxTurn)
+    if (this.movingForward || this.gameEnded)
       return;
 
     if (turnState === TurnState.TURN_BEGINS) {
@@ -781,7 +779,7 @@ class GameManager {
       this.updated = [];
 
       nextMap.map((data, i) => {
-        let y = i % board.n, x = Math.floor(i / board.n), type = parseInt(data.type);
+        let x = Math.floor(i / board.n), y = i % board.n, type = parseInt(data.type);
         let cell = board.get(x, y), p = new Phaser.Point(x, y);
         switch (type) {
           case CellType.VOID:
@@ -872,6 +870,30 @@ class GameManager {
   }
 
   connected() {
+    let pidToIndex = new Map();
+    let i = 0;
+    for (let player of players) {
+      let $player = $('.ui-player.player-' + player.ui.name);
+      let color = '#' + player.ui.color.toString(16);
+      this.ui.players.push($player);
+      $player.find('.ui-player-marker').css('backgroundColor', color);
+      let $goPlayer = $('.go-player.player-' + player.ui.name);
+      this.ui.goPlayers.push($goPlayer);
+      $goPlayer.css('color', color);
+      pidToIndex.set(player.pid, i++);
+    }
+
+    let n = this.n, baseN = this.baseN;
+    let baseCenter = Math.floor(n / 2 - baseN / 2);
+    let verticalLeftBase = nextMap[parseInt(n/2)]; // (x = 0) * n + (y = n/2)
+    let verticalOwner = verticalLeftBase.owner, horizontalOwner = (verticalOwner + 1) % 2;
+    let verticalPlayer = players[pidToIndex.get(verticalOwner)], horizontalPlayer = players[pidToIndex.get(horizontalOwner)];
+
+    PlayerBase.build(verticalOwner, verticalPlayer.ui.color, 0, baseCenter, baseN, Orientation.V, false);
+    PlayerBase.build(verticalOwner, verticalPlayer.ui.color, n - 1, baseCenter, baseN, Orientation.V, true);
+    PlayerBase.build(horizontalOwner, horizontalPlayer.ui.color, baseCenter, 0, baseN, Orientation.H, false);
+    PlayerBase.build(horizontalOwner, horizontalPlayer.ui.color, baseCenter, n - 1, baseN, Orientation.H, true);
+
     this.ui.spConnecting.fadeOut(() => $('#main,#sidebar').fadeIn());
   }
 
@@ -883,6 +905,14 @@ class GameManager {
     }
   }
 
+  endGame() {
+    if (this.gameEnded)
+      return;
+    this.gameEnded = true;
+    this.ui.spGameOver.fadeIn('slow');
+    network.disconnect();
+  }
+
   updateUi() {
     this.ui.turn.text(turn);
     this.ui.turnMax.text(this.maxTurn);
@@ -890,16 +920,13 @@ class GameManager {
     this.ui.roundMax.text(Math.floor(this.maxTurn / 2));
     this.ui.progressBar.css('width', (turn / this.maxTurn * 100) + '%');
 
-    if (turn >= this.maxTurn) {
-      this.ui.spGameOver.fadeIn('slow');
-    }
-
-    let player = this.ui.players[(turn) % 2], other = this.ui.players[(turn + 1) % 2];
+    let player = this.ui.players[(turn + 1) % 2], other = this.ui.players[(turn) % 2];
     player.addClass('active');
     other.removeClass('active');
     for (let i = 0; i < players.length; i++) {
       let $player = this.ui.players[i], $goPlayer = this.ui.goPlayers[i];
       let name = players[i].name, score = players[i].score;
+      $goPlayer.removeClass('winner');
       if (score > players[(i + 1) % 2].score) {
         $goPlayer.addClass('winner');
       }
