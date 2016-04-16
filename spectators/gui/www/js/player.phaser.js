@@ -809,7 +809,7 @@ class GameManager {
           case CellType.BASE:
             console.assert(cell instanceof PlayerBase, x, y, cell);
             if (data.vacuum !== cell.vacuumForce)
-              that.updated.push([p, 'vacuumForce', data.vacuum]);
+              that.updated.push([p, base => { base.vacuumForce = data.vacuum}]);
             break;
           case CellType.NOPE:
             break;
