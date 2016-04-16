@@ -13,32 +13,58 @@
 ** along with prologin2016.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cstring>
+#include <codecvt>
 #include <cstdlib>
+#include <iomanip>
+#include <ios>
+#include <iostream>
+#include <locale>
 #include <sstream>
+#include <string>
 
 #include "api.hh"
 #include "rules.hh"
 #include "constant.hh"
 #include "game_state.hh"
 
-/// Put some binary content as a JSON string in the output stream.
-static void dump_binary(std::ostream& ss, const uint8_t bytes[], unsigned size)
+/// Dump a JSON-escaped UTF-8 string
+static void dump_string(std::ostream& ss, const std::string& s)
 {
-    const char* hextable = "0123456789ABCDEF";
-
+    /*
+     * RFC4627, 2.5:
+     * All Unicode characters may be placed within the quotation marks except
+     * for the characters that must be escaped: quotation mark, reverse solidus,
+     * and the control characters (U+0000 through U+001F).
+     */
+    std::ios state(nullptr);
+    state.copyfmt(ss);
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf32conv;
+    std::u32string utf32 = utf32conv.from_bytes(s);
     ss << "\"";
-    for (unsigned i = 0; i < size; ++i)
-    {
-        if (bytes[i] == '"')
+    for (char32_t &c : utf32) {
+        if (c == u'"') {
             ss << "\\\"";
-        else if (bytes[i] == '\\')
+        } else if (c == u'\\') {
             ss << "\\\\";
-        else if (0x20 <= bytes[i] && bytes[i] <= 0x7e)
-            ss << (char)bytes[i];
-        else
-            ss << "\\u00" << hextable[bytes[i] >> 4]
-               << hextable[bytes[i] & 0x0f];
+        } else if (u'\u0020' <= c && c <= u'\u007E') {
+            // printable ASCII
+            ss << utf32conv.to_bytes(c);
+        } else if (c > u'\uFFFF') {
+            // surrogate pair
+            // http://unicode.org/faq/utf_bom.html#utf16-2
+            const unsigned s = c - 0x010000;
+            const unsigned lead = (s >> 10) + 0xD800;
+            const unsigned trail = (s & 0x3FF) + 0xDC00;
+            ss << "\\u" << std::hex << std::setfill('0') << std::setw(4)
+               << lead;
+            ss.copyfmt(state);
+            ss << "\\u" << std::hex << std::setfill('0') << std::setw(4)
+               << trail;
+            ss.copyfmt(state);
+        } else {
+            ss << "\\u" << std::hex << std::setfill('0') << std::setw(4) << c;
+            ss.copyfmt(state);
+        }
     }
     ss << "\"";
 }
@@ -57,8 +83,9 @@ static void dump_players(std::ostream& ss, const GameState& st)
             ss << ", ";
         is_first = false;
         ss << "\"" << player_info.first << "\": {"
-           << "\"name\": \"" << p.get_name() << "\""
-           << ", \"collected_plasma\": \"" << p.get_collected_plasma() << "\""
+           << "\"name\": ";
+        dump_string(ss, p.get_name());
+        ss << ", \"collected_plasma\": \"" << p.get_collected_plasma() << "\""
            << ", \"score\": " << p.get_score()
            << "}";
     }
