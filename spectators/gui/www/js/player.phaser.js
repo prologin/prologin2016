@@ -698,10 +698,37 @@ class GameManager {
 
         if (turnState === TurnState.ACTIONS_DONE) {
           that.destroyed.map(p => {
+            if (board.getC(p) instanceof Debris) {
+              // backhoe animation
+              let s = game.add.sprite(p.x * gs - gs / 2, p.y * gs, 'backhoe', 0, effectLayer);
+              s.scale.set(spriteScale);
+              s.alpha = 0;
+              let t = game.make.tween(s).to({x: '+' + gs}, ticksPerState * 8, Phaser.Easing.Linear.None, true);
+              game.make.tween(s).to({alpha: 1}, ticksPerState, Phaser.Easing.Linear.None, true);
+              t.onComplete.add(e => s.destroy());
+            }
             board.removeC(p);
           });
 
           that.built.map(entity => {
+            if (entity instanceof Debris) {
+              // explode animation
+              let pos = entity.p;
+              let s = game.add.sprite(pos.x * (.5 + gs), pos.y * (.5 + gs), 'boom', 0, effectLayer);
+              s.anchor.set(.5);
+              let a = s.animations.add('explode');
+              a.parent = s;
+              a.killOnComplete = true;
+              let e = game.add.emitter(baseZoneMargin + pos.x * (.5 + gs), baseZoneMargin + pos.y * (.5 + gs), 10);
+              e.setScale(.1, .5);
+              e.setRotation(0, 360);
+              e.setAlpha(1, 0, 1500);
+              e.gravity = 0;
+              e.makeParticles('brick');
+              e.explode(800, 10);
+              a.onComplete.add(() => { console.log('destroy emitter', e); e.destroy(); });
+              s.animations.play('explode', 15, false, true);
+            }
             board.set(entity);
           });
 
