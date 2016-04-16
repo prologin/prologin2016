@@ -7,7 +7,7 @@
 Phaser.Game.prototype.showDebugHeader = () => null;
 
 const gs = 20, baseZoneMargin = 1.5 * gs, spriteScale = gs / 32;
-var ticksPerState = 30;
+var ticksPerState = 11;
 
 const Direction = {
   N: new Phaser.Point(0, -1),

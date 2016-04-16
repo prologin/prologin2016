@@ -180,7 +180,7 @@ class PlayerBase extends Entity {
     gaugeSprite.scale.set(spriteScale);
     let vacGauge = this.vacGauge = game.add.text(0, 0, '0', {
       font: 'monospace',
-      fontSize: gs / 2.5,
+      fontSize: 10,
       fill: 'white',
       boundsAlignH: 'center',
       boundsAlignV: 'middle'

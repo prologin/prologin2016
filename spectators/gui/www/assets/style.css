@@ -55,7 +55,7 @@ body {
 }
 
 #sp-gameover .go-player {
-    font-size: 3em;
+    font-size: 2.4em;
 }
 
 #sp-gameover .go-player-score {
@@ -63,7 +63,7 @@ body {
 }
 
 #sp-gameover .go-player.winner {
-    font-size: 3.5em;
+    font-size: 2.9em;
     font-weight: bold;
 }
 
