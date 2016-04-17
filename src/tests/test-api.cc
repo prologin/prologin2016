@@ -261,8 +261,14 @@ TEST_F(ApiTest, Api_DirectionsPlasma)
     players[0].api->construire({pos.x, pos.y - 1});
     EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
     set_points(st, COUT_CONSTRUCTION_TUYAU);
+    DEBUG("%d\n", players[0].api->est_tuyau({pos.x + 1, pos.y - 1}));
     players[0].api->construire({pos.x + 1, pos.y - 1});
     expected.push_back({pos.x, pos.y - 1});
+    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
+    set_points(st, COUT_DESTRUCTION_TUYAU);
+    st->decrease_plasma(players[0].id, -CHARGE_DESTRUCTION);
+    players[0].api->detruire({pos.x, pos.y - 1});
+    expected.pop_back();
     EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
     set_points(st, COUT_CONSTRUCTION_TUYAU);
     players[0].api->construire({pos.x + 1, pos.y});
