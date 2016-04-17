@@ -127,18 +127,21 @@ en direction des bases les plus proches.
 Le plasma dans des tuyaux qui ne sont reliés à aucune base par d'autres
 tuyaux disparaît définitivement. Sinon, les règles ci-dessous s'appliquent.
 
-La distance effective entre une case ``c`` et une base ``b`` est égale à
-``D(c,b)-A(b)``, où ``D(c,b)`` est le nombre minimum de tuyaux reliant ``c`` à
-``b`` et ``A(b)`` est la puissance d'aspiration possédée par la base ``b``. Un
-Super Tuyau™ est considéré comme un tuyau dans le calcul des distances. La
-distance minimale d'une case est la plus petite distance effective entre cette
-case et n'importe quelle base à laquelle elle est reliée.
+La *distance effective* entre une case ``c`` et une case de base ``b`` est
+égale à ``D(c,b)-A(b)``, où ``D(c,b)`` est la longueur du plus court chemin de
+``c`` à ``b`` ne passant que par des tuyaux et ``A(b)`` est la puissance
+d'aspiration possédée par la case ``b``. Un Super Tuyau™ est considéré comme un
+tuyau dans le calcul des distances. La *distance minimale* d'une case est la
+plus petite distance effective entre cette case et n'importe quelle case de
+base à laquelle elle est reliée.
 
 À la fin d'un tour, il peut y avoir du plasma dans un tuyau, un Super Tuyau™,
 ou des débris. À partir d'une case à distance minimale ``D_min``, le plasma se
-déplace vers les tuyaux et Super Tuyaux™ voisins à distance minimale
-``D_min-1``. Il y en a toujours au moins un. Quand il y en a plusieurs, le
-plasma se divise en quantités égales sur chacune de ces cases.
+déplace vers les cases voisines de base, tuyau ou Super Tuyau™ à distance
+minimale ``D_min-1``. Il y en a toujours au moins une. Quand il y en a
+plusieurs, le plasma se divise en quantités égales sur chacune de ces cases.
+Le plasma qui arrive sur une case de base est immédiatement collecté par le
+joueur propriétaire de cette case.
 
 Le plasma avance d'une case s'il se trouve initialement sur un tuyau ou des
 débris, deux sur un Super-Tuyau™, sans être affecté par d'autres Super-Tuyaux™
