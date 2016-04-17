@@ -307,7 +307,9 @@ std::vector<position> GameState::direction_plasma(position p)
         for (const auto& delta : deltas)
         {
             auto q = p + delta;
-            if (distances[board_index(q)] < d)
+            auto t = cell(q).type;
+            if ((t == TUYAU || t == SUPER_TUYAU || t == BASE) &&
+                distances[board_index(q)] < d)
                 directions.push_back(q);
         }
     return directions;
@@ -368,7 +370,9 @@ void GameState::emit_plasma()
         for (const auto& delta : deltas)
         {
             auto pos = pulsar.first + delta;
-            if (distances[board_index(pos)] != std::numeric_limits<int>::max())
+            auto t = cell(pos).type;
+            if ((t == TUYAU || t == SUPER_TUYAU) &&
+                distances[board_index(pos)] != std::numeric_limits<int>::max())
                 increase_plasma(pos, pulsar.second.puissance);
         }
     }
