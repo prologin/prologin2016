@@ -60,7 +60,8 @@ Transporte du plasma plus rapidement qu'un tuyau et coûte plus cher à détruir
 Débris
 ======
 
-Restes de la destruction d'un tuyau.
+Restes de la destruction d'un tuyau. Du plasma peut en sortir mais pas y
+rentrer.
 
 ---------------------
 Déroulement d'un tour
@@ -88,11 +89,14 @@ un tuyau existant en Super-Tuyau™.
 Détruire un tuyau
 -----------------
 
-Vous pouvez dépenser ``COUT_DESTRUCTION_TUYAU`` points d'action pour détruire
-un tuyau ou ``COUT_DESTRUCTION_SUPER_TUYAU`` points d'action pour détruire un
-Super-Tuyau™, laissant une case de débris à la place.
+Vous pouvez dépenser ``COUT_DESTRUCTION_TUYAU`` points d'action pour lancer un
+*tir de plasma* et détruire un tuyau, ou ``COUT_DESTRUCTION_SUPER_TUYAU``
+points d'action pour détruire un Super-Tuyau™. Un tir de plasma vous consomme
+de plus ``CHARGE_PLASMA`` charges de plasma que vous avez collecté. La case
+visée est remplacée par une case de débris.
 
-Vous ne pouvez pas détruire un tuyau contenant du plasma.
+Le plasma encore présent dans le tuyau ou Super Tuyau™ détruit persiste dans
+les débris.
 
 Déblayer des débris
 -------------------
@@ -123,22 +127,44 @@ en direction des bases les plus proches.
 Le plasma dans des tuyaux qui ne sont reliés à aucune base par d'autres
 tuyaux disparaît définitivement. Sinon, les règles ci-dessous s'appliquent.
 
-La distance effective entre un tuyau ``t`` et une base ``b`` est égale à
-``D(t,b)-A(b)``, où ``D(t,b)`` est le nombre minimum de tuyaux reliant
-``t`` à ``b`` et ``A(b)`` est la puissance d'aspiration possédée par la base
-``b``. La distance minimale d'un tuyau est la plus petite distance effective
-entre ce tuyau et n'importe quelle base à laquelle il est relié.
+La distance effective entre une case ``c`` et une base ``b`` est égale à
+``D(c,b)-A(b)``, où ``D(c,b)`` est le nombre minimum de tuyaux reliant ``c`` à
+``b`` et ``A(b)`` est la puissance d'aspiration possédée par la base ``b``. Un
+Super Tuyau™ est considéré comme un tuyau dans le calcul des distances. La
+distance minimale d'une case est la plus petite distance effective entre cette
+case et n'importe quelle base à laquelle elle est reliée.
 
-À partir d'un tuyau à distance minimale ``D_min``, le plasma se déplace vers les
-cases voisines à distance minimale ``D_min-1``. Il y en a toujours au moins une.
-Quand il y en a plusieurs, le plasma se divise en quantités égales sur chacune
-de ces cases.
+À la fin d'un tour, il peut y avoir du plasma dans un tuyau, un Super Tuyau™,
+ou des débris. À partir d'une case à distance minimale ``D_min``, le plasma se
+déplace vers les tuyaux et Super Tuyaux™ voisins à distance minimale
+``D_min-1``. Il y en a toujours au moins un. Quand il y en a plusieurs, le
+plasma se divise en quantités égales sur chacune de ces cases.
 
-Le plasma avance d'une case s'il se trouve initialement sur un tuyau, deux sur
-un Super-Tuyau™, sans être affecté par d'autres Super-Tuyaux™ sur son trajet.
+Le plasma avance d'une case s'il se trouve initialement sur un tuyau ou des
+débris, deux sur un Super-Tuyau™, sans être affecté par d'autres Super-Tuyaux™
+sur son trajet.
 
 Enfin, quand la période d'un pulsar ``T`` est un diviseur du nombre de tours
 passés et qu'il lui reste des pulsations (``R > 0``), il pulse, ce qui
 décrémente ``R`` et ajoute ``P`` charges de plasma à chacune des quatre cases
 adjacentes au pulsar. Ce plasma disparaît immédiatement s'il ne se trouve pas
 dans un tuyau relié à une base.
+
+Score
+=====
+
+Votre score est la quantité de plasma que vous avez collecté, arrondie
+à l'entier inférieur. Détruire un tuyau vous coûte du plasma, ce qui
+réduit effectivement votre score.
+
+Format de la carte
+==================
+
+La carte est donnée par un fichier texte, où chaque ligne donne les
+caractéristiques d'un pulsar sur la carte, sous la forme de cinq entiers :
+*abscisse*, *ordonnée*, *période*, *puissance*, *nombre total de pulsations*.
+
+Voici un exemple avec deux pulsars : ::
+
+  11 15 9 5 8
+  15 11 9 5 8
