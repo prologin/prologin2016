@@ -32,13 +32,13 @@ TEST_F(RulesTest, DumpUnicodeString)
         rules->get_game_state()->get_player_info().find(PLAYER_ID_1)->second;
 
     player1_info.set_name("\xc3\xa9l\xc3\xa9phant"); // éléphant
-    oss = std::ostringstream();
+    oss.str("");
     rules->dump_state(oss);
     out = oss.str();
     EXPECT_NE(std::string::npos, out.find("\\u00e9l\\u00e9phant")) << out;
 
     player1_info.set_name("\xf0\x9f\x90\xae"); // U+1f42e COW FACE
-    oss = std::ostringstream();
+    oss.str("");
     rules->dump_state(oss);
     out = oss.str();
     EXPECT_NE(std::string::npos, out.find("\\ud83d\\udc2e")) << out;
