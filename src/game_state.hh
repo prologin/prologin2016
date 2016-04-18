@@ -59,6 +59,9 @@ public:
     /// Get this player's name
     const std::string& get_name() const { return player_->name; }
 
+    /// Set this player's name (for tests)
+    void set_name(const std::string& name) const { player_->name = name; }
+
     /// Get total collected plasma by this player
     double get_collected_plasma() const { return collected_plasma_; }
 
@@ -106,6 +109,7 @@ public:
     rules::GameState* copy() const final override;
 
     const auto& get_player_info() const { return player_info_; }
+    auto& get_player_info() { return player_info_; }
 
     // Decrease the amount of plasma of a player.
     void decrease_plasma(unsigned, double);

@@ -91,12 +91,13 @@ protected:
 class RulesTest : public ::testing::Test
 {
 protected:
+    constexpr static int PLAYER_ID_1 = 1;
+    constexpr static int PLAYER_ID_2 = 2;
+
     virtual void SetUp()
     {
-        int player_id_1 = 1;
-        int player_id_2 = 2;
         utils::Logger::get().level() = utils::Logger::DEBUG_LEVEL;
-        auto players_ptr = make_players(player_id_1, player_id_2);
+        auto players_ptr = make_players(PLAYER_ID_1, PLAYER_ID_2);
         rules::Options opt;
         if (!std::ifstream("map.txt").good())
         {
@@ -105,12 +106,10 @@ protected:
         }
         opt.map_file = "map.txt";
         opt.players = std::move(players_ptr);
-        rules = new Rules(opt);
+        rules.reset(new Rules(opt));
     }
 
-    virtual void TearDown() { delete rules; }
-
-    Rules* rules;
+    std::unique_ptr<Rules> rules;
 };
 
 // Set a given number of action points to a given player

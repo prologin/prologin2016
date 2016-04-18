@@ -13,7 +13,6 @@
 ** along with prologin2016.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <codecvt>
 #include <cstdlib>
 #include <iomanip>
 #include <ios>
@@ -27,6 +26,50 @@
 #include "constant.hh"
 #include "game_state.hh"
 
+/// Decodes a UTF-8 string to a list of 32 bit unicode codepoints. Ignores
+/// erroneous characters.
+static std::u32string utf8_decode(const std::string& s)
+{
+    std::u32string ret;
+    size_t i = 0;
+    size_t size = s.size();
+
+    while (i < size)
+    {
+        if ((s[i] & 0x80) == 0)
+        {
+            ret.push_back(s[i++]);
+        }
+        else if ((s[i] & 0xe0) == 0xc0 && (i + 1) < size &&
+                 (s[i + 1] & 0xc0) == 0x80)
+        {
+            ret.push_back(((s[i] & 0x1f) << 6) | (s[i + 1] & 0x3f));
+            i += 2;
+        }
+        else if ((s[i] & 0xf0) == 0xe0 && (i + 2) < size &&
+                 (s[i + 1] & 0xc0) == 0x80 && (s[i + 2] & 0xc0) == 0x80)
+        {
+            ret.push_back(((s[i] & 0x0f) << 12) | ((s[i + 1] & 0x3f) << 6) |
+                          (s[i + 2] & 0x3f));
+            i += 3;
+        }
+        else if ((s[i] & 0xf8) == 0xf0 && (i + 3) < size &&
+                 (s[i + 1] & 0xc0) == 0x80 && (s[i + 2] & 0xc0) == 0x80 &&
+                 (s[i + 1] & 0xc0) == 0x80)
+        {
+            ret.push_back(((s[i] & 0x07) << 18) | ((s[i + 1] & 0x3f) << 12) |
+                          ((s[i + 2] & 0x3f) << 6) | (s[i + 3] & 0x3f));
+            i += 4;
+        }
+        else
+        {
+            i++;
+        }
+    }
+
+    return ret;
+}
+
 /// Dump a JSON-escaped UTF-8 string
 static void dump_string(std::ostream& ss, const std::string& s)
 {
@@ -38,18 +81,25 @@ static void dump_string(std::ostream& ss, const std::string& s)
      */
     std::ios state(nullptr);
     state.copyfmt(ss);
-    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> utf32conv;
-    std::u32string utf32 = utf32conv.from_bytes(s);
+    std::u32string utf32 = utf8_decode(s);
     ss << "\"";
-    for (char32_t &c : utf32) {
-        if (c == u'"') {
+    for (char32_t& c : utf32)
+    {
+        if (c == u'"')
+        {
             ss << "\\\"";
-        } else if (c == u'\\') {
+        }
+        else if (c == u'\\')
+        {
             ss << "\\\\";
-        } else if (u'\u0020' <= c && c <= u'\u007E') {
+        }
+        else if (u'\u0020' <= c && c <= u'\u007E')
+        {
             // printable ASCII
-            ss << utf32conv.to_bytes(c);
-        } else if (c > u'\uFFFF') {
+            ss << static_cast<char>(c);
+        }
+        else if (c > u'\uFFFF')
+        {
             // surrogate pair
             // http://unicode.org/faq/utf_bom.html#utf16-2
             const unsigned s = c - 0x010000;
@@ -61,7 +111,9 @@ static void dump_string(std::ostream& ss, const std::string& s)
             ss << "\\u" << std::hex << std::setfill('0') << std::setw(4)
                << trail;
             ss.copyfmt(state);
-        } else {
+        }
+        else
+        {
             ss << "\\u" << std::hex << std::setfill('0') << std::setw(4) << c;
             ss.copyfmt(state);
         }
@@ -86,8 +138,7 @@ static void dump_players(std::ostream& ss, const GameState& st)
            << "\"name\": ";
         dump_string(ss, p.get_name());
         ss << ", \"collected_plasma\": \"" << p.get_collected_plasma() << "\""
-           << ", \"score\": " << p.get_score()
-           << "}";
+           << ", \"score\": " << p.get_score() << "}";
     }
     ss << "}";
 }
