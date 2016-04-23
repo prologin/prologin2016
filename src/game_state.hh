@@ -20,6 +20,7 @@
 #ifndef GAME_STATE_HH
 #define GAME_STATE_HH
 
+#include <array>
 #include <unordered_map>
 #include <rules/game-state.hh>
 #include <rules/player.hh>
