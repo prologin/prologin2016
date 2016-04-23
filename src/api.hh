@@ -51,6 +51,7 @@ class GameStateWrapper
             : game_state(game_state)
         {
         }
+        ~SharedState() { delete game_state; }
     };
     std::shared_ptr<SharedState> ptr;
 

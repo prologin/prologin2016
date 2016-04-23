@@ -47,9 +47,7 @@ protected:
         st = make_test_gamestate(some_map, make_players(PLAYER_1, PLAYER_2));
     }
 
-    virtual void TearDown() { delete st; }
-
-    GameState* st;
+    GameStateWrapper st = GameStateWrapper(nullptr);
 
     const int PLAYER_1 = 0;
     const int PLAYER_2 = 1;
