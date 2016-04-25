@@ -1,0 +1,43 @@
+$primary: #1a325e
+
+$body-bg: #222
+$text-color: #efefef
+
+$brand-primary: $primary
+$brand-danger: #f51643
+
+$state-danger-text: $brand-danger
+$state-danger-bg: lighten($brand-danger, 42)
+
+$navbar-default-color: $text-color
+$navbar-default-bg: transparent
+$navbar-default-link-hover-bg: $primary
+$navbar-default-link-hover-color: $text-color
+
+$nav-link-hover-bg: lighten($primary, 10)
+$nav-pills-border-radius: 0
+$nav-pills-active-link-hover-color: $text-color
+$nav-pills-active-link-hover-bg: $primary
+
+$pre-bg: lighten($body-bg, 5)
+$pre-border-color: lighten($pre-bg, 10)
+$pre-color: $text-color
+
+$panel-default-heading-bg: $primary
+$panel-primary-heading-bg: $primary
+$panel-primary-border: lighten($primary, 10)
+$panel-bg: $pre-bg
+
+$table-bg-accent: lighten($body-bg, 10)
+
+@import '../bootstrap-sass/assets/stylesheets/bootstrap'
+
+
+.nav
+  > li
+    > a
+      color: $text-color
+
+body
+  margin:
+    bottom: 2em
