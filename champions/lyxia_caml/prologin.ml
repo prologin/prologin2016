@@ -103,7 +103,7 @@ let pipes_to_build = !pipes_to_build
 let try_fix p =
   match type_case (mkp p) with
   | Debris ->
-      deblayer (mkp p);
+      ignore (deblayer (mkp p));
       raise Break
   | _ -> ()
 
