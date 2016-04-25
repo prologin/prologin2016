@@ -17,7 +17,9 @@ def dist_base(i, j):
     return dmin
 
 def partie_init():
-    pass
+    global early_strat, super_tuyau
+    early_strat = False
+    super_tuyau = True
 
 def partie_fin():
     pass
@@ -60,10 +62,11 @@ def print_map():
     print()
 
 def jouer_tour():
+    # print('###', api.liste_pulsars()[0])
     # print(api.hist_tuyaux_detruits())
     # print('', file = sys.stderr)
     # print_map()
-    if api.tour_actuel() % 5 in [0, 1]:
+    if api.tour_actuel() % 4 in [0, 1]:
         detruire()
     while api.points_action() >= 10:
         # print(api.points_action(), file = sys.stderr)
@@ -132,9 +135,10 @@ def coup():
     # Trouver les cases vers lesquelles les pulsars émettent et qui ne sont pas reliées à la base
     cases_to_reach = []
     for i, j in api.liste_pulsars():
-        for a, b in [(i - 1, j), (i + 1, j),(i, j - 1), (i, j + 1)]:
-            if (a, b) not in cases_to_reach and not connected[a][b]:
-                cases_to_reach.append((a, b))
+        if api.info_pulsar((i, j)).nombre_pulsations > 0:
+            for a, b in [(i - 1, j), (i + 1, j),(i, j - 1), (i, j + 1)]:
+                if (a, b) not in cases_to_reach and not connected[a][b]:
+                    cases_to_reach.append((a, b))
     nb_cases = len(cases_to_reach)
     if nb_cases == 0:
         return(False)
@@ -175,11 +179,11 @@ def coup():
     while value != []:
         _, i, j = value.pop(0)
         if (i, j) in poss_tuyau:
-            if api.tour_actuel() < 5 and (i < 16 or i > 24) and (j < 16 or j > 24):
+            if api.tour_actuel() < 5  and early_strat and (i < 16 or i > 24) and (j < 16 or j > 24):
                 continue
             # print("construction", i, j, file = sys.stderr)
             erreur = api.construire((i, j))
-            if api.tour_actuel() < 5:
+            if api.tour_actuel() < 5 and early_strat:
                 for d, e in [(i, j + 1), (i, j - 1), (i + 1, j), (i - 1, j)]:
                     if grille[d][e] in [api.case_type.TUYAU, api.case_type.BASE]:
                         for a, b in [(i, j + 1), (i, j - 1), (i + 1, j), (i - 1, j)]:
@@ -189,7 +193,7 @@ def coup():
                                     api.construire((i + t * x, j + t * y))
                                 break
                         break
-            if 4 < api.tour_actuel() < 20:
+            if api.tour_actuel() < 15 and super_tuyau and i != 1 and i != 37 and j != 1 and j != 37:
                 poss = True
                 for d, e in [(i, j + 1), (i, j - 1), (i + 1, j), (i - 1, j)]:
                     if grille[d][e] == api.case_type.SUPER_TUYAU:
