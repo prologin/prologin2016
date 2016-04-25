@@ -43,6 +43,9 @@
 /// Nombre de points d'action que coûte le déplacement d'un point d'énergie de la base (la première modification de chaque tour est offerte).
 # define COUT_MODIFICATION_ASPIRATION 10
 
+/// Limite de points d'énergie sur une case de base.
+# define LIMITE_ASPIRATION         5
+
 /// Nombre de points d'action que coûte le déblayage d'une case de débris.
 # define COUT_DEBLAYAGE            20
 
@@ -66,6 +69,7 @@ typedef enum erreur {
   PAS_DE_PULSAR, /* <- Il n'y a pas de pulsar à la position spécifiée. */
   PAS_DE_DEBRIS, /* <- Il n'y a pas de débris à la position spécifiée. */
   CHARGE_INSUFFISANTE, /* <- Vous ne possédez pas assez de plasma pour lancer une destruction. */
+  LIMITE_ASPIRATION_ATTEINTE, /* <- Vous avez atteint la limite d'aspiration sur cette case. */
 } erreur;
 
 

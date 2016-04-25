@@ -75,6 +75,7 @@ std::string convert_to_string(erreur in){
     case PAS_DE_PULSAR: return "\"pas_de_pulsar\"";
     case PAS_DE_DEBRIS: return "\"pas_de_debris\"";
     case CHARGE_INSUFFISANTE: return "\"charge_insuffisante\"";
+    case LIMITE_ASPIRATION_ATTEINTE: return "\"limite_aspiration_atteinte\"";
   }
   return "bad value";
 }
@@ -384,6 +385,7 @@ std::ostream& operator<<(std::ostream& os, erreur v)
   case PAS_DE_PULSAR: os << "PAS_DE_PULSAR"; break;
   case PAS_DE_DEBRIS: os << "PAS_DE_DEBRIS"; break;
   case CHARGE_INSUFFISANTE: os << "CHARGE_INSUFFISANTE"; break;
+  case LIMITE_ASPIRATION_ATTEINTE: os << "LIMITE_ASPIRATION_ATTEINTE"; break;
   }
   return os;
 }

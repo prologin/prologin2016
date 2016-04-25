@@ -57,6 +57,11 @@ constant:
                  est offerte).
 
   -
+    cst_name: LIMITE_ASPIRATION
+    cst_val: 5
+    cst_comment: Limite de points d'énergie sur une case de base.
+
+  -
     cst_name: COUT_DEBLAYAGE
     cst_val: 20
     cst_comment: Nombre de points d'action que coûte le déblayage d'une case de
@@ -67,6 +72,7 @@ constant:
     cst_val: 1
     cst_comment: Vitesse du plasma dans un tuyau normal, en nombre de cases
                  par tour.
+
   -
     cst_name: MULTIPLICATEUR_VITESSE_SUPER_TUYAU
     cst_val: 2
@@ -94,6 +100,8 @@ enum:
       - [pas_de_debris, "Il n'y a pas de débris à la position spécifiée."]
       - [charge_insuffisante, "Vous ne possédez pas assez de plasma pour
                                lancer une destruction."]
+      - [limite_aspiration_atteinte, "Vous avez atteint la limite
+                                      d'aspiration sur cette case."]
 
   -
     enum_name: case_type
