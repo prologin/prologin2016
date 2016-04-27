@@ -75,6 +75,7 @@ def jouer_tour():
     while api.cout_prochaine_modification_aspiration() <= api.points_action():
         if not bouger_aspiration():
             break
+    # print(api.cout_prochaine_modification_aspiration(), api.points_action())
     if api.points_action() >= 30:
         detruire()
 def coup():
@@ -170,13 +171,14 @@ def coup():
                 new_v = di
                 if (i, j) in poss_deblayer:
                     new_v += 2
-                new_v += d_bfs / 2
+                new_v += d_bfs / 1.6
             v = min(v, new_v)
         value.append((v, i, j))
     value.sort()
     # print(value)
     # print(value, file = sys.stderr)
 
+    # Poser des super-tuyaux dès le début pour obtenir du plasma au plus vite
     if 6 < api.tour_actuel() < 11:
         parite = -1
         for i, j in api.liste_tuyaux():
@@ -190,6 +192,26 @@ def coup():
                         erreur = api.ameliorer((i, j))
                         if erreur == api.erreur.OK:
                             grille[i][j] = api.case_type.SUPER_TUYAU
+
+    # Poser des super-tuyaux à la fin pour récupérer un maximum de plasma avant la fin de la partie
+    if 80 < api.tour_actuel() < 101:
+         for _ in range(2):
+             a, b, dmin = -1, -1, 1000000
+             for i, j in api.liste_tuyaux():
+                 dt = 1000000
+                 for x, y in api.ma_base():
+                     dt = min(dt, dist(x, y, i, j))
+                 poss = True
+                 if grille[i][j] == api.case_type.SUPER_TUYAU:
+                     poss = False
+                 for d, e in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                     if grille[i + d][j + e] == api.case_type.SUPER_TUYAU:
+                         poss = False
+                 if poss and 1 < dt < dmin:
+                     dmin, a, b = dt, i, j
+             erreur = api.ameliorer((a, b))
+             if erreur == api.erreur.OK:
+                 grille[a][b] = api.case_type.SUPER_TUYAU
 
     while value != []:
         _, i, j = value.pop(0)
@@ -286,7 +308,11 @@ def detruire():
     tuyaux = api.liste_tuyaux()
     liste = []
     for i, j in tuyaux:
-        if not api.est_super_tuyau((i, j)) and api.charges_presentes((i, j)) > 0.01:
+        poss = False
+        for d, e in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            if api.charges_presentes((i + d, j + e)):
+                poss = True
+        if not api.est_super_tuyau((i, j)) and poss:
             min_dist_ma_base = INF
             min_dist_base_ennemie = INF
             for a, b in api.ma_base():
@@ -295,7 +321,7 @@ def detruire():
                 min_dist_base_ennemie = min(min_dist_base_ennemie, dist(i, j, a, b))
             # value = min_dist_base_ennemie - min_dist_ma_base
             value = min_dist_base_ennemie
-            if value < 3:
+            if value < 4:
                 liste.append((value, i, j))
     if liste == []:
         return(False)
