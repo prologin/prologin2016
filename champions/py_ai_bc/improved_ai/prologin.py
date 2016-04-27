@@ -66,7 +66,7 @@ def jouer_tour():
     # print(api.hist_tuyaux_detruits())
     # print('', file = sys.stderr)
     # print_map()
-    if api.tour_actuel() % 4 in [0, 1]:
+    if api.tour_actuel() % 2 in [0, 1]:
         detruire()
     while api.points_action() >= 10:
         # print(api.points_action(), file = sys.stderr)
@@ -281,15 +281,17 @@ def detruire():
     tuyaux = api.liste_tuyaux()
     liste = []
     for i, j in tuyaux:
-        if not api.est_super_tuyau((i, j)):
+        if not api.est_super_tuyau((i, j)) and api.charges_presentes((i, j)) > 0.01:
             min_dist_ma_base = INF
             min_dist_base_ennemie = INF
             for a, b in api.ma_base():
                 min_dist_ma_base = min(min_dist_ma_base, dist(i, j, a, b))
             for a, b in api.base_ennemie():
                 min_dist_base_ennemie = min(min_dist_base_ennemie, dist(i, j, a, b))
-            value = min_dist_base_ennemie - min_dist_ma_base
-            liste.append((value, i, j))
+            # value = min_dist_base_ennemie - min_dist_ma_base
+            value = min_dist_base_ennemie
+            if value < 3:
+                liste.append((value, i, j))
     if liste == []:
         return(False)
     liste.sort()
