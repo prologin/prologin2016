@@ -176,6 +176,21 @@ def coup():
     value.sort()
     # print(value)
     # print(value, file = sys.stderr)
+
+    if 6 < api.tour_actuel() < 11:
+        parite = -1
+        for i, j in api.liste_tuyaux():
+            for a, b in api.ma_base():
+                if dist(i, j, a, b) < 2:
+                    parite = (i + j) % 2
+        for i, j in api.liste_tuyaux():
+            for a, b in api.ma_base():
+                if dist(i, j, a, b) < 13:
+                    if (i + j) % 2 == 1 - parite:
+                        erreur = api.ameliorer((i, j))
+                        if erreur == api.erreur.OK:
+                            grille[i][j] = api.case_type.SUPER_TUYAU
+
     while value != []:
         _, i, j = value.pop(0)
         if (i, j) in poss_tuyau:
@@ -183,17 +198,7 @@ def coup():
                 continue
             # print("construction", i, j, file = sys.stderr)
             erreur = api.construire((i, j))
-            if api.tour_actuel() < 5 and early_strat:
-                for d, e in [(i, j + 1), (i, j - 1), (i + 1, j), (i - 1, j)]:
-                    if grille[d][e] in [api.case_type.TUYAU, api.case_type.BASE]:
-                        for a, b in [(i, j + 1), (i, j - 1), (i + 1, j), (i - 1, j)]:
-                            if (a, b) != (d, e) and (a - i, b - j) != (i - d, j - e):
-                                x, y = a - i, b - j
-                                for t in range(1, 4):
-                                    api.construire((i + t * x, j + t * y))
-                                break
-                        break
-            if api.tour_actuel() < 15 and super_tuyau and i != 1 and i != 37 and j != 1 and j != 37:
+            if 5 < api.tour_actuel() < 15 and super_tuyau and i != 1 and i != 37 and j != 1 and j != 37:
                 poss = True
                 for d, e in [(i, j + 1), (i, j - 1), (i + 1, j), (i - 1, j)]:
                     if grille[d][e] == api.case_type.SUPER_TUYAU:
