@@ -200,7 +200,7 @@ static void dump_stream(std::ostream& ss, const GameState& st)
     ss << ", \"pulsars\": ";
     dump_pulsars(ss, st);
 
-    ss << "}";
+    ss << "}\n";
 }
 
 void Rules::dump_state(std::ostream& ss)
