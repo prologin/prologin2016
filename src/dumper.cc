@@ -179,7 +179,8 @@ static void dump_pulsars(std::ostream& ss, const GameState& st)
         ss << ", \"y\": " << p.y;
         ss << ", \"period\": " << pr.periode;
         ss << ", \"power\": " << pr.puissance;
-        ss << ", \"n_pulses\": " << pr.nombre_pulsations;
+        ss << ", \"n_pulses\": " << pr.pulsations_restantes;
+        ss << ", \"n_pulses_max\": " << pr.pulsations_totales;
         ss << "}";
     }
     ss << "]";

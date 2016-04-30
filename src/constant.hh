@@ -96,8 +96,9 @@ typedef struct position {
 /// Représente un pulsar existant.
 typedef struct pulsar_info {
   int periode;  /* <- Période de pulsation du pulsar */
-  int puissance;  /* <- Quantité de plasma émise par chaque pulsation dans chaque direction */
-  int nombre_pulsations;  /* <- Nombre de pulsations restantes */
+  double puissance;  /* <- Quantité de plasma émise par chaque pulsation dans chaque direction */
+  int pulsations_restantes;  /* <- Nombre de pulsations restantes */
+  int pulsations_totales;  /* <- Nombre total de pulsations au début de la partie */
 } pulsar_info;
 
 

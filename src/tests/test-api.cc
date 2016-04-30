@@ -177,7 +177,8 @@ TEST_F(ApiTest, Api_InfoPulsar)
         auto p = player.api->info_pulsar(TEST_PULSAR_POSITION);
         EXPECT_EQ(pulsar.puissance, p.puissance);
         EXPECT_EQ(pulsar.periode, p.periode);
-        EXPECT_EQ(pulsar.nombre_pulsations, p.nombre_pulsations);
+        EXPECT_EQ(pulsar.pulsations_restantes, p.pulsations_restantes);
+        EXPECT_EQ(pulsar.pulsations_totales, p.pulsations_totales);
     }
 }
 

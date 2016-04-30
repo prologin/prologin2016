@@ -216,7 +216,7 @@ pulsar_info Api::info_pulsar(position position)
     if (est_pulsar(position))
         return game_state_->get_pulsar(position);
     else
-        return {-1, -1, -1};
+        return {-1, -1, -1, -1};
 }
 
 /// Renvoie la quantité de plasma sur une case donnée.

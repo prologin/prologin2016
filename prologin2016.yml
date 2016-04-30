@@ -132,9 +132,11 @@ struct:
     str_tuple: no
     str_field:
       - [periode, int, "Période de pulsation du pulsar"]
-      - [puissance, int, "Quantité de plasma émise par chaque pulsation
+      - [puissance, double, "Quantité de plasma émise par chaque pulsation
                           dans chaque direction"]
-      - [nombre_pulsations, int, "Nombre de pulsations restantes"]
+      - [pulsations_restantes, int, "Nombre de pulsations restantes"]
+      - [pulsations_totales, int,
+          "Nombre total de pulsations au début de la partie"]
 
 function:
 

@@ -43,6 +43,12 @@ std::string convert_to_string(int i){
   std::string result = s.str();
   return result;
 }
+std::string convert_to_string(double i){
+  std::ostringstream s;
+  s << i;
+  std::string result = s.str();
+  return result;
+}
 std::string convert_to_string(std::string i){
   return i;
 }
@@ -139,13 +145,16 @@ std::string convert_to_string(std::vector<position> in){
 std::string convert_to_string(pulsar_info in){
   std::string periode = convert_to_string(in.periode);
   std::string puissance = convert_to_string(in.puissance);
-  std::string nombre_pulsations = convert_to_string(in.nombre_pulsations);
+  std::string pulsations_restantes = convert_to_string(in.pulsations_restantes);
+  std::string pulsations_totales = convert_to_string(in.pulsations_totales);
   std::string out = "{";
   out += "periode:" + periode;
   out += ", ";
   out += "puissance:" + puissance;
   out += ", ";
-  out += "nombre_pulsations:" + nombre_pulsations;
+  out += "pulsations_restantes:" + pulsations_restantes;
+  out += ", ";
+  out += "pulsations_totales:" + pulsations_totales;
   return out + "}";
 }
 
@@ -438,7 +447,9 @@ std::ostream& operator<<(std::ostream& os, pulsar_info v)
   os << ", ";
   os << "puissance" << "=" << v.puissance;
   os << ", ";
-  os << "nombre_pulsations" << "=" << v.nombre_pulsations;
+  os << "pulsations_restantes" << "=" << v.pulsations_restantes;
+  os << ", ";
+  os << "pulsations_totales" << "=" << v.pulsations_totales;
   os << " }";
   return os;
 }

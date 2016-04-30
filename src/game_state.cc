@@ -79,7 +79,8 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
         pulsar_info pr;
 
         board_stream >> pos.x >> pos.y >> pr.periode >> pr.puissance >>
-            pr.nombre_pulsations;
+            pr.pulsations_totales;
+        pr.pulsations_restantes = pr.pulsations_totales;
 
         CHECK(in_bounds(pos) && "Wrong position in map");
         cell(pos).type = case_type::PULSAR;
@@ -364,9 +365,9 @@ void GameState::emit_plasma()
     for (auto& pulsar : pulsars_)
     {
         if (turn_ % pulsar.second.periode != 0 ||
-            pulsar.second.nombre_pulsations == 0)
+            pulsar.second.pulsations_restantes == 0)
             continue;
-        pulsar.second.nombre_pulsations--;
+        pulsar.second.pulsations_restantes--;
         for (const auto& delta : deltas)
         {
             auto pos = pulsar.first + delta;
