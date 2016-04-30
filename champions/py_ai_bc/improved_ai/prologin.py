@@ -135,11 +135,14 @@ def coup():
 
     # Trouver les cases vers lesquelles les pulsars émettent et qui ne sont pas reliées à la base
     cases_to_reach = []
+    next_emission = []
     for i, j in api.liste_pulsars():
-        if api.info_pulsar((i, j)).nombre_pulsations > 0:
+        ip = api.info_pulsar((i, j))
+        if ip.nombre_pulsations > 0:
             for a, b in [(i - 1, j), (i + 1, j),(i, j - 1), (i, j + 1)]:
                 if (a, b) not in cases_to_reach and not connected[a][b]:
                     cases_to_reach.append((a, b))
+                    next_emission.append((ip.periode - api.tour_actuel()) % ip.periode)
     nb_cases = len(cases_to_reach)
     if nb_cases == 0:
         return(False)
@@ -167,10 +170,11 @@ def coup():
             a, b = cases_to_reach[k]
             di = dist(a, b, i, j)
             new_v = INF
-            if True:
+            if di < dist_min:
+                new_v = max(di, 4 * next_emission[k])
                 new_v = di
                 if (i, j) in poss_deblayer:
-                    new_v += 2
+                    new_v += 1
                 new_v += d_bfs / 1.6
             v = min(v, new_v)
         value.append((v, i, j))
@@ -297,6 +301,8 @@ def bouger_aspiration():
     liste.sort()
     while api.puissance_aspiration(base[liste[0][1]]) == 0:
          liste.pop(0)
+    while api.puissance_aspiration(base[liste[len(liste) - 1][1]]) == api.LIMITE_ASPIRATION:
+         liste.pop()
     if liste[len(liste)-1][0] > liste[0][0] and len(liste) > 1:
         erreur = api.deplacer_aspiration(base[liste[0][1]], base[liste[len(liste) - 1][1]])
         return(erreur == api.erreur.OK)
@@ -309,10 +315,13 @@ def detruire():
     liste = []
     for i, j in tuyaux:
         poss = False
+        nb = 0
         for d, e in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
             if api.charges_presentes((i + d, j + e)):
                 poss = True
-        if not api.est_super_tuyau((i, j)) and poss:
+            if api.est_tuyau((i + d, j + e)) or i + d in [0, 38] or j + e in [0, 38]:
+                nb += 1
+        if not api.est_super_tuyau((i, j)) and poss and nb == 2:
             min_dist_ma_base = INF
             min_dist_base_ennemie = INF
             for a, b in api.ma_base():
@@ -321,7 +330,7 @@ def detruire():
                 min_dist_base_ennemie = min(min_dist_base_ennemie, dist(i, j, a, b))
             # value = min_dist_base_ennemie - min_dist_ma_base
             value = min_dist_base_ennemie
-            if value < 4:
+            if value < 8:
                 liste.append((value, i, j))
     if liste == []:
         return(False)
