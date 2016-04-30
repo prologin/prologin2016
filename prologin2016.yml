@@ -41,13 +41,19 @@ constant:
     cst_name: COUT_DESTRUCTION_SUPER_TUYAU
     cst_val: 40
     cst_comment: Nombre de points d'action que coûte la destruction d'un
-                 super-tuyau.
+                 Super Tuyau™.
 
   -
     cst_name: CHARGE_DESTRUCTION
     cst_val: 2
     cst_comment: Charge en plasma nécessaire pour la destruction d'un tuyau ou
-                 d'un super-tuyau.
+                 d'un Super Tuyau™.
+
+  -
+    cst_name: COUT_DEBLAYAGE
+    cst_val: 20
+    cst_comment: Nombre de points d'action que coûte le déblayage d'une case de
+                 débris.
 
   -
     cst_name: COUT_MODIFICATION_ASPIRATION
@@ -62,12 +68,6 @@ constant:
     cst_comment: Limite de puissance d'aspiration sur une case de base.
 
   -
-    cst_name: COUT_DEBLAYAGE
-    cst_val: 20
-    cst_comment: Nombre de points d'action que coûte le déblayage d'une case de
-                 débris.
-
-  -
     cst_name: VITESSE_TUYAU
     cst_val: 1
     cst_comment: Vitesse du plasma dans un tuyau normal, en nombre de cases
@@ -76,7 +76,7 @@ constant:
   -
     cst_name: MULTIPLICATEUR_VITESSE_SUPER_TUYAU
     cst_val: 2
-    cst_comment: Multiplicateur de la vitesse du plasma dans un super-tuyau.
+    cst_comment: Multiplicateur de la vitesse du plasma dans un Super Tuyau™.
 
 enum:
   -
@@ -93,7 +93,7 @@ enum:
       - [deplacement_invalide, "Vous ne pouvez pas déplacer de la puissance
                                d'aspiration d'une case à elle-même."]
       - [pas_dans_base, "Cette case n'appartient pas à votre base."]
-      - [amelioration_impossible, "Il y a déjà un super-tuyau sur cette case."]
+      - [amelioration_impossible, "Il y a déjà un Super Tuyau™ sur cette case."]
       - [construction_impossible, "Il est impossible de construire un tuyau à
                                    la position indiquée."]
       - [destruction_impossible, "Il n'y a pas de tuyau à la position
@@ -111,7 +111,7 @@ enum:
     enum_field:
       - [vide, "Case vide"]
       - [tuyau, "Case contenant un tuyau"]
-      - [super_tuyau, "Case contenant un super-tuyau"]
+      - [super_tuyau, "Case contenant un Super Tuyau™"]
       - [debris, "Case contenant des débris à déblayer"]
       - [pulsar, "Case contenant un pulsar"]
       - [base, "Case appartenant à une base d'un des joueurs"]
@@ -152,7 +152,7 @@ function:
 
   -
     fct_name: ameliorer
-    fct_summary: Améliore un tuyau en super-tuyau.
+    fct_summary: Améliore un tuyau en Super Tuyau™.
     fct_ret_type: erreur
     fct_action: yes
     fct_arg:
@@ -187,7 +187,7 @@ function:
       - [pos, position, "Case choisie."]
 
 
-# Fonctions de query sur les pulsars / les tuyaux / le terrain
+# Fonctions de requête sur les pulsars / les tuyaux / le terrain
 
   -
     fct_name: type_case
@@ -210,13 +210,13 @@ function:
 
   -
     fct_name: liste_tuyaux
-    fct_summary: Renvoie la liste des cases contenant un tuyau (ou super-tuyau).
+    fct_summary: Renvoie la liste des cases contenant un tuyau ou Super Tuyau™.
     fct_ret_type: position array
     fct_arg: []
 
   -
     fct_name: liste_super_tuyaux
-    fct_summary: Renvoie la liste des cases contenant un super-tuyau.
+    fct_summary: Renvoie la liste des cases contenant un Super Tuyau™.
     fct_ret_type: position array
     fct_arg: []
 
@@ -250,7 +250,7 @@ function:
 
   -
     fct_name: est_super_tuyau
-    fct_summary: Renvoie vrai si et seulement si la case contient un super tuyau.
+    fct_summary: Renvoie vrai si et seulement si la case contient un Super Tuyau™.
     fct_ret_type: bool
     fct_arg:
       - [pos, position, "Case choisie."]
@@ -322,7 +322,7 @@ function:
   -
     fct_name: directions_plasma
     fct_summary: Renvoie pour une case donnée la liste des cases vers
-                 lesquelles se propagerait un plasma. Renvoie la liste vide
+                 lesquelles le plasma se propagera. Renvoie la liste vide
                  si la case n'est pas une case contenant un tuyau ou si elle
                  n'est reliée à aucune base.
     fct_ret_type: position array

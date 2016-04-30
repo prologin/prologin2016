@@ -46,7 +46,7 @@ erreur Api::construire(position position)
     return OK;
 }
 
-/// Améliore un tuyau en super-tuyau.
+/// Améliore un tuyau en Super Tuyau™.
 erreur Api::ameliorer(position position)
 {
     rules::IAction_sptr action(new ActionAmeliorer(position, player_->id));
@@ -131,7 +131,7 @@ std::vector<position> Api::liste_plasmas()
     return ret;
 }
 
-/// Renvoie la liste des cases contenant un tuyau (ou super-tuyau).
+/// Renvoie la liste des cases contenant un tuyau ou Super Tuyau™.
 std::vector<position> Api::liste_tuyaux()
 {
     std::vector<position> ret;
@@ -148,7 +148,7 @@ std::vector<position> Api::liste_tuyaux()
     return ret;
 }
 
-/// Renvoie la liste des cases contenant un super-tuyau.
+/// Renvoie la liste des cases contenant un Super Tuyau™.
 std::vector<position> Api::liste_super_tuyaux()
 {
     std::vector<position> ret;
@@ -199,7 +199,7 @@ bool Api::est_simple_tuyau(position position)
     return game_state_->get_cell_type(position) == case_type::TUYAU;
 }
 
-/// Renvoie vrai si et seulement si la case contient un super tuyau.
+/// Renvoie vrai si et seulement si la case contient un Super Tuyau™.
 bool Api::est_super_tuyau(position position)
 {
     return game_state_->get_cell_type(position) == case_type::SUPER_TUYAU;

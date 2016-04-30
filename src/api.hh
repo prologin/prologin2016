@@ -99,22 +99,22 @@ private:
 
 public:
     /// Construit un tuyau sur une case donnée.
-    erreur construire(position position);
+    erreur construire(position pos);
 
-    /// Améliore un tuyau en super-tuyau.
-    erreur ameliorer(position position);
+    /// Améliore un tuyau en Super Tuyau™.
+    erreur ameliorer(position pos);
 
     /// Détruit un tuyau sur une case donnée.
-    erreur detruire(position position);
+    erreur detruire(position pos);
 
     /// Déplace une unité de puissance d'aspiration d'une case de votre base vers une autre.
     erreur deplacer_aspiration(position source, position destination);
 
     /// Déblaye une case de débris.
-    erreur deblayer(position position);
+    erreur deblayer(position pos);
 
     /// Renvoie le type d'une case donnée.
-    case_type type_case(position position);
+    case_type type_case(position pos);
 
     /// Renvoie la liste de tous les pulsars présents.
     std::vector<position> liste_pulsars();
@@ -122,17 +122,17 @@ public:
     /// Renvoie la liste des cases contenant du plasma.
     std::vector<position> liste_plasmas();
 
-    /// Renvoie la liste des cases contenant un tuyau (ou super-tuyau).
+    /// Renvoie la liste des cases contenant un tuyau ou Super Tuyau™.
     std::vector<position> liste_tuyaux();
 
-    /// Renvoie la liste des cases contenant un super-tuyau.
+    /// Renvoie la liste des cases contenant un Super Tuyau™.
     std::vector<position> liste_super_tuyaux();
 
     /// Renvoie la liste des cases contenant des débris.
     std::vector<position> liste_debris();
 
     /// Renvoie vrai si et seulement si la case contient un pulsar.
-    bool est_pulsar(position position);
+    bool est_pulsar(position pos);
 
     /// Renvoie vrai si et seulement si la case contient un tuyau ou un Super Tuyau™.
     bool est_tuyau(position pos);
@@ -140,18 +140,17 @@ public:
     /// Renvoie vrai si et seulement si la case contient un simple tuyau.
     bool est_simple_tuyau(position pos);
 
-    /// Renvoie vrai si et seulement si la case contient un super tuyau.
-    bool est_super_tuyau(position position);
+    /// Renvoie vrai si et seulement si la case contient un Super Tuyau™.
+    bool est_super_tuyau(position pos);
 
-    /// Renvoie vrai si et seulement si la case contient un tuyau débris.
-    bool est_debris(position position);
+    /// Renvoie vrai si et seulement si la case contient un débris.
+    bool est_debris(position pos);
 
-    /// Renvoie vrai si et seulement s'il est possible de construire sur cette
-    /// case.
-    bool est_libre(position position);
+    /// Renvoie vrai si et seulement s'il est possible de construire sur cette case.
+    bool est_libre(position pos);
 
     /// Renvoie les informations propres au pulsar à la position donnée.
-    pulsar_info info_pulsar(position position);
+    pulsar_info info_pulsar(position pos);
 
     /// Renvoie la quantité de plasma sur une case donnée.
     double charges_presentes(position pos);
@@ -173,10 +172,9 @@ public:
     /// Renvoie -1 si la position n'est pas celle d'une base.
     int puissance_aspiration(position pos);
 
-    /// Renvoie pour une case donnée la liste des cases vers
-    /// lesquelles se propagerait un plasma. Renvoie la liste vide
-    /// si la case n'est pas une case contenant un tuyau ou si elle
-    /// n'est reliée à aucune base.
+    /// Renvoie pour une case donnée la liste des cases vers lesquelles le
+    /// plasma se propagera. Renvoie la liste vide si la case n'est pas une
+    /// case contenant un tuyau ou si elle n'est reliée à aucune base.
     std::vector<position> directions_plasma(position position);
 
     /// Renvoie la valeur du coût de la prochaine modification de vos

@@ -175,7 +175,7 @@ extern "C" erreur api_construire(position pos)
   return api->construire(pos);
 }
 
-/// Améliore un tuyau en super-tuyau.
+/// Améliore un tuyau en Super Tuyau™.
 extern "C" erreur api_ameliorer(position pos)
 {
   return api->ameliorer(pos);
@@ -217,13 +217,13 @@ extern "C" std::vector<position> api_liste_plasmas()
   return api->liste_plasmas();
 }
 
-/// Renvoie la liste des cases contenant un tuyau (ou super-tuyau).
+/// Renvoie la liste des cases contenant un tuyau ou Super Tuyau™.
 extern "C" std::vector<position> api_liste_tuyaux()
 {
   return api->liste_tuyaux();
 }
 
-/// Renvoie la liste des cases contenant un super-tuyau.
+/// Renvoie la liste des cases contenant un Super Tuyau™.
 extern "C" std::vector<position> api_liste_super_tuyaux()
 {
   return api->liste_super_tuyaux();
@@ -313,7 +313,7 @@ extern "C" int api_puissance_aspiration(position pos)
   return api->puissance_aspiration(pos);
 }
 
-/// Renvoie pour une case donnée la liste des cases vers lesquelles se propagerait un plasma. Renvoie la liste vide si la case n'est pas une case contenant un tuyau ou si elle n'est reliée à aucune base.
+/// Renvoie pour une case donnée la liste des cases vers lesquelles le plasma se propagera. Renvoie la liste vide si la case n'est pas une case contenant un tuyau ou si elle n'est reliée à aucune base.
 extern "C" std::vector<position> api_directions_plasma(position pos)
 {
   return api->directions_plasma(pos);

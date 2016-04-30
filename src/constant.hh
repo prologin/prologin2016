@@ -34,11 +34,14 @@
 /// Nombre de points d'action que coûte la destruction d'un tuyau.
 # define COUT_DESTRUCTION          30
 
-/// Nombre de points d'action que coûte la destruction d'un super-tuyau.
+/// Nombre de points d'action que coûte la destruction d'un Super Tuyau™.
 # define COUT_DESTRUCTION_SUPER_TUYAU 40
 
-/// Charge en plasma nécessaire pour la destruction d'un tuyau ou d'un super-tuyau.
+/// Charge en plasma nécessaire pour la destruction d'un tuyau ou d'un Super Tuyau™.
 # define CHARGE_DESTRUCTION        2
+
+/// Nombre de points d'action que coûte le déblayage d'une case de débris.
+# define COUT_DEBLAYAGE            20
 
 /// Nombre de points d'action que coûte le déplacement d'une unité de puissance d'aspiration de la base (la première modification de chaque tour est offerte).
 # define COUT_MODIFICATION_ASPIRATION 10
@@ -46,13 +49,10 @@
 /// Limite de puissance d'aspiration sur une case de base.
 # define LIMITE_ASPIRATION         5
 
-/// Nombre de points d'action que coûte le déblayage d'une case de débris.
-# define COUT_DEBLAYAGE            20
-
 /// Vitesse du plasma dans un tuyau normal, en nombre de cases par tour.
 # define VITESSE_TUYAU             1
 
-/// Multiplicateur de la vitesse du plasma dans un super-tuyau.
+/// Multiplicateur de la vitesse du plasma dans un Super Tuyau™.
 # define MULTIPLICATEUR_VITESSE_SUPER_TUYAU 2
 
 /// Erreurs possibles
@@ -64,7 +64,7 @@ typedef enum erreur {
   PUISSANCE_INSUFFISANTE, /* <- Vous ne possédez pas assez de puissance d'asipration sur cette partie de la base. */
   DEPLACEMENT_INVALIDE, /* <- Vous ne pouvez pas déplacer de la puissance d'aspiration d'une case à elle-même. */
   PAS_DANS_BASE, /* <- Cette case n'appartient pas à votre base. */
-  AMELIORATION_IMPOSSIBLE, /* <- Il y a déjà un super-tuyau sur cette case. */
+  AMELIORATION_IMPOSSIBLE, /* <- Il y a déjà un Super Tuyau™ sur cette case. */
   CONSTRUCTION_IMPOSSIBLE, /* <- Il est impossible de construire un tuyau à la position indiquée. */
   DESTRUCTION_IMPOSSIBLE, /* <- Il n'y a pas de tuyau à la position spécifiée. */
   PAS_DE_PULSAR, /* <- Il n'y a pas de pulsar à la position spécifiée. */
@@ -78,7 +78,7 @@ typedef enum erreur {
 typedef enum case_type {
   VIDE, /* <- Case vide */
   TUYAU, /* <- Case contenant un tuyau */
-  SUPER_TUYAU, /* <- Case contenant un super-tuyau */
+  SUPER_TUYAU, /* <- Case contenant un Super Tuyau™ */
   DEBRIS, /* <- Case contenant des débris à déblayer */
   PULSAR, /* <- Case contenant un pulsar */
   BASE, /* <- Case appartenant à une base d'un des joueurs */
