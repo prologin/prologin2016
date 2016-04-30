@@ -20,13 +20,18 @@ let active_cells = Hashtbl.create 200
 exception Break
 
 let try_move_vacuum () =
+  let f p q =
+    match deplacer_aspiration (mkp p) (mkp q) with
+    | Ok -> raise Break
+    | _ -> ()
+  in
   try
+    let b = if est_tuyau (mkp (1, tt/2)) then [|0;tt-1|] else [|tt-1;0|] in
     for i = 0 to longueur_base - 1 do
       for j = 0 to 1 do
-        let q = (tt/3 + i, [|0; tt-1|].(j)) in
-        match deplacer_aspiration (mkp q) (mkp (tt / 2, snd q)) with
-        | Ok -> raise Break
-        | _ -> ()
+        let q = (tt/3 + i, b.(j)) in
+        f q (tt/2, snd q);
+        f q (tt/2-1, snd q);
       done
     done
   with
@@ -186,11 +191,12 @@ let try_destroy () =
   let worth p =
     int_of_float (charges_presentes (mkp p)) > charge_destruction in
   for i = 1 to tt-2 do
-    [(2, i); (tt-3, i)] |> List.iter (fun ((x, y) as p) ->
-      match aspi.(x).(y) with
-      | _, [p0] when worth p ->
-          destroy' p0
-      | _ -> ())
+    [(2, i); (3, i); (tt-3, i); (tt-4, i)]
+      |> List.iter (fun ((x, y) as p) ->
+        match aspi.(x).(y) with
+        | _, [p0] when worth p ->
+            destroy' p0
+        | _ -> ())
   done;
   for i = 1 to tt-2 do
     for j = 1 to tt-2 do
@@ -207,15 +213,12 @@ let try_destroy () = try try_destroy () with Break -> ()
 let first_path = ref true
 
 let try_double_pipe () =
-  if tour_actuel () > 8 then (
-    if est_tuyau (mkp (tt/2, tt-2)) then
-      for i = tt-2 to tt-6 do
+  if tour_actuel () > 8 then
+    for i = 1 to tt-1 do
+      if (i < tt/3 || i > (2 * tt)/3)
+        && est_tuyau (mkp (tt/2, i)) then
         construire' (mkp (tt/2-1, i))
-      done;
-    if est_tuyau (mkp (tt/2, 1)) then
-      for i = 1 to 4 do
-        construire' (mkp (tt/2+1, i))
-      done)
+    done
 
 let partie_init () = ()
 
