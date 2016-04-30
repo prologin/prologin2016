@@ -806,6 +806,7 @@ class GameManager {
             break;
           case CellType.SUPER_PIPE:
             if (!(cell instanceof SuperPipe)) {
+              that.destroyed.push(p);
               let pipe = new SuperPipe(p);
               pipe.alpha = 0;
               that.built.push(pipe);
