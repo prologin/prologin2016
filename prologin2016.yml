@@ -23,17 +23,17 @@ constant:
     cst_comment: Nombre de points d'action par tour.
 
   -
-    cst_name: COUT_CONSTRUCTION_TUYAU
+    cst_name: COUT_CONSTRUCTION
     cst_val: 10
     cst_comment: Nombre de points d'action que coûte la construction d'un tuyau.
 
   -
-    cst_name: COUT_AMELIORATION_TUYAU
+    cst_name: COUT_AMELIORATION
     cst_val: 10
     cst_comment: Nombre de points d'action que coûte l'amélioration d'un tuyau.
 
   -
-    cst_name: COUT_DESTRUCTION_TUYAU
+    cst_name: COUT_DESTRUCTION
     cst_val: 30
     cst_comment: Nombre de points d'action que coûte la destruction d'un tuyau.
 

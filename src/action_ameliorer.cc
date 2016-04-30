@@ -28,14 +28,14 @@ int ActionAmeliorer::check(const GameState* st) const
         return AMELIORATION_IMPOSSIBLE;
     if (ct != case_type::TUYAU)
         return AUCUN_TUYAU;
-    if (st->get_action_points() < COUT_AMELIORATION_TUYAU)
+    if (st->get_action_points() < COUT_AMELIORATION)
         return PA_INSUFFISANTS;
     return OK;
 }
 
 void ActionAmeliorer::apply_on(GameState* st) const
 {
-    st->decrease_action_points(COUT_AMELIORATION_TUYAU);
+    st->decrease_action_points(COUT_AMELIORATION);
     st->upgrade_pipe(position_, player_id_);
     st->hist_add_upgrade(position_, player_id_);
 }

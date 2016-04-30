@@ -39,7 +39,7 @@ TEST_F(ActionTest, Construire_Ok)
 
 TEST_F(ActionTest, Construire_NoMoreActionPoints)
 {
-    set_points(st, COUT_CONSTRUCTION_TUYAU - 1);
+    set_points(st, COUT_CONSTRUCTION - 1);
     ActionConstruire act({1, 1}, PLAYER_1);
 
     EXPECT_EQ(PA_INSUFFISANTS, act.check(st));

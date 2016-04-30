@@ -26,13 +26,13 @@
 # define NB_POINTS_ACTION          40
 
 /// Nombre de points d'action que coûte la construction d'un tuyau.
-# define COUT_CONSTRUCTION_TUYAU   10
+# define COUT_CONSTRUCTION         10
 
 /// Nombre de points d'action que coûte l'amélioration d'un tuyau.
-# define COUT_AMELIORATION_TUYAU   10
+# define COUT_AMELIORATION         10
 
 /// Nombre de points d'action que coûte la destruction d'un tuyau.
-# define COUT_DESTRUCTION_TUYAU    30
+# define COUT_DESTRUCTION          30
 
 /// Nombre de points d'action que coûte la destruction d'un super-tuyau.
 # define COUT_DESTRUCTION_SUPER_TUYAU 40

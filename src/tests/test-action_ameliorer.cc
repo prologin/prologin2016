@@ -36,7 +36,7 @@ TEST_F(ActionTest, Ameliorer_EmptyCell)
 
 TEST_F(ActionTest, Ameliorer_NotEnoughActionPoints)
 {
-    set_points(st, COUT_AMELIORATION_TUYAU - 1);
+    set_points(st, COUT_AMELIORATION - 1);
     ActionConstruire act(TEST_EMPTY_CELL, PLAYER_1);
     ActionAmeliorer act2(TEST_EMPTY_CELL, PLAYER_1);
 

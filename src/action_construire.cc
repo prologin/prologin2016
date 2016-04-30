@@ -26,14 +26,14 @@ int ActionConstruire::check(const GameState* st) const
         return POSITION_INVALIDE;
     if (ct != case_type::VIDE)
         return CONSTRUCTION_IMPOSSIBLE;
-    if (st->get_action_points() < COUT_CONSTRUCTION_TUYAU)
+    if (st->get_action_points() < COUT_CONSTRUCTION)
         return PA_INSUFFISANTS;
     return OK;
 }
 
 void ActionConstruire::apply_on(GameState* st) const
 {
-    st->decrease_action_points(COUT_CONSTRUCTION_TUYAU);
+    st->decrease_action_points(COUT_CONSTRUCTION);
     st->build_pipe(position_, player_id_);
     st->hist_add_build(position_, player_id_);
     st->reset_board_distances();

@@ -236,41 +236,41 @@ TEST_F(ApiTest, Api_DirectionsPlasma)
     position pos{1, TAILLE_TERRAIN / 2};
     std::vector<position> expected;
     EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    set_points(st, COUT_CONSTRUCTION);
     players[0].api->construire(pos);
     expected.push_back({0, TAILLE_TERRAIN / 2});
     EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    set_points(st, COUT_CONSTRUCTION);
     players[0].api->construire({pos.x, pos.y + 1});
     EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
 
     expected.clear();
     pos = position{TAILLE_TERRAIN - 3, TAILLE_TERRAIN / 2};
     EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    set_points(st, COUT_CONSTRUCTION);
     players[0].api->construire(pos);
     EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    set_points(st, COUT_CONSTRUCTION);
     players[0].api->construire({pos.x, pos.y + 1});
     EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    set_points(st, COUT_CONSTRUCTION);
     players[0].api->construire({pos.x + 1, pos.y + 1});
     expected.push_back({pos.x, pos.y + 1});
     EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    set_points(st, COUT_CONSTRUCTION);
     players[0].api->construire({pos.x, pos.y - 1});
     EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    set_points(st, COUT_CONSTRUCTION);
     DEBUG("%d\n", players[0].api->est_tuyau({pos.x + 1, pos.y - 1}));
     players[0].api->construire({pos.x + 1, pos.y - 1});
     expected.push_back({pos.x, pos.y - 1});
     EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_DESTRUCTION_TUYAU);
+    set_points(st, COUT_DESTRUCTION);
     st->decrease_plasma(players[0].id, -CHARGE_DESTRUCTION);
     players[0].api->detruire({pos.x, pos.y - 1});
     expected.pop_back();
     EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION_TUYAU);
+    set_points(st, COUT_CONSTRUCTION);
     players[0].api->construire({pos.x + 1, pos.y});
     expected.clear();
     expected.push_back({pos.x + 1, pos.y});
@@ -305,7 +305,7 @@ TEST_F(ApiTest, Api_HistTuyauxConstruits)
         EXPECT_EQ(expected, other.api->hist_tuyaux_construits());
         auto build = [&](position pos)
         {
-            set_points(st, COUT_CONSTRUCTION_TUYAU);
+            set_points(st, COUT_CONSTRUCTION);
             EXPECT_EQ(OK, player.api->construire(pos));
             expected.push_back(pos);
             EXPECT_EQ(expected, other.api->hist_tuyaux_construits());
@@ -326,9 +326,9 @@ TEST_F(ApiTest, Api_HistTuyauxDetruits)
         EXPECT_EQ(expected, other.api->hist_tuyaux_detruits());
         auto build_destroy = [&](position pos)
         {
-            set_points(st, COUT_CONSTRUCTION_TUYAU);
+            set_points(st, COUT_CONSTRUCTION);
             EXPECT_EQ(OK, player.api->construire(pos));
-            set_points(st, COUT_DESTRUCTION_TUYAU);
+            set_points(st, COUT_DESTRUCTION);
             st->decrease_plasma(player.id, -CHARGE_DESTRUCTION);
             EXPECT_EQ(OK, player.api->detruire(pos));
             expected.push_back(pos);
@@ -350,9 +350,9 @@ TEST_F(ApiTest, Api_HistTuyauxAmeliores)
         EXPECT_EQ(expected, other.api->hist_tuyaux_ameliores());
         auto build_upgrade = [&](position pos)
         {
-            set_points(st, COUT_CONSTRUCTION_TUYAU);
+            set_points(st, COUT_CONSTRUCTION);
             EXPECT_EQ(OK, player.api->construire(pos));
-            set_points(st, COUT_AMELIORATION_TUYAU);
+            set_points(st, COUT_AMELIORATION);
             EXPECT_EQ(OK, player.api->ameliorer(pos));
             expected.push_back(pos);
             EXPECT_EQ(expected, other.api->hist_tuyaux_ameliores());
@@ -373,9 +373,9 @@ TEST_F(ApiTest, Api_HistDebrisDeblayes)
         EXPECT_EQ(expected, other.api->hist_debris_deblayes());
         auto build_destroy_clear = [&](position pos)
         {
-            set_points(st, COUT_CONSTRUCTION_TUYAU);
+            set_points(st, COUT_CONSTRUCTION);
             EXPECT_EQ(OK, player.api->construire(pos));
-            set_points(st, COUT_DESTRUCTION_TUYAU);
+            set_points(st, COUT_DESTRUCTION);
             st->decrease_plasma(player.id, -CHARGE_DESTRUCTION);
             EXPECT_EQ(OK, player.api->detruire(pos));
             set_points(st, COUT_DEBLAYAGE);
@@ -512,7 +512,7 @@ TEST_F(ApiTest, Api_Annuler)
         EXPECT_FALSE(player.api->annuler());
         position pos{1, 1};
         EXPECT_TRUE(player.api->est_libre(pos));
-        set_points(st, COUT_CONSTRUCTION_TUYAU);
+        set_points(st, COUT_CONSTRUCTION);
         EXPECT_EQ(OK, player.api->construire(pos));
         EXPECT_TRUE(player.api->est_tuyau(pos));
         EXPECT_TRUE(player.api->annuler());

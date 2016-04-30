@@ -27,7 +27,7 @@ int ActionDetruire::check(const GameState* st) const
     if (ct != case_type::TUYAU && ct != case_type::SUPER_TUYAU)
         return DESTRUCTION_IMPOSSIBLE;
     unsigned points = st->get_action_points();
-    if (points < COUT_DESTRUCTION_TUYAU)
+    if (points < COUT_DESTRUCTION)
         return PA_INSUFFISANTS;
     if (ct == case_type::SUPER_TUYAU && points < COUT_DESTRUCTION_SUPER_TUYAU)
         return PA_INSUFFISANTS;
@@ -42,7 +42,7 @@ void ActionDetruire::apply_on(GameState* st) const
     if (st->get_cell_type(position_) == case_type::SUPER_TUYAU)
         st->decrease_action_points(COUT_DESTRUCTION_SUPER_TUYAU);
     else
-        st->decrease_action_points(COUT_DESTRUCTION_TUYAU);
+        st->decrease_action_points(COUT_DESTRUCTION);
     st->decrease_plasma(player_id_, CHARGE_DESTRUCTION);
     st->destroy_pipe(position_);
     st->hist_add_destroy(position_, player_id_);
