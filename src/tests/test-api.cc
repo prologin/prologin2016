@@ -140,7 +140,16 @@ TEST_F(ApiTest, Api_EstTuyau)
     st->build_pipe({1, 1}, players[0].id);
     EXPECT_TRUE(players[0].api->est_tuyau({1, 1}));
     st->upgrade_pipe({1, 1}, players[0].id);
-    EXPECT_FALSE(players[0].api->est_tuyau({1, 1}));
+    EXPECT_TRUE(players[0].api->est_tuyau({1, 1}));
+}
+
+TEST_F(ApiTest, Api_EstSimpleTuyau)
+{
+    EXPECT_FALSE(players[0].api->est_simple_tuyau({1, 1}));
+    st->build_pipe({1, 1}, players[0].id);
+    EXPECT_TRUE(players[0].api->est_simple_tuyau({1, 1}));
+    st->upgrade_pipe({1, 1}, players[0].id);
+    EXPECT_FALSE(players[0].api->est_simple_tuyau({1, 1}));
 }
 
 TEST_F(ApiTest, Api_EstSuperTuyau)

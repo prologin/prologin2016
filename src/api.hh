@@ -134,8 +134,11 @@ public:
     /// Renvoie vrai si et seulement si la case contient un pulsar.
     bool est_pulsar(position position);
 
+    /// Renvoie vrai si et seulement si la case contient un tuyau ou un Super Tuyau™.
+    bool est_tuyau(position pos);
+
     /// Renvoie vrai si et seulement si la case contient un simple tuyau.
-    bool est_tuyau(position position);
+    bool est_simple_tuyau(position pos);
 
     /// Renvoie vrai si et seulement si la case contient un super tuyau.
     bool est_super_tuyau(position position);

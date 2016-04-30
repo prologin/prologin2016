@@ -186,8 +186,15 @@ bool Api::est_pulsar(position position)
     return game_state_->get_cell_type(position) == case_type::PULSAR;
 }
 
-/// Renvoie vrai si et seulement si la case contient un simple tuyau.
+/// Renvoie vrai si et seulement si la case contient un tuyau ou un Super Tuyau™.
 bool Api::est_tuyau(position position)
+{
+    case_type type = game_state_->get_cell_type(position);
+    return type == case_type::TUYAU || type == case_type::SUPER_TUYAU;
+}
+
+/// Renvoie vrai si et seulement si la case contient un simple tuyau.
+bool Api::est_simple_tuyau(position position)
 {
     return game_state_->get_cell_type(position) == case_type::TUYAU;
 }

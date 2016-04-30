@@ -235,6 +235,14 @@ function:
 
   -
     fct_name: est_tuyau
+    fct_summary: Renvoie vrai si et seulement si la case contient un tuyau ou
+                 un Super Tuyau™.
+    fct_ret_type: bool
+    fct_arg:
+      - [pos, position, "Case choisie."]
+
+  -
+    fct_name: est_simple_tuyau
     fct_summary: Renvoie vrai si et seulement si la case contient un simple tuyau.
     fct_ret_type: bool
     fct_arg:

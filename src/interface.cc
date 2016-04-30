@@ -241,13 +241,19 @@ extern "C" bool api_est_pulsar(position pos)
   return api->est_pulsar(pos);
 }
 
-/// Renvoie vrai si et seulement si la case contient un simple tuyau.
+/// Renvoie vrai si et seulement si la case contient un tuyau ou un Super Tuyau™.
 extern "C" bool api_est_tuyau(position pos)
 {
   return api->est_tuyau(pos);
 }
 
-/// Renvoie vrai si et seulement si la case contient un super tuyau.
+/// Renvoie vrai si et seulement si la case contient un simple tuyau.
+extern "C" bool api_est_simple_tuyau(position pos)
+{
+  return api->est_simple_tuyau(pos);
+}
+
+/// Renvoie vrai si et seulement si la case contient un Super Tuyau™.
 extern "C" bool api_est_super_tuyau(position pos)
 {
   return api->est_super_tuyau(pos);
