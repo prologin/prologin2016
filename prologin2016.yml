@@ -52,14 +52,14 @@ constant:
   -
     cst_name: COUT_MODIFICATION_ASPIRATION
     cst_val: 10
-    cst_comment: Nombre de points d'action que coûte le déplacement d'un point
-                 d'énergie de la base (la première modification de chaque tour
-                 est offerte).
+    cst_comment: Nombre de points d'action que coûte le déplacement d'une
+                 unité de puissance d'aspiration de la base (la première
+                 modification de chaque tour est offerte).
 
   -
     cst_name: LIMITE_ASPIRATION
     cst_val: 5
-    cst_comment: Limite de points d'énergie sur une case de base.
+    cst_comment: Limite de puissance d'aspiration sur une case de base.
 
   -
     cst_name: COUT_DEBLAYAGE
@@ -88,8 +88,10 @@ enum:
                            cette action."]
       - [aucun_tuyau, "Il n'y a pas de tuyau à la position spécifiée."]
       - [position_invalide, "La position spécifiée est hors de la carte."]
-      - [pe_insuffisants, "Vous ne possédez pas assez de points d'énergie sur
-                           cette partie de la base."]
+      - [puissance_insuffisante, "Vous ne possédez pas assez de puissance
+                                 d'asipration sur cette partie de la base."]
+      - [deplacement_invalide, "Vous ne pouvez pas déplacer de la puissance
+                               d'aspiration d'une case à elle-même."]
       - [pas_dans_base, "Cette case n'appartient pas à votre base."]
       - [amelioration_impossible, "Il y a déjà un super-tuyau sur cette case."]
       - [construction_impossible, "Il est impossible de construire un tuyau à
@@ -164,13 +166,15 @@ function:
 
   -
     fct_name: deplacer_aspiration
-    fct_summary: "Déplace un point d'aspiration d'un point
-                  de la base vers l'autre."
+    fct_summary: Déplace une unité de puissance d'aspiration d'une case de
+                 votre base vers une autre.
     fct_ret_type: erreur
     fct_action: yes
     fct_arg:
-      - [source, position, "Position de la base où est prise l'énergie."]
-      - [destination, position, "Position de la base où est apportée l'énergie."]
+      - [source, position, "Case de la base où est prise la puissance
+                           d'aspiration."]
+      - [destination, position, "Position de la base où est apportée la
+                                puissance d'aspiration."]
 
   -
     fct_name: deblayer
@@ -303,7 +307,7 @@ function:
   -
     fct_name: cout_prochaine_modification_aspiration
     fct_summary: Renvoie la valeur du coût de la prochaine modification de vos
-                 points d'aspiration.
+                 puissances d'aspiration.
     fct_ret_type: int
     fct_arg: []
 

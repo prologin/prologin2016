@@ -107,7 +107,7 @@ public:
     /// Détruit un tuyau sur une case donnée.
     erreur detruire(position position);
 
-    /// Déplace un point d'aspiration d'un point de la base vers l'autre.
+    /// Déplace une unité de puissance d'aspiration d'une case de votre base vers une autre.
     erreur deplacer_aspiration(position source, position destination);
 
     /// Déblaye une case de débris.
@@ -159,9 +159,9 @@ public:
     /// Renvoie la liste des cases composant la base de votre ennemi.
     std::vector<position> base_ennemie();
 
-    /// Renvoie la puissance d'aspiration d'une case de base donnée.
+    /// Renvoie la puissance d'aspiration sur une case de base.
     /// Renvoie -1 si la position n'est pas celle d'une base.
-    int puissance_aspiration(position position);
+    int puissance_aspiration(position pos);
 
     /// Renvoie pour une case donnée la liste des cases vers
     /// lesquelles se propagerait un plasma. Renvoie la liste vide
@@ -169,8 +169,8 @@ public:
     /// n'est reliée à aucune base.
     std::vector<position> directions_plasma(position position);
 
-    /// Renvoie la valeur du coût de la prochaine modification de vos points
-    /// d'aspiration.
+    /// Renvoie la valeur du coût de la prochaine modification de vos
+    /// puissances d'aspiration.
     int cout_prochaine_modification_aspiration();
 
     /// Renvoie la liste des tuyaux construits par votre adversaire au dernier

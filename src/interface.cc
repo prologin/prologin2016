@@ -67,7 +67,8 @@ std::string convert_to_string(erreur in){
     case PA_INSUFFISANTS: return "\"pa_insuffisants\"";
     case AUCUN_TUYAU: return "\"aucun_tuyau\"";
     case POSITION_INVALIDE: return "\"position_invalide\"";
-    case PE_INSUFFISANTS: return "\"pe_insuffisants\"";
+    case PUISSANCE_INSUFFISANTE: return "\"puissance_insuffisante\"";
+    case DEPLACEMENT_INVALIDE: return "\"deplacement_invalide\"";
     case PAS_DANS_BASE: return "\"pas_dans_base\"";
     case AMELIORATION_IMPOSSIBLE: return "\"amelioration_impossible\"";
     case CONSTRUCTION_IMPOSSIBLE: return "\"construction_impossible\"";
@@ -177,7 +178,7 @@ extern "C" erreur api_detruire(position pos)
   return api->detruire(pos);
 }
 
-/// Déplace un point d'aspiration d'un point de la base vers l'autre.
+/// Déplace une unité de puissance d'aspiration d'une case de votre base vers une autre.
 extern "C" erreur api_deplacer_aspiration(position source, position destination)
 {
   return api->deplacer_aspiration(source, destination);
@@ -291,7 +292,7 @@ extern "C" std::vector<position> api_directions_plasma(position pos)
   return api->directions_plasma(pos);
 }
 
-/// Renvoie la valeur du coût de la prochaine modification de vos points d'aspiration.
+/// Renvoie la valeur du coût de la prochaine modification de vos puissances d'aspiration.
 extern "C" int api_cout_prochaine_modification_aspiration()
 {
   return api->cout_prochaine_modification_aspiration();
@@ -377,7 +378,8 @@ std::ostream& operator<<(std::ostream& os, erreur v)
   case PA_INSUFFISANTS: os << "PA_INSUFFISANTS"; break;
   case AUCUN_TUYAU: os << "AUCUN_TUYAU"; break;
   case POSITION_INVALIDE: os << "POSITION_INVALIDE"; break;
-  case PE_INSUFFISANTS: os << "PE_INSUFFISANTS"; break;
+  case PUISSANCE_INSUFFISANTE: os << "PUISSANCE_INSUFFISANTE"; break;
+  case DEPLACEMENT_INVALIDE: os << "DEPLACEMENT_INVALIDE"; break;
   case PAS_DANS_BASE: os << "PAS_DANS_BASE"; break;
   case AMELIORATION_IMPOSSIBLE: os << "AMELIORATION_IMPOSSIBLE"; break;
   case CONSTRUCTION_IMPOSSIBLE: os << "CONSTRUCTION_IMPOSSIBLE"; break;

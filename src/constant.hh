@@ -40,10 +40,10 @@
 /// Charge en plasma nécessaire pour la destruction d'un tuyau ou d'un super-tuyau.
 # define CHARGE_DESTRUCTION        2
 
-/// Nombre de points d'action que coûte le déplacement d'un point d'énergie de la base (la première modification de chaque tour est offerte).
+/// Nombre de points d'action que coûte le déplacement d'une unité de puissance d'aspiration de la base (la première modification de chaque tour est offerte).
 # define COUT_MODIFICATION_ASPIRATION 10
 
-/// Limite de points d'énergie sur une case de base.
+/// Limite de puissance d'aspiration sur une case de base.
 # define LIMITE_ASPIRATION         5
 
 /// Nombre de points d'action que coûte le déblayage d'une case de débris.
@@ -61,7 +61,8 @@ typedef enum erreur {
   PA_INSUFFISANTS, /* <- Vous ne possédez pas assez de points d'action pour cette action. */
   AUCUN_TUYAU, /* <- Il n'y a pas de tuyau à la position spécifiée. */
   POSITION_INVALIDE, /* <- La position spécifiée est hors de la carte. */
-  PE_INSUFFISANTS, /* <- Vous ne possédez pas assez de points d'énergie sur cette partie de la base. */
+  PUISSANCE_INSUFFISANTE, /* <- Vous ne possédez pas assez de puissance d'asipration sur cette partie de la base. */
+  DEPLACEMENT_INVALIDE, /* <- Vous ne pouvez pas déplacer de la puissance d'aspiration d'une case à elle-même. */
   PAS_DANS_BASE, /* <- Cette case n'appartient pas à votre base. */
   AMELIORATION_IMPOSSIBLE, /* <- Il y a déjà un super-tuyau sur cette case. */
   CONSTRUCTION_IMPOSSIBLE, /* <- Il est impossible de construire un tuyau à la position indiquée. */

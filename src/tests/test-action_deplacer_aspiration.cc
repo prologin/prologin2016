@@ -13,7 +13,7 @@ TEST_F(ActionTest, DeplacerAspiration_InvalidPosition)
     EXPECT_EQ(PAS_DANS_BASE, act2.check(st));
 
     ActionDeplacerAspiration act3(TEST_BASE, TEST_BASE, PLAYER_2);
-    EXPECT_EQ(POSITION_INVALIDE, act3.check(st));
+    EXPECT_EQ(DEPLACEMENT_INVALIDE, act3.check(st));
 
     ActionDeplacerAspiration act4(TEST_BASE, TEST_BASE_ALT, PLAYER_2);
     EXPECT_EQ(PAS_DANS_BASE, act4.check(st));
@@ -49,7 +49,7 @@ TEST_F(ActionTest, DeplacerAspiration_ActionPoints)
         act.apply_on(st);
         EXPECT_EQ((unsigned)0, st->get_action_points());
     }
-    EXPECT_EQ(PE_INSUFFISANTS, act.check(st));
+    EXPECT_EQ(PUISSANCE_INSUFFISANTE, act.check(st));
 }
 
 TEST_F(ActionTest, DeplacerAspiration_AspirationLimit)

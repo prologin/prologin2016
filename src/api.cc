@@ -260,7 +260,7 @@ std::vector<position> Api::directions_plasma(position position)
         return {};
 }
 
-/// Renvoie la valeur du coût de la prochaine modification de vos points
+/// Renvoie la valeur du coût de la prochaine modification de vos puissances
 /// d'aspiration.
 int Api::cout_prochaine_modification_aspiration()
 {
