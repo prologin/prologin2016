@@ -232,6 +232,19 @@ double Api::charges_presentes(position position)
     return game_state_->get_plasma(position);
 }
 
+/// Renvoie le numéro du joueur ayant dernièrement construit ou amélioré un
+/// tuyau sur une case.
+int Api::constructeur_tuyau(position pos)
+{
+    return game_state_->get_cell_owner(pos);
+}
+
+/// Renvoie le numéro du propriétaire d'une case de base.
+int Api::proprietaire_base(position pos)
+{
+    return game_state_->get_cell_owner(pos);
+}
+
 /// Renvoie la liste des cases composant votre base.
 std::vector<position> Api::ma_base()
 {

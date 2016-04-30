@@ -204,6 +204,30 @@ TEST_F(ApiTest, Api_ChargesPresentes)
     EXPECT_EQ(pulsar.puissance, players[0].api->charges_presentes(pos));
 }
 
+TEST_F(ApiTest, Api_ConstructeurTuyau)
+{
+    const auto& api = players[0].api;
+    st->build_pipe({1, 1}, players[0].id);
+    EXPECT_EQ(players[0].id, api->constructeur_tuyau({1, 1}));
+    st->build_pipe({4, 2}, players[1].id);
+    EXPECT_EQ(players[1].id, api->constructeur_tuyau({4, 2}));
+    st->upgrade_pipe({4, 2}, players[0].id);
+    EXPECT_EQ(players[0].id, api->constructeur_tuyau({4, 2}));
+}
+
+TEST_F(ApiTest, Api_ProprietaireBase)
+{
+    const int N = TAILLE_TERRAIN;
+    for (int i = 0 ; i < LONGUEUR_BASE ; i++)
+    {
+        const auto& api = players[0].api;
+        EXPECT_EQ(players[0].id, api->proprietaire_base({N/3+i, 0}));
+        EXPECT_EQ(players[0].id, api->proprietaire_base({N/3+i, N-1}));
+        EXPECT_EQ(players[1].id, api->proprietaire_base({0, N/3+i}));
+        EXPECT_EQ(players[1].id, api->proprietaire_base({N-1, N/3+i}));
+    }
+}
+
 TEST_F(ApiTest, Api_BasesListes)
 {
     EXPECT_EQ(players[0].api->ma_base(), players[1].api->base_ennemie());

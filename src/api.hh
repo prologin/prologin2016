@@ -154,7 +154,14 @@ public:
     pulsar_info info_pulsar(position position);
 
     /// Renvoie la quantité de plasma sur une case donnée.
-    double charges_presentes(position position);
+    double charges_presentes(position pos);
+
+    /// Renvoie le numéro du joueur ayant dernièrement construit ou amélioré un
+    /// tuyau sur une case.
+    int constructeur_tuyau(position pos);
+
+    /// Renvoie le numéro du propriétaire d'une case de base.
+    int proprietaire_base(position pos);
 
     /// Renvoie la liste des cases composant votre base.
     std::vector<position> ma_base();

@@ -283,6 +283,18 @@ extern "C" double api_charges_presentes(position pos)
   return api->charges_presentes(pos);
 }
 
+/// Renvoie le numéro du joueur ayant dernièrement construit ou amélioré un tuyau sur une case.
+extern "C" int api_constructeur_tuyau(position pos)
+{
+  return api->constructeur_tuyau(pos);
+}
+
+/// Renvoie le numéro du propriétaire d'une case de base.
+extern "C" int api_proprietaire_base(position pos)
+{
+  return api->proprietaire_base(pos);
+}
+
 /// Renvoie la liste des cases composant votre base.
 extern "C" std::vector<position> api_ma_base()
 {

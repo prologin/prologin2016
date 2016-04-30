@@ -285,6 +285,21 @@ function:
       - [pos, position, "Case choisie."]
 
   -
+    fct_name: constructeur_tuyau
+    fct_summary: Renvoie le numéro du joueur ayant dernièrement construit ou
+                 amélioré un tuyau sur une case.
+    fct_ret_type: int
+    fct_arg:
+      - [pos, position, "Case choisie."]
+
+  -
+    fct_name: proprietaire_base
+    fct_summary: Renvoie le numéro du propriétaire d'une case de base.
+    fct_ret_type: int
+    fct_arg:
+      - [pos, position, "Case choisie."]
+
+  -
     fct_name: ma_base
     fct_summary: Renvoie la liste des cases composant votre base.
     fct_ret_type: position array
