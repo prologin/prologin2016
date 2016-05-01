@@ -138,7 +138,7 @@ def coup():
     next_emission = []
     for i, j in api.liste_pulsars():
         ip = api.info_pulsar((i, j))
-        if ip.nombre_pulsations > 0:
+        if ip.pulsations_restantes > 0:
             for a, b in [(i - 1, j), (i + 1, j),(i, j - 1), (i, j + 1)]:
                 if (a, b) not in cases_to_reach and not connected[a][b]:
                     cases_to_reach.append((a, b))
@@ -277,7 +277,7 @@ def bouger_aspiration():
     # Trouver les cases vers lesquelles les pulsars émettent et qui sont reliées à la base
     cases_reached = []
     for i, j in api.liste_pulsars():
-        periode, puissance, nb_pulsations = api.info_pulsar((i, j))
+        periode, puissance, nb_pulsations, _ = api.info_pulsar((i, j))
         power = puissance / periode
         if nb_pulsations * periode >= api.tour_actuel() - 10:
             for a, b in [(i - 1, j), (i + 1, j),(i, j - 1), (i, j + 1)]:

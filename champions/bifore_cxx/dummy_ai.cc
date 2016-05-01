@@ -41,7 +41,7 @@ void jouer_tour() {
     for(auto i = border.begin(); i != border.end(); ++i) {
       for(auto u = pulsars.begin(); u != pulsars.end(); ++u) {
         pulsar_info info = info_pulsar(*u);
-        if(info.nombre_pulsations > 0 
+        if(info.pulsations_restantes > 0
            && getBorderCaseOf(*u, TUYAU).size() == 0
            && getBorderCaseOf(*u, SUPER_TUYAU).size() == 0) {
           int dist = getSquareDist(*i, *u);
