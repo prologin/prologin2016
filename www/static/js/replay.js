@@ -1,8 +1,10 @@
 $(function () {
-  const N_CELLS = 39,
-    CELL_SIZE = 16,
-    N_BASES = parseInt(N_CELLS / 3),
-    TURN_DURATION = 300;
+  const N_CELLS = 39;
+  const CELL_SIZE = 18;
+  const N_BASES = parseInt(N_CELLS / 3);
+  const TURN_DURATION = 300;
+  const B_WIDTH = 2, B_PAD = .5, B_OFFSET = .3;
+  const PLAYER_COLORS = ['#ff71b0', '#8aff73'];
 
   const DIRECTIONS = [{x: 0, y: -1}, {x: 1, y: 0}, {x: 0, y: 1}, {x: -1, y: 0}];
   const CellType = {
@@ -24,7 +26,7 @@ $(function () {
     $turnLabel = $('#replay-turn-label'),
     $turnSlider = $('#replay-turn-slider');
 
-  let playing = false, turnIndex, turnForward, playingTimer;
+  let playing = false, turnIndex, turnForward, playingTimer, playerColors = {};
 
   $replay.hide();
 
@@ -34,8 +36,8 @@ $(function () {
 
   // setup game board
   var svg = d3.select('#replay-board').append('svg')
-    .attr('width', (1 + N_CELLS) * CELL_SIZE)
-    .attr('height', (1 + N_CELLS) * CELL_SIZE);
+    .attr('width', (2 + N_CELLS) * CELL_SIZE)
+    .attr('height', (2 + N_CELLS) * CELL_SIZE);
 
   let defs = svg.append('defs');
   // base pattern (slashed yellow)
@@ -44,7 +46,7 @@ $(function () {
     .attr('patternUnits', 'userSpaceOnUse')
     .attr('width', 10).attr('height', 10);
   basePat.append('rect')
-    .attr('fill', 'goldenrod')
+    .attr('fill', 'darkgoldenrod')
     .attr('width', 10).attr('height', 10);
   basePat.append('path')
     .attr('stroke', '#333').attr('stroke-width', 4)
@@ -76,7 +78,7 @@ $(function () {
   let spriteScale = CELL_SIZE / 32;
   // pipe, super-pipe
   for (let [typeN, typeName] of [[0, 'p'], [1, 'sp']]) {
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < 20; i++) {
       defs
         .append('symbol')
         .attr('id', typeName + i)
@@ -88,7 +90,7 @@ $(function () {
     }
   }
 
-  // explode sprite
+  // explosion sprite
   for (let i = 0; i < 16; i++) {
     defs
       .append('symbol')
@@ -116,13 +118,14 @@ $(function () {
     .attr('xlink:href', '/static/debris.png')
     .attr('width', 32).attr('height', 32);
 
+  let svgContent = svg.append('g')
+    .attr('transform', 'translate(' + [CELL_SIZE / 2, CELL_SIZE / 2] + ')');
+
   // grid surface
-  svg.append('rect')
+  svgContent.append('rect')
     .attr('x', CELL_SIZE * 1.5).attr('y', CELL_SIZE * 1.5)
     .attr('width', (N_CELLS - 2) * CELL_SIZE).attr('height', (N_CELLS - 2) * CELL_SIZE)
     .attr('fill', 'url(#pattern-grid)');
-
-  let svgContent = svg.append('g');
 
   let baseCenter = Math.floor(N_CELLS / 2 - N_BASES / 2);
   let base = (x, y, w, h) => svgContent
@@ -133,10 +136,26 @@ $(function () {
     .attr('shape-rendering', 'crispEdges')
     .attr('fill', 'url(#pattern-base)')
     .attr('transform', svg_translate({x: x, y: y}));
-  base(baseCenter, -1, N_BASES, 2);
-  base(baseCenter, N_CELLS - 1, N_BASES, 2);
-  base(-1, baseCenter, 2, N_BASES);
-  base(N_CELLS - 1, baseCenter, 2, N_BASES);
+  let basePipes = (x, y, dx, dy, frame) => {
+    for (let i = 0; i < N_BASES; i++) {
+      svgContent
+        .append('g')
+        .attr('class', 'base-pipe')
+        .attr('transform', svg_translate({x: x + dx * i, y: y + dy * i}))
+        .append('use')
+        .attr('width', CELL_SIZE / spriteScale).attr('height', CELL_SIZE / spriteScale)
+        .attr('transform', 'scale(' + spriteScale + ')')
+        .attr('xlink:href', '#p' + frame);
+    }
+  };
+  base(baseCenter - B_PAD / 2, -1 - B_OFFSET, N_BASES + B_PAD, B_WIDTH);
+  base(baseCenter - B_PAD / 2, N_CELLS - 1 + B_OFFSET, N_BASES + B_PAD, B_WIDTH);
+  base(-1 - B_OFFSET, baseCenter - B_PAD / 2, B_WIDTH, N_BASES + B_PAD);
+  base(N_CELLS - 1 + B_OFFSET, baseCenter - B_PAD / 2, B_WIDTH, N_BASES + B_OFFSET);
+  basePipes(baseCenter, 0, 1, 0, 18);
+  basePipes(baseCenter, N_CELLS - 1, 1, 0, 16);
+  basePipes(0, baseCenter, 0, 1, 17);
+  basePipes(N_CELLS - 1, baseCenter, 0, 1, 19);
 
   function renderPulsars(pulsarData) {
     // n_pulses period power x y
@@ -190,6 +209,26 @@ $(function () {
     let explosionData = [];
     let clearedDebrisData = [];
 
+    let baseData = mapData.filter(d => d.type === CellType.BASE);
+
+    let bases = svgContent.selectAll('g.base').data(baseData, coordFunc);
+    let base = bases.enter()
+      .append('g').attr('class', 'base')
+      .attr('transform', d => svg_translate({
+        x: d.x + (baseCenter <= d.y && d.y <= baseCenter + N_BASES ? 1 : 0) * (d.x > N_CELLS / 2 ? 1 : -1),
+        y: d.y + (baseCenter <= d.x && d.x <= baseCenter + N_BASES ? 1 : 0) * (d.y > N_CELLS / 2 ? 1 : -1)
+      }));
+    base.append('circle')
+      .attr('cx', CELL_SIZE / 2).attr('cy', CELL_SIZE / 2)
+      .attr('r', CELL_SIZE / 2 * .9)
+      .attr('fill', d => playerColors[d.owner]);
+    base.append('text')
+      .attr('x', CELL_SIZE / 2).attr('y', CELL_SIZE / 1.5)
+      .attr('font-size', CELL_SIZE * .5 + 'px')
+      .attr('fill', 'black')
+      .attr('text-anchor', 'middle');
+    bases.select('text').text(d => d.vacuum);
+
     let pipeData = mapData.filter(d => d.type === CellType.PIPE || d.type === CellType.SUPER_PIPE);
 
     let pipes = svgContent.selectAll('g.pipe').data(pipeData, coordFunc);
@@ -201,7 +240,9 @@ $(function () {
       .attr('cx', CELL_SIZE / 2).attr('cy', CELL_SIZE / 2);
     pipe.append('use')
       .attr('transform', 'scale(' + spriteScale + ')')
-      .attr('width', CELL_SIZE / spriteScale).attr('height', CELL_SIZE / spriteScale);
+      .attr('width', CELL_SIZE / spriteScale).attr('height', CELL_SIZE / spriteScale)
+      .attr('opacity', 0)
+      .transition().duration(TURN_DURATION).attr('opacity', 1);
     pipes.exit().each(d => {
       explosionData.push(d);
     }).remove();
@@ -209,7 +250,7 @@ $(function () {
       .attr('xlink:href', d => '#' + (d.type === CellType.SUPER_PIPE ? 'sp' : 'p') + spriteIndex(d));
     pipes.select('circle')
       .attr('fill', d => d.plasma > 0 ? 'white' : 'none')
-      .attr('r', d => Math.max(0.1, Math.min(0.9, d.plasma)) * CELL_SIZE / 3);
+      .attr('r', d => Math.max(0.1, Math.min(0.9, d.plasma / 2)) * CELL_SIZE / 3);
 
     let debrisData = mapData.filter(d => d.type === CellType.DEBRIS);
 
@@ -283,6 +324,13 @@ $(function () {
     let turnCount = firstTurn.turn[1];
 
     // TODO: player scores & stuff
+    // assign colors
+    let i = 0;
+    for (let pid in firstTurn.players) {
+      if (firstTurn.players.hasOwnProperty(pid)) {
+        playerColors[pid] = PLAYER_COLORS[i++];
+      }
+    }
 
     // ui handlers
     $previous.click(function () {
@@ -304,7 +352,7 @@ $(function () {
       turnIndex = newTurnIndex;
       $previous.prop('disabled', turnIndex <= 0);
       $next.prop('disabled', turnIndex >= turns.length - 1);
-      $turnLabel.text(turns[turnIndex].turn[0] + ' (' + turnIndex + ')');
+      $turnLabel.text(('000' + turns[turnIndex].turn[0]).slice(-3));
       renderTurn(turns[turnIndex]);
     });
     $turnSlider.attr('min', 0).attr('max', turns.length - 1).val(0);
@@ -324,11 +372,10 @@ $(function () {
           turnForward = true;
           if (turnIndex >= turns.length) {
             turnForward = false;
-            // turnIndex = turns.length - 1;
-            turnIndex = 0;
-            // clearInterval(playingTimer); // just to be sure
-            // playing = true; // trigger pause
-            // $playPause.trigger('click');
+            turnIndex = turns.length - 1;
+            clearInterval(playingTimer); // just to be sure
+            playing = true; // trigger pause
+            $playPause.trigger('click');
             return;
           }
           $turnSlider.val(turnIndex).trigger('change');
@@ -379,7 +426,7 @@ $(function () {
     $playPause.trigger('click');
 
     // reveal the UI
-    $replay.fadeIn();
+    $replay.fadeIn('fast');
   });
 
 });
