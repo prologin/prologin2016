@@ -28,7 +28,8 @@ $(function () {
     $turnLabel = $('#replay-turn-label'),
     $turnSlider = $('#replay-turn-slider');
 
-  let playing = false, turnIndex, turnForward, playingTimer, playerColors = {}, nextTurnCallback;
+  let playing = false, playerColors = {}, animationEnabled = true;
+  let turnIndex, turnForward, playingTimer, nextTurnCallback;
 
   $replay.hide();
 
@@ -37,7 +38,7 @@ $(function () {
   }
 
   // setup game board
-  var svg = d3.select('#replay-board').append('svg')
+  let svg = d3.select('#replay-board').append('svg')
     .attr('width', (2 + N_CELLS) * CELL_SIZE)
     .attr('height', (2 + N_CELLS) * CELL_SIZE);
 
@@ -167,13 +168,13 @@ $(function () {
 
   function renderMap(previousMapData, mapData, pulsarData) {
     let index = (x, y) => x * N_CELLS + y;
-    let plasmaAnimated = turnForward && previousMapData;
+    let plasmaAnimated = animationEnabled && turnForward && previousMapData;
     let explosionData = [];
     let clearedDebrisData = [];
 
     function spriteIndex(d) {
       return DIRECTIONS.reduce((acc, dir, i) => {
-        var ind = index(d.x + dir.x, d.y + dir.y);
+        let ind = index(d.x + dir.x, d.y + dir.y);
         let o = mapData[ind];
         if (!o)
           return acc;
@@ -320,33 +321,36 @@ $(function () {
 
     if (turnForward) {
       let pulsating = pulsarData.filter(d => d.n_pulses > 0 && turnIndex > 0 && (turnIndex + 1) % d.period === 0);
-      let pulsations = svgContent.selectAll('g.pulsar').data(pulsating, coordFunc);
-      pulsations
-        .append('circle')
-        .attr('cx', CELL_SIZE / 2).attr('cy', CELL_SIZE / 2)
-        .attr('r', CELL_SIZE / 3)
-        .attr('stroke', 'white')
-        .attr('stroke-width', 1.5)
-        .attr('opacity', 1)
-        .transition().ease('linear').duration(TURN_DURATION)
-        .attr('r', CELL_SIZE * 1.5)
-        .attr('opacity', 0)
-        .transition().duration(0).remove();
 
-      // pulsar loot
-      for (let pulsar of pulsarData) {
-        if (pulsar.n_pulses <= 0 || turnIndex % pulsar.period !== 0)
-          continue;
-        for (let destination of pulsar.energyPaths) {
-          plasmaLayer.append('circle')
-            .attr('fill', 'white')
-            .attr('fill-opacity', .9)
-            .attr('cx', CELL_SIZE / 2).attr('cy', CELL_SIZE / 2)
-            .attr('r', Math.max(0.1, Math.min(0.9, pulsar.power / 2)) * CELL_SIZE / 3)
-            .attr('transform', svg_translate(pulsar))
-            .transition().ease('linear').duration(TURN_DURATION)
-            .attr('transform', svg_translate(destination))
-            .transition().duration(0).remove();
+      if (animationEnabled) {
+        let pulsations = svgContent.selectAll('g.pulsar').data(pulsating, coordFunc);
+        pulsations
+          .append('circle')
+          .attr('cx', CELL_SIZE / 2).attr('cy', CELL_SIZE / 2)
+          .attr('r', CELL_SIZE / 3)
+          .attr('stroke', 'white')
+          .attr('stroke-width', 1.5)
+          .attr('opacity', 1)
+          .transition().ease('linear').duration(TURN_DURATION)
+          .attr('r', CELL_SIZE * 1.5)
+          .attr('opacity', 0)
+          .transition().duration(0).remove();
+
+        // pulsar loot
+        for (let pulsar of pulsarData) {
+          if (pulsar.n_pulses <= 0 || turnIndex % pulsar.period !== 0)
+            continue;
+          for (let destination of pulsar.energyPaths) {
+            plasmaLayer.append('circle')
+              .attr('fill', 'white')
+              .attr('fill-opacity', .9)
+              .attr('cx', CELL_SIZE / 2).attr('cy', CELL_SIZE / 2)
+              .attr('r', Math.max(0.1, Math.min(0.9, pulsar.power / 2)) * CELL_SIZE / 3)
+              .attr('transform', svg_translate(pulsar))
+              .transition().ease('linear').duration(TURN_DURATION)
+              .attr('transform', svg_translate(destination))
+              .transition().duration(0).remove();
+          }
         }
       }
     }
@@ -397,27 +401,33 @@ $(function () {
     // render the pipes
     let pipeData = mapData.filter(d => d.type === CellType.PIPE || d.type === CellType.SUPER_PIPE);
     let pipes = pipeLayer.selectAll('g.pipe').data(pipeData, coordFunc);
+
     let pipe = pipes.enter()
       .append('g').attr('class', 'pipe')
       .attr('transform', svg_translate);
-    pipe.append('circle')
+    pipe
+      .append('circle')
       .attr('fill-opacity', .9)
       .attr('cx', CELL_SIZE / 2).attr('cy', CELL_SIZE / 2);
-    pipe.append('use')
+    let tt = pipe
+      .append('use')
       .attr('transform', 'scale(' + spriteScale + ')')
       .attr('width', CELL_SIZE / spriteScale).attr('height', CELL_SIZE / spriteScale)
-      .attr('opacity', 0)
-      .transition().duration(TURN_DURATION).attr('opacity', 1);
+      .attr('opacity', 1);
+    if (animationEnabled)
+      tt.attr('opacity', 0).transition().duration(TURN_DURATION).attr('opacity', 1);
+
     pipes.exit().each(d => {
       // explode animation building
       explosionData.push(d);
     }).remove();
     pipes.select('use')
       .attr('xlink:href', d => '#' + (d.type === CellType.SUPER_PIPE ? 'sp' : 'p') + spriteIndex(d));
-    pipes.select('circle')
-    // show instantly after animation
-      .transition().delay(plasmaAnimated ? TURN_DURATION : 0).duration(0)
-      .attr('fill', d => d.plasma > 0 ? 'white' : 'none')
+
+    tt = pipes.select('circle')
+    if (plasmaAnimated)
+      tt = tt.transition().delay(TURN_DURATION).duration(0);
+    tt.attr('fill', d => d.plasma > 0 ? 'white' : 'none')
       .attr('r', d => Math.max(0.1, Math.min(0.9, d.plasma / 2)) * CELL_SIZE / 3);
 
     let debrisData = mapData.filter(d => d.type === CellType.DEBRIS);
@@ -436,7 +446,7 @@ $(function () {
       clearedDebrisData.push(d);
     }).remove();
 
-    if (turnForward && clearedDebrisData.length) {
+    if (animationEnabled && turnForward && clearedDebrisData.length) {
       svgContent.selectAll('circle.clearing').data(clearedDebrisData, coordFunc)
         .enter()
         .append('circle')
@@ -453,7 +463,7 @@ $(function () {
         .transition().duration(0).remove();
     }
 
-    if (turnForward && explosionData.length) {
+    if (animationEnabled && turnForward && explosionData.length) {
       svgContent.selectAll('.explosion').data(explosionData, coordFunc)
         .enter()
         .append('use')
@@ -482,6 +492,12 @@ $(function () {
       x: parseInt(i / N_CELLS),
       y: i % N_CELLS
     });
+    for (let pid in turnData.players) {
+      if (!turnData.players.hasOwnProperty(pid))
+        continue;
+      // update scores
+      $('.replay-player[data-id=' + pid + '] .score').text(turnData.players[pid].score);
+    }
     renderMap(previousTurnData ? previousTurnData.map.map(complete) : null, turnData.map.map(complete), turnData.pulsars);
     if (playing) {
       clearTimeout(playingTimer);
@@ -496,12 +512,20 @@ $(function () {
     let firstTurn = turns[0];
     let turnCount = firstTurn.turn[1];
 
-    // TODO: player scores & stuff
-    // assign colors
+    // build player legend
+    let $legend = $('#replay-legend').empty();
     let i = 0;
     for (let pid in firstTurn.players) {
       if (firstTurn.players.hasOwnProperty(pid)) {
-        playerColors[pid] = PLAYER_COLORS[i++];
+        let player = firstTurn.players[pid], color = PLAYER_COLORS[i++];
+        playerColors[pid] = color;
+        let $el = $('<div/>').attr('data-id', pid).addClass('replay-player');
+        let svg = d3.select($el[0]).append('svg').attr('width', CELL_SIZE).attr('height', CELL_SIZE);
+        svg.append('circle').attr('r', CELL_SIZE / 2).attr('cx', CELL_SIZE / 2).attr('cy', CELL_SIZE / 2).attr('fill', color);
+        $el
+          .append($('<span/>').addClass('name').text(player.name))
+          .append($('<span/>').addClass('score'));
+        $legend.append($el);
       }
     }
 
@@ -546,6 +570,8 @@ $(function () {
     };
 
     $playPause.click(function () {
+      if (!playing && turnIndex >= turns.length - 1)
+        return;
       playing = !playing;
       $playPause
         .find('span').text(playing ? 'Pause' : 'Lecture');
@@ -566,37 +592,38 @@ $(function () {
         e.stopPropagation();
       }
 
-      var key = e.which,
-        repeat = e.shiftKey ? 10 : 1,
-        i;
+      let key = e.which, offset = e.shiftKey ? 10 : 1;
       if (key === 32) {
         // space
         stop();
         $playPause.trigger('click');
-      } else if (key == 37) {
+      } else if (key === 37) {
         // left
         stop();
-        for (i = 0; i < repeat; i++)
-          $previous.trigger('click');
-      } else if (key == 39) {
-        // left
+        turnIndex -= offset;
+        $turnSlider.val(turnIndex).trigger('change');
+      } else if (key === 39) {
+        // right
         stop();
-        for (i = 0; i < repeat; i++)
-          $next.trigger('click');
-      } else if (key == 65) {
+        turnIndex += offset;
+        $turnSlider.val(turnIndex).trigger('change');
+      } else if (key === 65) {
         // a
         stop();
         turnIndex = 0;
         $turnSlider.val(turnIndex).trigger('change');
-      } else if (key == 69) {
+      } else if (key === 69) {
         // e
         stop();
         turnIndex = turns.length - 1;
         $turnSlider.val(turnIndex).trigger('change');
+      } else if (key === 77) {
+        // m
+        animationEnabled = !animationEnabled;
       }
     });
 
-    // ready, trigger a fake playpause to init everything
+    // ready, trigger a fake play/pause to init everything
     playing = true;
     $playPause.trigger('click');
 
