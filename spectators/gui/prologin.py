@@ -78,12 +78,14 @@ class Server:
                 "clear"]:
             self.event_ready.set()
 
-    def start(self):
+    def start(self, is_player):
         logger.info("start")
         self.run_thread.start()
         print("Waiting for browser")
         # webbrowser.open('http://127.0.0.1:8099/www/index.html')
         self.event_ready.wait()
+        if is_player:
+            self.send('player')
 
     def run_forever(self):
         asyncio.set_event_loop(self.loop)
@@ -134,7 +136,7 @@ server = Server()
 
 
 def partie_init():
-    server.start()
+    server.start(bool(api.ma_base()))
 
 
 def jouer_tour():
