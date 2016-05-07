@@ -15,10 +15,14 @@ LIBPROLOGIN = 'libprologin2016.so'
 logger = logging.Logger(__name__)
 root = os.path.abspath(os.path.dirname(__file__))
 
+def parse_pos(string):
+    pos = string.split(",")
+    return position(int(pos[0]), int(pos[1]))
 
 class Server:
     def __init__(self):
         self.event_ready = threading.Event()
+        self.cmd = ""
 
         librules = ctypes.cdll.LoadLibrary(LIBPROLOGIN)
         self.get_dump = librules.dump_state_json
@@ -67,7 +71,11 @@ class Server:
         if cmd == "hello":
             self.send("whatsup", size=api.TAILLE_TERRAIN, maxTurn=api.NB_TOURS)
             return
+        self.cmd = cmd
         if cmd == "ready":
+            self.event_ready.set()
+        elif cmd.split()[0] in ["build", "upgrade", "destroy", "move_vacuum",
+                "clear"]:
             self.event_ready.set()
 
     def start(self):
@@ -99,6 +107,21 @@ class Server:
         self.send('turn', state=state)
         self.event_ready.clear()
         self.event_ready.wait()
+        while self.cmd != "ready":
+            words = self.cmd.split()
+            if words[0] == "build":
+                api.construire(parse_pos(words[1]))
+            elif words[0] == "upgrade":
+                api.ameliorer(parse_pos(words[1]))
+            elif words[0] == "destroy":
+                api.detruire(parse_pos(words[1]))
+            elif words[0] == "move_vacuum":
+                api.deplacer_aspiration(parse_pos(words[1]),
+                        parse_pos(words[2]))
+            elif words[0] == "clear":
+                api.deblayer(parse_pos(words[1]))
+            self.event_ready.clear()
+            self.event_ready.wait()
 
     def end_game(self):
         print("end_game")
