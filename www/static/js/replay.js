@@ -145,26 +145,10 @@ $(function () {
     .attr('shape-rendering', 'crispEdges')
     .attr('fill', 'url(#pattern-base)')
     .attr('transform', svg_translate({x: x, y: y}));
-  let basePipes = (x, y, dx, dy, frame) => {
-    for (let i = 0; i < N_BASES; i++) {
-      baseLayer
-        .append('g')
-        .attr('class', 'base-pipe')
-        .attr('transform', svg_translate({x: x + dx * i, y: y + dy * i}))
-        .append('use')
-        .attr('width', CELL_SIZE / spriteScale).attr('height', CELL_SIZE / spriteScale)
-        .attr('transform', 'scale(' + spriteScale + ')')
-        .attr('xlink:href', '#p' + frame);
-    }
-  };
   base(baseCenter - B_PAD / 2, -1 - B_OFFSET, N_BASES + B_PAD, B_WIDTH);
   base(baseCenter - B_PAD / 2, N_CELLS - 1 + B_OFFSET, N_BASES + B_PAD, B_WIDTH);
   base(-1 - B_OFFSET, baseCenter - B_PAD / 2, B_WIDTH, N_BASES + B_PAD);
   base(N_CELLS - 1 + B_OFFSET, baseCenter - B_PAD / 2, B_WIDTH, N_BASES + B_OFFSET);
-  basePipes(baseCenter, 0, 1, 0, 18);
-  basePipes(baseCenter, N_CELLS - 1, 1, 0, 16);
-  basePipes(0, baseCenter, 0, 1, 17);
-  basePipes(N_CELLS - 1, baseCenter, 0, 1, 19);
 
   function renderMap(previousMapData, mapData, pulsarData) {
     let index = (x, y) => x * N_CELLS + y;
@@ -206,6 +190,24 @@ $(function () {
       .attr('fill', 'black')
       .attr('text-anchor', 'middle');
     bases.select('text').text(d => d.vacuum);
+    // base pipe sprite
+    let basePipes = svgContent.selectAll('g.basepipe').data(baseData, coordFunc);
+    basePipes.enter()
+      .append('g')
+      .attr('class', 'basepipe')
+      .attr('transform', svg_translate)
+      .append('use')
+      .attr('width', CELL_SIZE / spriteScale).attr('height', CELL_SIZE / spriteScale)
+      .attr('transform', 'scale(' + spriteScale + ')');
+    basePipes.selectAll('use')
+      .attr('xlink:href', d => {
+        let nx = d.x + (baseCenter <= d.y && d.y <= baseCenter + N_BASES ? 1 : 0) * (d.x > N_CELLS / 2 ? -1 : 1);
+        let ny = d.y + (baseCenter <= d.x && d.x <= baseCenter + N_BASES ? 1 : 0) * (d.y > N_CELLS / 2 ? -1 : 1);
+        let type = mapData[index(nx, ny)].type;
+        if (type === CellType.PIPE || type === CellType.SUPER_PIPE || type === CellType.PULSAR)
+          return '#p' + (16 + (d.y === 0 ? 2 : d.y === N_CELLS - 1 ? 0 : d.x === 0 ? 1 : 3));
+        return '#p0';
+      });
 
     // build pipe clusters & vacuum graph
     for (let pipe of mapData) {
