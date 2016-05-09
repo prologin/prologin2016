@@ -1,0 +1,117 @@
+% !TEX encoding = UTF-8 Unicode
+% $Header: /cvsroot/latex-beamer/latex-beamer/solutions/conference-talks/conference-ornate-20min.en.tex,v 1.6 2004/10/07 20:53:08 tantau Exp $
+
+\documentclass{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Warsaw}
+  % or ...
+
+  \setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+  
+  \setbeamertemplate{navigation symbols}{}
+  
+  \newcommand*\oldmacro{}%
+  \let\oldmacro\insertshorttitle%
+  \renewcommand*\insertshorttitle{%
+    \oldmacro\hfill%
+    \insertframenumber\,/\,\inserttotalframenumber}
+}
+
+\usepackage[utf8]{inputenc}
+% or whatever
+
+\usepackage{times}
+\usepackage{multirow}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+
+\usepackage{eso-pic}
+\usepackage{color}
+\usepackage{tikz}
+\usepackage{wasysym}
+
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+\title[Petit guide des bonnes pratiques pour la construction et la maintenance d'$\alpha$-extracteurs cosmiques à vacuité]
+{}
+
+\titlegraphic{\raisebox{2em}{}}
+
+\author[Prologin]
+{\includegraphics{../prologin2016}}
+
+\date
+{}
+
+\begin{document}
+
+\definecolor{vert}{rgb}{0.07 0.54 0.07}
+
+
+\begin{frame}
+	\frametitle{Petit guide des bonnes pratiques pour la construction et la maintenance d'$\alpha$-extracteurs cosmiques à vacuité}
+	\vspace{0.5cm} \centering \includegraphics[width=0.9\linewidth]{../prologin2016}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Présentation}
+	\begin{itemize}
+        \item Jeu de stratégie à 2 joueurs : \textcolor{green}{Vert} et
+            \textcolor{red}{Rouge}
+        \item Tour par tour
+        \item Carte carrée de taille fixe
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Plateau}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Pulsar}
+        \begin{itemize}
+        \item Période de pulsation $T$
+        \item Puissance d'émission $P$
+        \item Nombre de pulsations restantes $R$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Plasma}
+        \begin{itemize}
+        \item Ressource émise par les pulsars
+        \item Se déplace dans la direction qui qui le raproche le plus d'une base
+        \item Disparaît s'il n'est relié à aucun tuyau à la fin d'un tour
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Base}
+        \begin{itemize}
+        \item 5 points d'aspirations maximum par case
+        \item Possède une puissance d'aspiration qui réduit la distance de cette case au reste du plateau
+        \item Case de récolte du plasma
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Points d'actions}
+	\begin{itemize}
+	\item[+] commencer un tour
+	\item[\alert{--}] construire un tuyau
+	\item[\alert{--}] améliorer un tuyau
+	\item[\alert{--}] déplacer la puissance d'aspiration
+	\item[\alert{--}] détruire un tuyau/super-tuyau
+	\item[\alert{--}] déblayer un tuyau détruit
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Conférences}
+\end{frame}
+\end{document}
