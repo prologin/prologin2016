@@ -1,10 +1,8 @@
-!function(t){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=t();else if("function"==typeof define&&define.amd)define([],t);else{var e;e="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this,e.PriorityQueue=t()}}(function(){return function t(e,i,r){function o(n,s){if(!i[n]){if(!e[n]){var h="function"==typeof require&&require;if(!s&&h)return h(n,!0);if(a)return a(n,!0);var u=new Error("Cannot find module '"+n+"'");throw u.code="MODULE_NOT_FOUND",u}var p=i[n]={exports:{}};e[n][0].call(p.exports,function(t){var i=e[n][1][t];return o(i?i:t)},p,p.exports,t,e,i,r)}return i[n].exports}for(var a="function"==typeof require&&require,n=0;n<r.length;n++)o(r[n]);return o}({1:[function(t,e,i){var r,o,a,n,s,h=function(t,e){function i(){this.constructor=t}for(var r in e)u.call(e,r)&&(t[r]=e[r]);return i.prototype=e.prototype,t.prototype=new i,t.__super__=e.prototype,t},u={}.hasOwnProperty;r=t("./PriorityQueue/AbstractPriorityQueue"),o=t("./PriorityQueue/ArrayStrategy"),n=t("./PriorityQueue/BinaryHeapStrategy"),a=t("./PriorityQueue/BHeapStrategy"),s=function(t){function e(t){t||(t={}),t.strategy||(t.strategy=n),t.comparator||(t.comparator=function(t,e){return(t||0)-(e||0)}),e.__super__.constructor.call(this,t)}return h(e,t),e}(r),s.ArrayStrategy=o,s.BinaryHeapStrategy=n,s.BHeapStrategy=a,e.exports=s},{"./PriorityQueue/AbstractPriorityQueue":2,"./PriorityQueue/ArrayStrategy":3,"./PriorityQueue/BHeapStrategy":4,"./PriorityQueue/BinaryHeapStrategy":5}],2:[function(t,e,i){var r;e.exports=r=function(){function t(t){var e;if(null==(null!=t?t.strategy:void 0))throw"Must pass options.strategy, a strategy";if(null==(null!=t?t.comparator:void 0))throw"Must pass options.comparator, a comparator";this.priv=new t.strategy(t),this.length=(null!=t&&null!=(e=t.initialValues)?e.length:void 0)||0}return t.prototype.queue=function(t){this.length++,this.priv.queue(t)},t.prototype.dequeue=function(t){if(!this.length)throw"Empty queue";return this.length--,this.priv.dequeue()},t.prototype.peek=function(t){if(!this.length)throw"Empty queue";return this.priv.peek()},t.prototype.clear=function(){return this.length=0,this.priv.clear()},t}()},{}],3:[function(t,e,i){var r,o;o=function(t,e,i){var r,o,a;for(o=0,r=t.length;r>o;)a=o+r>>>1,i(t[a],e)>=0?o=a+1:r=a;return o},e.exports=r=function(){function t(t){var e;this.options=t,this.comparator=this.options.comparator,this.data=(null!=(e=this.options.initialValues)?e.slice(0):void 0)||[],this.data.sort(this.comparator).reverse()}return t.prototype.queue=function(t){var e;e=o(this.data,t,this.comparator),this.data.splice(e,0,t)},t.prototype.dequeue=function(){return this.data.pop()},t.prototype.peek=function(){return this.data[this.data.length-1]},t.prototype.clear=function(){this.data.length=0},t}()},{}],4:[function(t,e,i){var r;e.exports=r=function(){function t(t){var e,i,r,o,a,n,s,h,u;for(this.comparator=(null!=t?t.comparator:void 0)||function(t,e){return t-e},this.pageSize=(null!=t?t.pageSize:void 0)||512,this.length=0,h=0;1<<h<this.pageSize;)h+=1;if(1<<h!==this.pageSize)throw"pageSize must be a power of two";for(this._shift=h,this._emptyMemoryPageTemplate=e=[],i=r=0,n=this.pageSize;n>=0?n>r:r>n;i=n>=0?++r:--r)e.push(null);if(this._memory=[],this._mask=this.pageSize-1,t.initialValues)for(s=t.initialValues,o=0,a=s.length;a>o;o++)u=s[o],this.queue(u)}return t.prototype.queue=function(t){this.length+=1,this._write(this.length,t),this._bubbleUp(this.length,t)},t.prototype.dequeue=function(){var t,e;return t=this._read(1),e=this._read(this.length),this.length-=1,this.length>0&&(this._write(1,e),this._bubbleDown(1,e)),t},t.prototype.peek=function(){return this._read(1)},t.prototype.clear=function(){this.length=0,this._memory.length=0},t.prototype._write=function(t,e){var i;for(i=t>>this._shift;i>=this._memory.length;)this._memory.push(this._emptyMemoryPageTemplate.slice(0));return this._memory[i][t&this._mask]=e},t.prototype._read=function(t){return this._memory[t>>this._shift][t&this._mask]},t.prototype._bubbleUp=function(t,e){var i,r,o,a;for(i=this.comparator;t>1&&(r=t&this._mask,t<this.pageSize||r>3?o=t&~this._mask|r>>1:2>r?(o=t-this.pageSize>>this._shift,o+=o&~(this._mask>>1),o|=this.pageSize>>1):o=t-2,a=this._read(o),!(i(a,e)<0));)this._write(o,e),this._write(t,a),t=o},t.prototype._bubbleDown=function(t,e){var i,r,o,a,n;for(n=this.comparator;t<this.length;)if(t>this._mask&&!(t&this._mask-1)?i=r=t+2:t&this.pageSize>>1?(i=(t&~this._mask)>>1,i|=t&this._mask>>1,i=i+1<<this._shift,r=i+1):(i=t+(t&this._mask),r=i+1),i!==r&&r<=this.length)if(o=this._read(i),a=this._read(r),n(o,e)<0&&n(o,a)<=0)this._write(i,e),this._write(t,o),t=i;else{if(!(n(a,e)<0))break;this._write(r,e),this._write(t,a),t=r}else{if(!(i<=this.length))break;if(o=this._read(i),!(n(o,e)<0))break;this._write(i,e),this._write(t,o),t=i}},t}()},{}],5:[function(t,e,i){var r;e.exports=r=function(){function t(t){var e;this.comparator=(null!=t?t.comparator:void 0)||function(t,e){return t-e},this.length=0,this.data=(null!=(e=t.initialValues)?e.slice(0):void 0)||[],this._heapify()}return t.prototype._heapify=function(){var t,e,i;if(this.data.length>0)for(t=e=1,i=this.data.length;i>=1?i>e:e>i;t=i>=1?++e:--e)this._bubbleUp(t)},t.prototype.queue=function(t){this.data.push(t),this._bubbleUp(this.data.length-1)},t.prototype.dequeue=function(){var t,e;return e=this.data[0],t=this.data.pop(),this.data.length>0&&(this.data[0]=t,this._bubbleDown(0)),e},t.prototype.peek=function(){return this.data[0]},t.prototype.clear=function(){this.length=0,this.data.length=0},t.prototype._bubbleUp=function(t){for(var e,i;t>0&&(e=t-1>>>1,this.comparator(this.data[t],this.data[e])<0);)i=this.data[e],this.data[e]=this.data[t],this.data[t]=i,t=e},t.prototype._bubbleDown=function(t){var e,i,r,o,a;for(e=this.data.length-1;;){if(i=(t<<1)+1,o=i+1,r=t,e>=i&&this.comparator(this.data[i],this.data[r])<0&&(r=i),e>=o&&this.comparator(this.data[o],this.data[r])<0&&(r=o),r===t)break;a=this.data[r],this.data[r]=this.data[t],this.data[t]=a,t=r}},t}()},{}]},{},[1])(1)});
-
 $(function () {
   const N_CELLS = 39;
-  const CELL_SIZE = 18;
+  const CELL_SIZE = 20;
   const N_BASES = parseInt(N_CELLS / 3);
-  const TURN_DURATION = 250;
+  let TURN_DURATION = 250;
   const B_WIDTH = 2, B_PAD = .5, B_OFFSET = .3;
   const PLAYER_COLORS = ['#ff71b0', '#8aff73'];
 
@@ -21,24 +19,48 @@ $(function () {
 
   const coordFunc = d => [d.x, d.y];
 
-  let $replay = $('#replay'),
-    $playPause = $('#replay-playpause'),
-    $previous = $('#replay-previous'),
-    $next = $('#replay-next'),
-    $turnLabel = $('#replay-turn-label'),
-    $turnSlider = $('#replay-turn-slider');
+  let
+    $playPause = $('#ui-playpause'),
+    $previous = $('#ui-previous'),
+    $next = $('#ui-next'),
+    $turnLabel = $('#ui-turn'),
+    $maxTurnLabel = $('#ui-turn-max'),
+    $turnSlider = $('#ui-turn-slider'),
+    $coordsSection = $('#ui-mouse-section'),
+    $coords = $('#ui-mouse-coords'),
+    $cellInfo = $('#ui-cell-info'),
+    $cellImg = $('#ui-cell-img'),
+    $cellType = $('#ui-cell-type'),
+    $cellProps = $('#ui-cell-props'),
+    $spConnecting = $('#sp-connecting'),
+    $spWaitingPlayer = $('#sp-waiting'),
+    $spGameOver = $('#sp-gameover'),
+    $previousNext = $('#ui-previous,#ui-next')
+    ;
 
   let playing = false, playerColors = {}, animationEnabled = true;
-  let turnIndex, turnForward, playingTimer, nextTurnCallback;
+  let turnIndex, turnForward, playingTimer, nextTurnCallback, lastCoords = {
+    x: null,
+    y: null
+  };
 
-  $replay.hide();
+  $spWaitingPlayer.hide();
+  $spGameOver.hide();
+
+  function index(x, y) {
+    return x * N_CELLS + y;
+  }
+
+  function plasmaRadius(plasma) {
+    return Math.max(0.1, Math.min(0.9, Math.sqrt(plasma / 2))) * CELL_SIZE / 3;
+  }
 
   function svg_translate(d) {
     return 'translate(' + [(d.x + .5) * CELL_SIZE, (d.y + .5) * CELL_SIZE] + ')';
   }
 
   // setup game board
-  let svg = d3.select('#replay-board').append('svg')
+  let svg = d3.select('#main').append('svg')
     .attr('width', (2 + N_CELLS) * CELL_SIZE)
     .attr('height', (2 + N_CELLS) * CELL_SIZE);
 
@@ -87,7 +109,7 @@ $(function () {
         .attr('id', typeName + i)
         .append('image')
         .attr('transform', 'translate(-' + i * 32 + ' -' + typeN * 32 + ')')
-        .attr('xlink:href', '/static/pipes.png')
+        .attr('xlink:href', 'assets/pipes.png')
         // .attr('clip-path', 'url(#clip)')
         .attr('width', 32 * 20).attr('height', 32 * 2);
     }
@@ -100,7 +122,7 @@ $(function () {
       .attr('id', 'explosion' + i)
       .append('image')
       .attr('transform', 'translate(-' + (i % 4) * 32 + ' -' + parseInt(i / 4) * 32 + ')')
-      .attr('xlink:href', '/static/boom.png')
+      .attr('xlink:href', 'assets/boom.png')
       // .attr('clip-path', 'url(#clip)')
       .attr('width', 32 * 4).attr('height', 32 * 4);
   }
@@ -110,7 +132,7 @@ $(function () {
     .append('symbol')
     .attr('id', 'pulsar')
     .append('image')
-    .attr('xlink:href', '/static/energy.gif')
+    .attr('xlink:href', 'assets/energy.gif')
     .attr('width', 64).attr('height', 64);
 
   // debris sprite
@@ -118,11 +140,31 @@ $(function () {
     .append('symbol')
     .attr('id', 'debris')
     .append('image')
-    .attr('xlink:href', '/static/debris.png')
+    .attr('xlink:href', 'assets/debris.png')
     .attr('width', 32).attr('height', 32);
 
   let svgContent = svg.append('g')
     .attr('transform', 'translate(' + [CELL_SIZE / 2, CELL_SIZE / 2] + ')');
+
+  svg
+    .on('mousemove', () => {
+      let [x, y] = d3.mouse(svgContent.node());
+      x = parseInt((x - CELL_SIZE / 2) / CELL_SIZE);
+      y = parseInt((y - CELL_SIZE / 2) / CELL_SIZE);
+      if (x !== lastCoords.x || y !== lastCoords.y) {
+        lastCoords = {x: x, y: y};
+        if (x < 0 || y < 0 || x >= N_CELLS || y >= N_CELLS) {
+          $coordsSection.css('visibility', 'hidden');
+        } else {
+          $coords.text(('00' + x).slice(-2) + ', ' + ('00' + y).slice(-2));
+          $coordsSection.css('visibility', 'visible');
+          updateCurrentCell(turnIndex);
+        }
+      }
+    })
+    .on('mouseleave', () => {
+      $coordsSection.css('visibility', 'hidden');
+    });
 
   // grid surface
   svgContent.append('rect')
@@ -150,8 +192,57 @@ $(function () {
   base(-1 - B_OFFSET, baseCenter - B_PAD / 2, B_WIDTH, N_BASES + B_PAD);
   base(N_CELLS - 1 + B_OFFSET, baseCenter - B_PAD / 2, B_WIDTH, N_BASES + B_PAD);
 
-  function renderMap(previousMapData, mapData, pulsarData) {
-    let index = (x, y) => x * N_CELLS + y;
+  function updateCurrentCell(turnIndex) {
+    let x = lastCoords.x, y = lastCoords.y;
+
+    function prop(name, value) {
+      $cellProps.append($('<dt>').text(name));
+      $cellProps.append($('<dd>').text(value));
+    }
+
+    function plural(q, p = 's', s = '') {
+      return q <= 1 ? s : p;
+    }
+
+    $cellProps.empty();
+    $cellInfo.css('visibility', 'visible');
+    $cellImg.attr('class', '');
+    let turn = turnCache[turnIndex], cell = turn.map[index(x, y)];
+    if (!cell)
+      return;
+    let type = parseInt(cell.type);
+    if (type === CellType.PIPE || type === CellType.SUPER_PIPE) {
+      if (type === CellType.SUPER_PIPE) {
+        $cellType.text("Super-tuyau");
+        $cellImg.addClass('cell-super-pipe');
+      } else {
+        $cellType.text("Tuyau");
+        $cellImg.addClass('cell-pipe');
+      }
+      prop("Débit", type === CellType.SUPER_PIPE ? 2 : 1);
+      prop("Charge transportée", cell.plasma);
+    } else if (type === CellType.DEBRIS) {
+      $cellImg.addClass('cell-destroyed-pipe');
+      $cellType.text("Débris de tuyau");
+    } else if (type === CellType.PULSAR) {
+      cell = turn.pulsars.filter(d => d.x === x && d.y === y)[0];
+      $cellType.text("Pulsar");
+      $cellImg.addClass('cell-pulsar');
+      prop("Période", "" + cell.period + " tours");
+      let tl = cell.period - 1 - ((turnIndex) % cell.period);
+      prop("Émet", (cell.n_pulses === 0) ? "n/a" : (tl === 0) ? "maintenant" : "dans " + tl + " tour" + plural(tl));
+      prop("Charge par pulse", cell.power);
+      prop("Capacité", (cell.n_pulses > 0) ? cell.n_pulses + " pulse" + plural(cell.n_pulses) : "mort");
+    } else if (type === CellType.BASE) {
+      $cellType.text("Base");
+      $cellImg.addClass('cell-base');
+      prop("Force d'aspiration", cell.vacuum);
+    } else {
+      $cellInfo.css('visibility', 'hidden');
+    }
+  }
+
+  function renderMap(turnIndex, previousMapData, mapData, pulsarData) {
     let plasmaAnimated = animationEnabled && turnForward && previousMapData;
     let explosionData = [];
     let clearedDebrisData = [];
@@ -347,7 +438,7 @@ $(function () {
               .attr('fill', 'white')
               .attr('fill-opacity', .9)
               .attr('cx', CELL_SIZE / 2).attr('cy', CELL_SIZE / 2)
-              .attr('r', Math.max(0.1, Math.min(0.9, pulsar.power / 2)) * CELL_SIZE / 3)
+              .attr('r', plasmaRadius(pulsar.power))
               .attr('transform', svg_translate(pulsar))
               .transition().ease('linear').duration(TURN_DURATION)
               .attr('transform', svg_translate(destination))
@@ -378,7 +469,7 @@ $(function () {
           let animate = () => {
             let t = plasmaLayer
               .append('circle')
-              .attr('r', Math.max(0.1, Math.min(0.9, d.plasma * p.factor / 2)) * CELL_SIZE / 3)
+              .attr('r', plasmaRadius(d.plasma * p.factor))
               .attr('cx', CELL_SIZE / 2).attr('cy', CELL_SIZE / 2)
               .attr('transform', svg_translate(p.from))
               .attr('fill', 'white')
@@ -430,7 +521,7 @@ $(function () {
     if (plasmaAnimated)
       tt = tt.transition().delay(TURN_DURATION).duration(0);
     tt.attr('fill', d => d.plasma > 0 ? 'white' : 'none')
-      .attr('r', d => Math.max(0.1, Math.min(0.9, d.plasma / 2)) * CELL_SIZE / 3);
+      .attr('r', d => plasmaRadius(d.plasma));
 
     let debrisData = mapData.filter(d => d.type === CellType.DEBRIS);
 
@@ -484,7 +575,9 @@ $(function () {
     }
   }
 
-  function renderTurn(previousTurnData, turnData) {
+  function renderTurn(index) {
+    let previousTurnData = turnCache[index - 1], turnData = turnCache[index];
+    console.assert(turnData.turn[0] === index);
     let complete = (d, i) => ({
       // literal copy is *much* faster than $.extend
       owner: d.owner,
@@ -498,93 +591,88 @@ $(function () {
       if (!turnData.players.hasOwnProperty(pid))
         continue;
       // update scores
-      $('.replay-player[data-id=' + pid + '] .score').text(turnData.players[pid].score);
+      $('.ui-player[data-id=' + pid + '] .ui-player-score').text(turnData.players[pid].score);
     }
-    renderMap(previousTurnData ? previousTurnData.map.map(complete) : null, turnData.map.map(complete), turnData.pulsars);
+    $turnLabel.text(index);
+    $turnSlider.val(index);
+    $previous.prop('disabled', !canGoBackwards || index <= 0);
+    $next.prop('disabled', index >= turnCount);
+    $playPause.prop('disabled', index >= turnCount);
+    renderMap(index, previousTurnData ? previousTurnData.map.map(complete) : null, turnData.map.map(complete), turnData.pulsars);
+    updateCurrentCell(index);
     if (playing) {
       clearTimeout(playingTimer);
       playingTimer = setTimeout(nextTurnCallback, TURN_DURATION + 25);
     }
   }
 
-  console.log('loading dump');
-  $.get("dump/", function (game_data) {
-    let turns = game_data.split('\n').filter(Boolean).map(JSON.parse);
-    console.log('loaded', turns.length, 'turns');
-    let firstTurn = turns[0];
-    let turnCount = firstTurn.turn[1];
+  let backoff = 1, socket, turnCount, turnCache = [], canGoBackwards = false, canSeek = false, tvMode = false;
 
-    // build player legend
-    let $legend = $('#replay-legend').empty();
-    let i = 0;
-    for (let pid in firstTurn.players) {
-      if (firstTurn.players.hasOwnProperty(pid)) {
-        let player = firstTurn.players[pid], color = PLAYER_COLORS[i++];
-        playerColors[pid] = color;
-        let $el = $('<div/>').attr('data-id', pid).addClass('replay-player');
-        let svg = d3.select($el[0]).append('svg').attr('width', CELL_SIZE).attr('height', CELL_SIZE);
-        svg.append('circle').attr('r', CELL_SIZE / 2).attr('cx', CELL_SIZE / 2).attr('cy', CELL_SIZE / 2).attr('fill', color);
-        $el
-          .append($('<span/>').addClass('name').text(player.name))
-          .append($('<span/>').addClass('score'));
-        $legend.append($el);
-      }
-    }
+  function init(turnData) {
+    turnCount = turnData.turn[1];
+    $maxTurnLabel.text(turnCount);
+    $turnSlider.attr('min', 0).attr('max', turnCount).val(turnData.turn[0]);
+    $turnSlider.prop('disabled', !canSeek);
 
-    // ui handlers
-    $previous.click(function () {
-      turnIndex--;
-      turnForward = false;
-      $turnSlider.val(turnIndex).trigger('change');
-    });
-
-    $next.click(function () {
-      turnIndex++;
-      turnForward = true;
-      $turnSlider.val(turnIndex).trigger('change');
-    });
-
-    $turnSlider.change(function () {
-      let newTurnIndex = parseInt($turnSlider.val());
-      if (turnIndex != newTurnIndex)
-        turnForward = turnIndex < newTurnIndex;
-      turnIndex = newTurnIndex;
-      $previous.prop('disabled', turnIndex <= 0);
-      $next.prop('disabled', turnIndex >= turns.length - 1);
-      $turnLabel.text(('000' + turns[turnIndex].turn[0]).slice(-3));
-      renderTurn(turns[turnIndex - 1], turns[turnIndex]);
-    });
-    $turnSlider.attr('min', 0).attr('max', turns.length - 1).val(0);
-    $turnSlider.trigger('change');
+    let updatePlayPause = function () {
+      $playPause.html(playing ? '&#9646;&#9646;' : '&blacktriangleright;');
+    };
 
     nextTurnCallback = function () {
       clearTimeout(playingTimer); // just to be sure
-      turnIndex++;
-      turnForward = true;
-      if (turnIndex >= turns.length) {
-        turnForward = false;
-        turnIndex = turns.length - 1;
-        playing = true; // trigger pause
-        $playPause.trigger('click');
-        return;
+      if (turnIndex >= turnCount) {
+        playing = false;
+        updatePlayPause();
+      } else {
+        $next.trigger('click');
       }
-      $turnSlider.val(turnIndex).trigger('change');
     };
 
+    let i = 0;
+    for (let pid in turnData.players) {
+      if (turnData.players.hasOwnProperty(pid)) {
+        let player = turnData.players[pid], color = PLAYER_COLORS[i];
+        playerColors[pid] = color;
+        let $el = $('.ui-player:eq(' + i + ')').attr('data-id', pid);
+        $el.find('.ui-player-marker').css('backgroundColor', color);
+        $el.find('.ui-player-name').text(player.name);
+        $el.find('.ui-player-score').text('?');
+        i++;
+      }
+    }
+
+    $turnSlider.change(function () {
+      if (!canSeek)
+        return;
+      let index = parseInt($turnSlider.val());
+      turnForward = false;
+      $previousNext.prop('disabled', true);
+      send('seek', {index: index});
+    });
+
+    $previous.click(function () {
+      if (!canGoBackwards)
+        return;
+      turnForward = false;
+      $previousNext.prop('disabled', true);
+      // TODO: show spinner
+      send('previous');
+    });
+
+    $next.click(function () {
+      turnForward = true;
+      $previousNext.prop('disabled', true);
+      send('next');
+    });
+
     $playPause.click(function () {
-      if (!playing && turnIndex >= turns.length - 1)
+      if (!playing && turnIndex >= turnCount)
         return;
       playing = !playing;
-      $playPause
-        .find('span').text(playing ? 'Pause' : 'Lecture');
-      $playPause
-        .find('i')
-        .toggleClass('fa-play', !playing)
-        .toggleClass('fa-pause', playing);
+      updatePlayPause();
+      clearTimeout(playingTimer);
       if (playing) {
         playingTimer = setTimeout(nextTurnCallback, TURN_DURATION);
-      } else {
-        clearTimeout(playingTimer);
       }
     });
 
@@ -602,34 +690,78 @@ $(function () {
       } else if (key === 37) {
         // left
         stop();
-        turnIndex -= offset;
-        $turnSlider.val(turnIndex).trigger('change');
+        $previous.trigger('click');
+        // turnIndex -= offset;
+        // $turnSlider.val(turnIndex).trigger('change');
       } else if (key === 39) {
         // right
         stop();
-        turnIndex += offset;
-        $turnSlider.val(turnIndex).trigger('change');
+        $next.trigger('click');
+        // turnIndex += offset;
+        // $turnSlider.val(turnIndex).trigger('change');
       } else if (key === 65) {
         // a
         stop();
-        turnIndex = 0;
-        $turnSlider.val(turnIndex).trigger('change');
+        // turnIndex = 0;
+        // $turnSlider.val(turnIndex).trigger('change');
       } else if (key === 69) {
         // e
         stop();
-        turnIndex = turns.length - 1;
-        $turnSlider.val(turnIndex).trigger('change');
+        // turnIndex = turns.length - 1;
+        // $turnSlider.val(turnIndex).trigger('change');
       } else if (key === 77) {
         // m
         animationEnabled = !animationEnabled;
       }
     });
+  }
 
-    // ready, trigger a fake play/pause to init everything
-    playing = true;
-    $playPause.trigger('click');
+  function connect() {
+    console.log('trying to connect');
+    socket = new WebSocket(WS_URI);
+    socket.onopen = () => {
+      backoff = 1;
+      console.log('connected to server');
+      send('hello');
+    };
+    socket.onerror = (e) => {
+      console.warn(e);
+      // check error code, don't reconnect if not needed
+      backoff = Math.min(4, backoff + 1);
+      setTimeout(connect, 1000 * Math.pow(1.5, backoff));
+    };
+    socket.onmessage = (msg) => {
+      msg = JSON.parse(msg.data);
+      console.log('ws >', msg);
+      if (msg.c === 'whatsup') {
+        turnCache = [];
+        canGoBackwards = msg.canGoBackwards;
+        canSeek = msg.canSeek;
+        tvMode = msg.tvMode;
+      } else if (msg.c === 'end') {
+        // TODO: show game end
+      } else if (msg.c === 'turn') {
+        let turnData = msg.state;
+        let needInit = !turnCache.length;
+        turnIndex = turnData.turn[0];
+        turnCache[turnIndex] = turnData;
+        if (needInit) {
+          init(turnData);
+          $spConnecting.fadeOut(() => $('#main,#sidebar').fadeIn());
+          if (tvMode) {
+            setTimeout(() => $playPause.trigger('click'), 2 * TURN_DURATION);
+          }
+        }
+        renderTurn(turnIndex);
+      }
+    };
+  }
 
-    // reveal the UI
-    $replay.fadeIn('fast');
-  });
+  function send(cmd, data) {
+    let msg = $.extend({c: cmd}, data);
+    console.log('ws <', msg);
+    socket.send(JSON.stringify(msg));
+  }
+
+  connect();
 });

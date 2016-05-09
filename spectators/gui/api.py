@@ -1,5 +1,5 @@
 # coding: iso-8859-1
-from _api import *
+#from _api import *
 
 # Taille du terrain (longueur et largeur).
 TAILLE_TERRAIN = 39

@@ -13,6 +13,11 @@ body {
     left: 0;
 }
 
+#main > svg {
+    background: black;
+    overflow: hidden;
+}
+
 #main, #sidebar {
     display: none;
 }
@@ -80,18 +85,25 @@ body {
 }
 
 #sidebar {
-    position: absolute;
+    position: fixed;
     padding: 1em;
     top: 0;
     right: 0;
+    bottom: 0;
+    min-width: 300px;
 }
 
-#controls {
-    margin-top: 80px;
-    width: 100%;
+#information {
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
 }
 
-#controls > section {
+#information > section {
     display: flex;
     align-items: flex-start;
     align-content: stretch;
@@ -100,10 +112,9 @@ body {
     margin: 3em 0;
 }
 
-#controls > section > div {
+#information > section > div {
     text-align: center;
     align-self: auto;
-    flex: 0 1 50%;
     margin: 0 .5em;
     white-space: nowrap;
     overflow: hidden;
@@ -113,10 +124,7 @@ body {
 .brand {
     margin: 0;
     padding: 0;
-    position: absolute;
-    left: 90px;
     font-size: 34px;
-    top: 26px;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -138,25 +146,24 @@ body {
     vertical-align: middle;
 }
 
-#ui-mouse-section {
-    align-self: flex-end;
-}
-
-#ui-game-progress {
-    box-sizing: border-box;
-    height: 16px;
+#ui-turn-index {
     width: 100%;
-    border-radius: 3px;
-    border: 1px solid #444;
-    overflow: hidden;
-    background-color: #111;
 }
 
-#ui-game-progress-bar {
-    background: url(platform.center.png) repeat 100% 0;
-    background-size: 16px 16px;
-    height: 16px;
-    transition: all .5s linear;
+.btn {
+    border-radius: 3px;
+    border: none;
+    padding: 4px 8px;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    height: 24px;
+}
+
+.btn:disabled {
+    opacity: .7;
+    cursor: auto;
 }
 
 .ui-player-marker {
@@ -179,6 +186,7 @@ body {
     border-radius: 6px;
     padding: 1em 0;
     transition: background .2s linear, color .2s linear;
+    flex: 1 1 50%;
 }
 
 .ui-minor {
@@ -219,6 +227,26 @@ body {
     font-weight: bold;
 }
 
+#controls {
+    display: flex;
+    flex-direction: row;
+}
+
+#controls > * {
+    margin: 0 4px;
+}
+
+#controls input {
+    vertical-align: middle;
+    display: inline;
+    flex: 1 1 auto;
+}
+
+#ui-playpause {
+    width: 2.5em;
+    text-align: center;
+}
+
 .cell-pipe {
     background: url(pipes.png) -96px 0;
 }
@@ -241,22 +269,57 @@ body {
     background: url(debris.png) 0 0;
 }
 
-#ui-game-timeline li {
-    opacity: .5;
+input[type=range] {
+    height: 24px;
+    background: none;
+    -webkit-appearance: none;
 }
 
-#ui-game-timeline.ui-tl-1 li:nth-child(1) {
-    opacity: 1;
+input[type=range]:focus {
+    outline: none
 }
 
-#ui-game-timeline.ui-tl-2 li:nth-child(1), #ui-game-timeline.ui-tl-2 li:nth-child(2) {
-    opacity: 1;
+input[type=range]::-webkit-slider-runnable-track {
+    height: 24px;
+    cursor: pointer;
+    box-shadow: none;
+    background: #4b4d4d;
+    border-radius: 3px;
+    padding: 0 5px
 }
 
-#ui-game-timeline.ui-tl-3 li:nth-child(1), #ui-game-timeline.ui-tl-3 li:nth-child(2), #ui-game-timeline.ui-tl-3 li:nth-child(3) {
-    opacity: 1;
+input[type=range]::-webkit-slider-thumb {
+    box-shadow: 0px 0px 1.8px #600000, 0px 0px 0px #7a0000;
+    border: none;
+    height: 14px;
+    width: 9px;
+    border-radius: 7px;
+    background: rgba(255, 67, 103, 0.78);
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: 5.3px
 }
 
-#ui-game-timeline.ui-tl-4 li:nth-child(1), #ui-game-timeline.ui-tl-4 li:nth-child(2), #ui-game-timeline.ui-tl-4 li:nth-child(3), #ui-game-timeline.ui-tl-4 li:nth-child(4) {
-    opacity: 1;
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #4b4d4d
+}
+
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 24px;
+    cursor: pointer;
+    box-shadow: none;
+    background: #4b4d4d;
+    border-radius: 3px;
+    padding: 0 5px
+}
+
+input[type=range]::-moz-range-thumb {
+    box-shadow: 0px 0px 1.8px #600000, 0px 0px 0px #7a0000;
+    border: 0px solid rgba(255, 30, 0, 0);
+    height: 14px;
+    width: 9px;
+    border-radius: 7px;
+    background: rgba(255, 67, 103, 0.78);
+    cursor: pointer
 }

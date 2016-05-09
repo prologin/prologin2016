@@ -33,36 +33,7 @@
   <div id="logo"></div>
   <h1 class="brand">Prologin 2016</h1>
 
-  <section id="controls">
-    <section>
-      <div>
-        Tour <span id="ui-turn" class="ui-hl"></span> <span class="ui-minor">sur <span
-        id="ui-turn-max"></span></span>
-      </div>
-      <div>
-        Round <span id="ui-round" class="ui-hl"></span> <span class="ui-minor">sur <span
-        id="ui-round-max" class="ui-minor"></span></span>
-      </div>
-    </section>
-
-    <section style="margin: 0;">
-      <div style="flex: 0 1 80%;">
-        <div id="ui-game-progress">
-          <div id="ui-game-progress-bar" style="width: 0"></div>
-        </div>
-      </div>
-    </section>
-
-    <section style="margin: 0;">
-      <div style="flex: 0 1 80%;">
-        <ol id="ui-game-timeline">
-          <li>Actions du joueur</li>
-          <li>Déplacement du plasma</li>
-          <li>Éruption des pulsars</li>
-        </ol>
-      </div>
-    </section>
-
+  <section id="information">
     <section>
       <div class="ui-player player-a">
         <div class="ui-player-marker"></div>
@@ -83,7 +54,7 @@
       </div>
     </section>
 
-    <section id="ui-cell-info">
+    <section id="ui-cell-info" style="flex-grow: 1">
       <div style="flex: 0 1 20%;">
         <span id="ui-cell-img"></span>
       </div>
@@ -92,14 +63,30 @@
         <dl id="ui-cell-props"></dl>
       </div>
     </section>
+
+    <section style="margin-bottom: 1em;">
+      <div>
+        Tour <span id="ui-turn" class="ui-hl"></span> <span class="ui-minor">sur <span
+        id="ui-turn-max"></span></span>
+      </div>
+    </section>
+
+    <section id="controls" style="margin-top: 0">
+      <button class="btn btn-default btn-xs" id="ui-playpause"><span class="icon">&blacktriangleright;</span></button>
+      <button class="btn btn-default btn-xs" id="ui-previous">&lsaquo;</button>
+      <button class="btn btn-default btn-xs" id="ui-next">&rsaquo;</button>
+      <input type="range" id="ui-turn-slider"/>
+    </section>
   </section>
+
 </section>
 
+<script type="application/javascript">
+  var WS_URI = 'ws://127.0.0.1:8099/ws';
+</script>
 <script src="js/jquery.min.js"></script>
-<script src="js/phaser.js"></script>
+<script src="js/d3.min.js"></script>
 <script src="js/priority-queue.min.js"></script>
-<script src="js/starfield.js"></script>
-<script src="js/entity.js"></script>
-<script src="js/player.phaser.js"></script>
+<script src="js/player.d3.js"></script>
 </body>
 </html>
