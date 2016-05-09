@@ -85,7 +85,7 @@ class Server:
         # webbrowser.open('http://127.0.0.1:8099/www/index.html')
         self.event_ready.wait()
         if is_player:
-            self.send('player')
+            self.send('interactive')
 
     def run_forever(self):
         asyncio.set_event_loop(self.loop)

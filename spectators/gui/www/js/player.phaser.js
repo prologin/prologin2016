@@ -72,6 +72,7 @@ class Board {
   constructor(n) {
     this.n = n;
     this.entities = {};
+    this.interactive = false;
   }
 
   iterate(type = Entity, cb) {
@@ -172,6 +173,12 @@ class Network {
     if (msg.c === 'whatsup') {
       board = new Board(msg.size);
       gameManager = new GameManager(msg.size, msg.maxTurn);
+      return;
+    }
+
+    if (msg.c === 'interactive') {
+      // This means that this is a real player, not a spectator
+      this.interactive = true;
       return;
     }
 
@@ -750,12 +757,12 @@ class GameManager {
 
           shouldUpdateUi = true;
 
-          if (autoForward || game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+          if (self.interactive || autoForward || game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
             gameManager.moveForward();
 
         } else if (turnState === TurnState.PULSARS_LOOTED || turnState === TurnState.TURN_BEGINS) {
 
-          if (autoForward || game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+          if (self.interactive == autoForward || game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
             gameManager.moveForward();
 
         }
