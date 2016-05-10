@@ -37,7 +37,7 @@
 % Or whatever. Note that the encoding and the font should match. If T1
 % does not look nice, try deleting the line with the fontenc.
 
-\title[Petit guide des bonnes pratiques pour la construction et la maintenance d'$\alpha$-extracteurs cosmiques à vacuité]
+%\title[Petit guide des bonnes pratiques pour la construction et la maintenance d'$\alpha$-extracteurs cosmiques à vacuité]
 {}
 
 \titlegraphic{\raisebox{2em}{}}
@@ -54,15 +54,16 @@
 
 
 \begin{frame}
-	\frametitle{Petit guide des bonnes pratiques pour la construction et la maintenance d'$\alpha$-extracteurs cosmiques à vacuité}
-	\vspace{0.5cm} \centering \includegraphics[width=0.9\linewidth]{../prologin2016}
+        \centering \includegraphics[width=0.9\linewidth]{../prologin2016} \\
+        \vspace{1.5cm}
+	Petit guide des bonnes pratiques pour la construction et la maintenance d'$\alpha$-extracteurs cosmiques à vacuité
 \end{frame}
 
 \begin{frame}
 	\frametitle{Présentation}
 	\begin{itemize}
-        \item Jeu de stratégie à 2 joueurs : \textcolor{green}{Vert} et
-            \textcolor{red}{Rouge}
+        \item Jeu de stratégie à 2 joueurs : \textcolor{green}{\textbf{Vert}} et
+            \textcolor{pink}{\textbf{Rose}}
         \item Tour par tour
         \item Carte carrée de taille fixe
 	\end{itemize}
@@ -70,45 +71,99 @@
 
 \begin{frame}
 	\frametitle{Plateau}
+	\center{\includegraphics[width=7cm]{pictures/map}}
 \end{frame}
 
 \begin{frame}
 	\frametitle{Pulsar}
-        \begin{itemize}
-        \item Période de pulsation $T$
-        \item Puissance d'émission $P$
-        \item Nombre de pulsations restantes $R$
-	\end{itemize}
+    \begin{columns}[T]
+        \begin{column}{.3\textwidth}
+            \includegraphics[width=3cm]{pictures/pulsar}
+        \end{column}
+        \begin{column}{.7\textwidth}
+            \begin{itemize}
+                \item Période de pulsation $T$
+                \item Puissance d'émission $P$
+                \item Nombre de pulsations restantes $R$
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Tuyau}
+    \begin{columns}[T]
+        \begin{column}{.05\textwidth}
+        \end{column}
+        \begin{column}{.4\textwidth}
+            \center{Simple tuyau} \\
+            \vspace{1.5cm}
+            \includegraphics[width=3cm]{pictures/tuyau}
+        \end{column}
+        \begin{column}{.55\textwidth}
+            \center{Super tuyau} \\
+            \vspace{0.8cm}
+            \includegraphics[width=3cm]{pictures/super-tuyau}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}
 	\frametitle{Plasma}
-        \begin{itemize}
-        \item Ressource émise par les pulsars
-        \item Se déplace dans la direction qui qui le raproche le plus d'une base
-        \item Disparaît s'il n'est relié à aucun tuyau à la fin d'un tour
-	\end{itemize}
+    \begin{columns}[T]
+        \begin{column}{.3\textwidth}
+            \includegraphics[width=3cm]{pictures/emission}
+        \end{column}
+        \begin{column}{.7\textwidth}
+            \begin{itemize}
+                \item Ressource émise par les pulsars
+                \item Se déplace dans la direction qui le raproche le plus d'une base
+                \item Disparaît s'il n'est relié à aucun tuyau à la fin d'un tour
+            \end{itemize}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}
 	\frametitle{Base}
-        \begin{itemize}
-        \item 5 points d'aspirations maximum par case
-        \item Possède une puissance d'aspiration qui réduit la distance de cette case au reste du plateau
-        \item Case de récolte du plasma
-	\end{itemize}
+    \begin{columns}[T]
+        \begin{column}{.3\textwidth}
+            \includegraphics[width=3cm]{pictures/aspiration}
+        \end{column}
+        \begin{column}{.7\textwidth}
+            \begin{itemize}
+                \item Case de récolte du plasma
+                \item Possède une puissance d'aspiration qui réduit la distance de cette case au reste du plateau
+                \item 5 points d'aspirations maximum par case
+            \end{itemize}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}
 	\frametitle{Points d'actions}
-	\begin{itemize}
-	\item[+] commencer un tour
-	\item[\alert{--}] construire un tuyau
-	\item[\alert{--}] améliorer un tuyau
-	\item[\alert{--}] déplacer la puissance d'aspiration
-	\item[\alert{--}] détruire un tuyau/super-tuyau
-	\item[\alert{--}] déblayer un tuyau détruit
-	\end{itemize}
+	\begin{columns}[T]
+        \begin{column}{.65\textwidth}
+            \begin{itemize}
+	            \item[+] commencer un tour
+	            \item[\alert{--}] construire un tuyau
+	            \item[\alert{--}] améliorer un tuyau
+	            \item[\alert{--}] déplacer la puissance d'aspiration
+	            \item[\alert{--}] détruire un tuyau/super-tuyau
+	            \item[\alert{--}] déblayer un tuyau détruit
+	        \end{itemize}
+        \end{column}
+        \begin{column}{.35\textwidth}
+            \begin{itemize}
+                \item[] 40
+	            \item[] 10
+	            \item[] 10
+	            \item[] 0 $\rightarrow$ 5
+	            \item[] 30/40
+	            \item[] 10
+            \end{itemize}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \begin{frame}
