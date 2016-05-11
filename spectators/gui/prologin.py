@@ -4,7 +4,7 @@ from state import StechecReader
 from server import Server
 
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 
 reader = StechecReader()
 server = Server(reader, ('127.0.0.1', 8099), tv_mode=False)

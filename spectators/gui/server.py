@@ -58,7 +58,7 @@ class Server:
     def handle_message(self, msg: Message):
         data = json.loads(msg.data)
         cmd = data['c']
-        print("received WS message:", data)
+        logging.debug("received WS message: %s", data)
         if cmd == 'hello':
             self.send('whatsup',
                       size=api.TAILLE_TERRAIN,
@@ -79,10 +79,6 @@ class Server:
 
     def start(self):
         self.run_thread.start()
-        host, port = self.listen_addr
-        url = 'http://{}:{}/www/index.html'.format(host, port)
-        print("Open browser to " + url)
-        # webbrowser.open(url)
 
     def go_next(self):
         self.state = self.state_reader.get_next_state()
@@ -105,7 +101,19 @@ class Server:
     def run_forever(self):
         asyncio.set_event_loop(self.loop)
         handler = self.app.make_handler()
-        srv = self.loop.run_until_complete(self.loop.create_server(handler, *self.listen_addr))
+        host, port = self.listen_addr
+        url = 'http://{}:{}/www/index.html'.format(host, port)
+        for prog in ('chromium', 'google-chrome', 'chromium-browser'):
+            try:
+                browser = asyncio.create_subprocess_exec(prog, '--app=' + url,
+                                                         loop=self.loop)
+                logging.info("Opening %s with %s", url, prog)
+                self.loop.run_until_complete(browser)
+                break
+            except FileNotFoundError:
+                pass
+        srv = self.loop.run_until_complete(
+            self.loop.create_server(handler, *self.listen_addr))
         try:
             self.loop.run_forever()
         except KeyboardInterrupt:
