@@ -16,15 +16,16 @@ Pour permettre le transport du plasma des pulsars vers vos bases vous disposerez
 Chaque base possède une puissance d'aspiration électro-magnétique permettant de piéger le plasma et de l'attirer vers elle. Cette aspiration se propage le long des tuyaux avec une atténuation constante. Lorsqu'un plasma est relié à une base de part le réseau de tuyaux, il est soumis à cette attractivité. Comme il peut être attiré vers plusieurs directions à la fois, il se déplace à chaque instant dans la direction où l'attractivité est la plus forte, et il se divise en parts uniformes s'il fait face à plusieurs forces d'attraction identiques provenant de directions différentes.
 Chaque base est initialement chargée d'une unité de puissance d'aspiration, vous aurez la possibilité d'en déplacer des unités d'une case de base vers une autre, en faisant attention de ne pas dépasser une certaine limite qui pourrait déclencher une surcharge d'énergie.
 Pour corser la partie nous vous autorisons à détruire les tuyaux présents sur le site, que ce soit vous ou vous adversaire qu'il l'ait construit. Cependant, une fois détruit, un tuyau laisse des débris empêchant de construire par dessus sans déblayer le lieu au préalable.
+En guise de défense, il vous sera possible d'améliorer les tuyaux existants. Un super tuyau sera plus coûteux à détruire et tout plasma qui passe dedans verra sa vitesse doubler temporairement.
 Vous serez évalués sur un temps fixé à l'issue duquel un vainqueur sera désigné. Initialement le site est vide et ne contient que les pulsars, certains d'entre eux pourront cesser d'émettre au cours de la partie, car ils disposent d'une quantité de plasma finie. À vous de vous débrouiller pour en récolter un maximum.
 
 
------
-Carte
------
+----
+Site
+----
 
-La carte consiste en une grille carrée de ``TAILLE_TERRAIN`` cases de côté. Au
-centre de chaque bord se trouve une base de ``LONGUEUR_BASE`` cases, encadrée
+Chaque site consiste en une grille carrée de ``TAILLE_TERRAIN`` cases de côté. Au
+centre de chaque bord se trouve une rangée de bases de ``LONGUEUR_BASE`` cases, encadrée
 de zones interdites de chaque côté. Le reste de la région est constitué de
 pulsars et de cases vides.
 
@@ -33,17 +34,20 @@ Base
 
 Les bases se trouvant sur deux bords opposés appartiennent au même joueur.
 Chaque case possède initialement une unité de puissance d'aspiration,
-qui pourra être assignée à d'autres cases en cours de jeu. Chaque case a une limite de puissance d'aspiration.
+qui pourra être assignée à d'autres cases en cours de jeu, dans la limite de
+``LIMITE_ASPIRATION`` unités par case.
 
 Zone interdite
 ==============
 
-Case inconstructible.
+Ce sont les cases du bord des sites qui ne sont pas des cases de base, il n'est pas
+possible de construire par dessus.
 
 Vide
 ====
 
-Case constructible.
+Ce sont des cases qui ne contiennent rien, la seule action possible est de construire
+par dessus.
 
 Pulsar
 ======
@@ -58,19 +62,19 @@ propres :
 Tuyau
 =====
 
-Transporte du plasma.
+Le tuyau est un composant qui permet de transporter le plasma.
 Les effets d'un tuyau (ou d'un Super-Tuyau™) ne dépendent pas du joueur qui l'a
 construit.
 
 Super-Tuyau™
 ============
 
-Transporte du plasma plus rapidement qu'un tuyau et coûte plus cher à détruire.
+Le super tuyau transporte du plasma plus rapidement qu'un tuyau et coûte plus cher à détruire.
 
 Débris
 ======
 
-Restes de la destruction d'un tuyau. Du plasma peut en sortir mais pas y
+Ce sont les restes de la destruction d'un tuyau. Du plasma peut en sortir mais pas y
 rentrer.
 
 ---------------------
