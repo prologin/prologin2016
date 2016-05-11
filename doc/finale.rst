@@ -6,19 +6,64 @@ Prologin 2016 : Sujet
 Introduction
 ------------
 
-Maintenant que vous avez bien compris la raison de votre présence, nous allons vous présenter le détail de votre mission.
-Nous avons besoin d'un maximum de productivité et nous ne pourront pas nous permettre de garder ceux d'entre vous qui ne seront pas à la hauteur.
-Pour tester vos capacités, nous allons vous mettre en situation sur des sites de récolte. Vous vous affronterez par groupes de 2.
-L'énergie que vous nous apporterez nous sera de plus grande utilité, si bien que c'est uniquement par cette quantité que vous serez évalués.
-Les sites se situent aux alentours 14 142 km du sol et prennent la forme de carrés en 2 dimensions. Ces sites sont remarquables par la présence de pulsars qui émettent séquentiellement du plasma autour d'eux. Le plasma émit apporte l'énergie dont nous avons besoin. Cependant il est fortement instable et ne peut se maintenir seul dans l'espace. Le seul moyen de le récolter est de le maintenir enfermé jusque dans votre base.
-Des bases sont disponibles sur la bordure de ces sites et permettent de récupérer l'énergie du plasma. Sur un site donné, chacun des deux opposants disposera de la moitié des bases, l'un occupera les bases au Nord et au Sud tandis que l'autre disposera de celles d'Est et Ouest.
-Pour permettre le transport du plasma des pulsars vers vos bases vous disposerez d'une quantité importante de tuyaux.
-Chaque base possède une puissance d'aspiration électro-magnétique permettant de piéger le plasma et de l'attirer vers elle. Cette aspiration se propage le long des tuyaux avec une atténuation constante. Lorsqu'un plasma est relié à une base de part le réseau de tuyaux, il est soumis à cette attractivité. Comme il peut être attiré vers plusieurs directions à la fois, il se déplace à chaque instant dans la direction où l'attractivité est la plus forte, et il se divise en parts uniformes s'il fait face à plusieurs forces d'attraction identiques provenant de directions différentes.
-Chaque base est initialement chargée d'une unité de puissance d'aspiration, vous aurez la possibilité d'en déplacer des unités d'une case de base vers une autre, en faisant attention de ne pas dépasser une certaine limite qui pourrait déclencher une surcharge d'énergie.
-Pour corser la partie nous vous autorisons à détruire les tuyaux présents sur le site, que ce soit vous ou vous adversaire qu'il l'ait construit. Cependant, une fois détruit, un tuyau laisse des débris empêchant de construire par dessus sans déblayer le lieu au préalable.
-En guise de défense, il vous sera possible d'améliorer les tuyaux existants. Un super tuyau sera plus coûteux à détruire et tout plasma qui passe dedans verra sa vitesse doubler temporairement.
-Vous serez évalués sur un temps fixé à l'issue duquel un vainqueur sera désigné. Initialement le site est vide et ne contient que les pulsars, certains d'entre eux pourront cesser d'émettre au cours de la partie, car ils disposent d'une quantité de plasma finie. À vous de vous débrouiller pour en récolter un maximum.
+Vous devriez à présent avoir compris la raison de votre présence parmi nous.
+Évidemment, comme dans toute entreprise qui se respecte, vous ne pourrez pas
+travailler d'égal à égal, c'est pourquoi nous devons vous hiérarchiser aussi
+vite que possible.
 
+Nous allons procéder de la façon suivante : nous allons vous placer dans une
+simulation d'une situation réelle de sites de récolte de plasma, et vous vous
+affronterez les uns contre les autres (à raison de deux personne par partie).
+
+La seule chose qui nous intéresse est la quantité de plasma que vous serez
+capable de collecter, c'est pourquoi vous serez uniquement évalués sur cette
+mesure.
+
+Les sites sur lesquels vous travaillerez prennent la forme de carrés en 2
+dimensions. Ceux-ci sont particulièrement singuliers car ils présentent une
+forte concentration en pulsars qui émettent séquentiellement du plasma autour
+d'eux. Le plasma émit apporte l'énergie dont nous avons besoin. Cependant, il
+est hautement instable et ne peut se maintenir dans l'espace de façon autonome.
+Le seul moyen de le récolter est de le maintenir enfermé dans des tuyaux
+jusqu'à une base de collection.
+
+Des bases sont disponibles sur la bordure de ces sites et permettent de
+récupérer l'énergie du plasma. Sur un site donné, chacun des deux opposants
+disposera de la moitié des bases, l'un occupera les bases au Nord et au Sud
+tandis que l'autre disposera de celles à l'Est et à l'Ouest.
+
+Pour permettre le transport du plasma des pulsars vers vos bases vous
+disposerez d'une quantité illimitée de tuyaux.
+
+Chaque base possède une puissance d'aspiration électro-magnétique permettant de
+piéger le plasma et de l'attirer vers elle. Cette aspiration se propage le long
+des tuyaux avec une atténuation constante. Lorsqu'un plasma est relié à une
+base par le réseau de tuyaux, il est soumis à cette attraction. Comme il
+peut être attiré vers plusieurs directions à la fois, il se déplace à chaque
+instant dans la direction où l'attraction est la plus forte, et il se divise
+en parts uniformes s'il fait face à plusieurs forces d'attraction identiques
+provenant de directions différentes.
+
+Chaque base est initialement chargée d'une unité de puissance d'aspiration,
+vous aurez la possibilité d'en déplacer des unités d'une case de base vers une
+autre, en faisant attention de ne pas dépasser une certaine limite qui pourrait
+déclencher une surcharge d'énergie.
+
+Pour corser la partie (et imiter de façon réaliste la fourberie de nos
+concurrents), il est également possible de détruire les tuyaux présents sur le
+site, quel que soit le joueur qui l'ait construit. Cependant, une fois détruit,
+un tuyau laisse des débris empêchant de construire par dessus sans déblayer le
+lieu au préalable.
+
+En guise de défense, il est également possible d'améliorer les tuyaux
+existants. Un super tuyau sera plus coûteux à détruire et tout plasma qui passe
+dedans verra sa vitesse doubler temporairement (c'est à dire qu'il se déplacera
+de deux cases à la fois à chaque tour).
+
+Vous serez évalués sur un temps fixé à l'issue duquel un vainqueur sera
+désigné. Initialement le site est vide et ne contient que les pulsars, certains
+d'entre eux pourront cesser d'émettre au cours de la partie, car ils disposent
+d'une quantité de plasma finie. À vous de jouer pour en récolter un maximum !
 
 ----
 Site
