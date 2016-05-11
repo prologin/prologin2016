@@ -6,8 +6,18 @@ Prologin 2016 : Sujet
 Introduction
 ------------
 
-Votre objectif est de récolter le plasma produit par les pulsars, en les
-aspirant dans des tuyaux menant à votre base.
+Maintenant que vous avez bien compris la raison de votre présence, nous allons vous présenter le détail de votre mission.
+Nous avons besoin d'un maximum de productivité et nous ne pourront pas nous permettre de garder ceux d'entre vous qui ne seront pas à la hauteur.
+Pour tester vos capacités, nous allons vous mettre en situation sur des sites de récolte. Vous vous affronterez par groupes de 2.
+L'énergie que vous nous apporterez nous sera de plus grande utilité, si bien que c'est uniquement par cette quantité que vous serez évalués.
+Les sites se situent aux alentours 14 142 km du sol et prennent la forme de carrés en 2 dimensions. Ces sites sont remarquables par la présence de pulsars qui émettent séquentiellement du plasma autour d'eux. Le plasma émit apporte l'énergie dont nous avons besoin. Cependant il est fortement instable et ne peut se maintenir seul dans l'espace. Le seul moyen de le récolter est de le maintenir enfermé jusque dans votre base.
+Des bases sont disponibles sur la bordure de ces sites et permettent de récupérer l'énergie du plasma. Sur un site donné, chacun des deux opposants disposera de la moitié des bases, l'un occupera les bases au Nord et au Sud tandis que l'autre disposera de celles d'Est et Ouest.
+Pour permettre le transport du plasma des pulsars vers vos bases vous disposerez d'une quantité importante de tuyaux.
+Chaque base possède une puissance d'aspiration électro-magnétique permettant de piéger le plasma et de l'attirer vers elle. Cette aspiration se propage le long des tuyaux avec une atténuation constante. Lorsqu'un plasma est relié à une base de part le réseau de tuyaux, il est soumis à cette attractivité. Comme il peut être attiré vers plusieurs directions à la fois, il se déplace à chaque instant dans la direction où l'attractivité est la plus forte, et il se divise en parts uniformes s'il fait face à plusieurs forces d'attraction identiques provenant de directions différentes.
+Chaque base est initialement chargée d'une unité de puissance d'aspiration, vous aurez la possibilité d'en déplacer des unités d'une case de base vers une autre, en faisant attention de ne pas dépasser une certaine limite qui pourrait déclencher une surcharge d'énergie.
+Pour corser la partie nous vous autorisons à détruire les tuyaux présents sur le site, que ce soit vous ou vous adversaire qu'il l'ait construit. Cependant, une fois détruit, un tuyau laisse des débris empêchant de construire par dessus sans déblayer le lieu au préalable.
+Vous serez évalués sur un temps fixé à l'issue duquel un vainqueur sera désigné. Initialement le site est vide et ne contient que les pulsars, certains d'entre eux pourront cesser d'émettre au cours de la partie, car ils disposent d'une quantité de plasma finie. À vous de vous débrouiller pour en récolter un maximum.
+
 
 -----
 Carte
@@ -23,7 +33,7 @@ Base
 
 Les bases se trouvant sur deux bords opposés appartiennent au même joueur.
 Chaque case possède initialement une unité de puissance d'aspiration,
-qui pourra être assignée à d'autres cases en cours de jeu.
+qui pourra être assignée à d'autres cases en cours de jeu. Chaque case a une limite de puissance d'aspiration.
 
 Zone interdite
 ==============
@@ -167,7 +177,7 @@ La carte est donnée par un fichier texte, où chaque ligne donne les
 caractéristiques d'un pulsar sur la carte, sous la forme de cinq entiers :
 *abscisse*, *ordonnée*, *période*, *puissance*, *nombre total de pulsations*.
 
-Voici un exemple avec deux pulsars : ::
+Voici un exemple avec deux pulsars :
 
   11 15 9 5 8
   15 11 9 5 8
