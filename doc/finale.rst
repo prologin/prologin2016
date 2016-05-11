@@ -13,16 +13,16 @@ vite que possible.
 
 Nous allons procéder de la façon suivante : nous allons vous placer dans une
 simulation d'une situation réelle de sites de récolte de plasma, et vous vous
-affronterez les uns contre les autres (à raison de deux personne par partie).
+affronterez les uns contre les autres (à raison de deux personnes par partie).
 
 La seule chose qui nous intéresse est la quantité de plasma que vous serez
-capable de collecter, c'est pourquoi vous serez uniquement évalués sur cette
+capables de collecter, c'est pourquoi vous serez uniquement évalués sur cette
 mesure.
 
 Les sites sur lesquels vous travaillerez prennent la forme de carrés en 2
 dimensions. Ceux-ci sont particulièrement singuliers car ils présentent une
 forte concentration en pulsars qui émettent séquentiellement du plasma autour
-d'eux. Le plasma émit apporte l'énergie dont nous avons besoin. Cependant, il
+d'eux. Le plasma émis apporte l'énergie dont nous avons besoin. Cependant, il
 est hautement instable et ne peut se maintenir dans l'espace de façon autonome.
 Le seul moyen de le récolter est de le maintenir enfermé dans des tuyaux
 jusqu'à une base de collection.
