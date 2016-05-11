@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import os.path
+import random
 import threading
 
 from aiohttp import web
@@ -15,9 +16,8 @@ root = os.path.abspath(os.path.dirname(__file__))
 
 
 class Server:
-    def __init__(self, state_reader: Reader, listen_addr, tv_mode=False):
+    def __init__(self, state_reader: Reader, tv_mode=False):
         self.state_reader = state_reader
-        self.listen_addr = listen_addr
         self.tv_mode = tv_mode
 
         self.loop = asyncio.new_event_loop()
@@ -101,7 +101,16 @@ class Server:
     def run_forever(self):
         asyncio.set_event_loop(self.loop)
         handler = self.app.make_handler()
-        host, port = self.listen_addr
+        host = '127.0.0.1'
+        port = random.randint(9000, 9999)
+        while True:
+            try:
+                srv = self.loop.run_until_complete(
+                    self.loop.create_server(handler, host, port))
+                break
+            except OSError:
+                logger.warning("Port %d not available", port)
+                port += 1
         url = 'http://{}:{}/www/index.html'.format(host, port)
         for prog in ('chromium', 'google-chrome', 'chromium-browser'):
             try:
@@ -112,8 +121,6 @@ class Server:
                 break
             except FileNotFoundError:
                 pass
-        srv = self.loop.run_until_complete(
-            self.loop.create_server(handler, *self.listen_addr))
         try:
             self.loop.run_forever()
         except KeyboardInterrupt:

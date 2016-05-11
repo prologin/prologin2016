@@ -12,10 +12,6 @@ if __name__ == '__main__':
                                                  "a dump file")
     parser.add_argument('dump', metavar='dump-file', type=argparse.FileType('r'),
                         help="The dump file (plain JSON or gzipped JSON)")
-    parser.add_argument('-a', '--host', help="Listen address",
-                        default='127.0.0.1')
-    parser.add_argument('-p', '--port', type=int, help="Listen port",
-                        default=8099)
     parser.add_argument('-t', '--tv', action='store_true', help="TV mode")
 
     args = parser.parse_args()
@@ -27,5 +23,5 @@ if __name__ == '__main__':
         dump = args.dump
 
     reader = DumpReader(dump)
-    server = Server(reader, (args.host, args.port), tv_mode=args.tv)
+    server = Server(reader, tv_mode=args.tv)
     server.start()

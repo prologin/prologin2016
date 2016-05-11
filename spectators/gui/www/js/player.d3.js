@@ -718,7 +718,7 @@ $(function () {
 
   function connect() {
     console.log('trying to connect');
-    socket = new WebSocket(WS_URI);
+    socket = new WebSocket('ws://' + window.location.host + '/ws');
     socket.onopen = () => {
       backoff = 1;
       console.log('connected to server');

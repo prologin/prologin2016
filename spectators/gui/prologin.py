@@ -7,7 +7,7 @@ from server import Server
 logging.basicConfig(level=logging.WARNING)
 
 reader = StechecReader()
-server = Server(reader, ('127.0.0.1', 8099), tv_mode=False)
+server = Server(reader, tv_mode=False)
 
 
 def partie_init():
