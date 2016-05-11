@@ -91,23 +91,23 @@ Actions
 Construire un tuyau
 -------------------
 
-Vous pouvez dépenser ``COUT_CONSTRUCTION_TUYAU`` points d'action pour
+Vous pouvez dépenser ``COUT_CONSTRUCTION`` points d'action pour
 construire un tuyau sur une case vide.
 
 Améliorer un tuyau en Super-Tuyau™
 ----------------------------------
 
-Vous pouvez dépenser ``COUT_AMELIORATION_TUYAU`` points d'action pour améliorer
+Vous pouvez dépenser ``COUT_AMELIORATION`` points d'action pour améliorer
 un tuyau existant en Super-Tuyau™.
 
 Détruire un tuyau
 -----------------
 
-Vous pouvez dépenser ``COUT_DESTRUCTION_TUYAU`` points d'action pour lancer un
+Vous pouvez dépenser ``COUT_DESTRUCTION`` points d'action pour lancer un
 *tir de plasma* et détruire un tuyau, ou ``COUT_DESTRUCTION_SUPER_TUYAU``
 points d'action pour détruire un Super-Tuyau™. Un tir de plasma vous consomme
-de plus ``CHARGE_PLASMA`` charges de plasma que vous avez collecté. La case
-visée est remplacée par une case de débris.
+de plus ``CHARGE_DESTRUCTION`` charges de plasma que vous avez collecté. La
+case visée est remplacée par une case de débris.
 
 Le plasma encore présent dans le tuyau ou Super Tuyau™ détruit persiste dans
 les débris.
