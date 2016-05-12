@@ -23,28 +23,28 @@
 # define NB_TOURS                  100
 
 /// Nombre de points d'action par tour.
-# define NB_POINTS_ACTION          40
+# define NB_POINTS_ACTION          4
 
 /// Nombre de points d'action que coûte la construction d'un tuyau.
-# define COUT_CONSTRUCTION         10
+# define COUT_CONSTRUCTION         1
 
 /// Nombre de points d'action que coûte l'amélioration d'un tuyau.
-# define COUT_AMELIORATION         10
+# define COUT_AMELIORATION         1
 
 /// Nombre de points d'action que coûte la destruction d'un tuyau.
-# define COUT_DESTRUCTION          30
+# define COUT_DESTRUCTION          3
 
 /// Nombre de points d'action que coûte la destruction d'un Super Tuyau™.
-# define COUT_DESTRUCTION_SUPER_TUYAU 40
+# define COUT_DESTRUCTION_SUPER_TUYAU 4
 
 /// Charge en plasma nécessaire pour la destruction d'un tuyau ou d'un Super Tuyau™.
 # define CHARGE_DESTRUCTION        2
 
 /// Nombre de points d'action que coûte le déblayage d'une case de débris.
-# define COUT_DEBLAYAGE            20
+# define COUT_DEBLAYAGE            2
 
 /// Nombre de points d'action que coûte le déplacement d'une unité de puissance d'aspiration de la base (la première modification de chaque tour est offerte).
-# define COUT_MODIFICATION_ASPIRATION 10
+# define COUT_MODIFICATION_ASPIRATION 1
 
 /// Limite de puissance d'aspiration sur une case de base.
 # define LIMITE_ASPIRATION         5

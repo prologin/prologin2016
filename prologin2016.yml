@@ -19,27 +19,27 @@ constant:
 
   -
     cst_name: NB_POINTS_ACTION
-    cst_val: 40
+    cst_val: 4
     cst_comment: Nombre de points d'action par tour.
 
   -
     cst_name: COUT_CONSTRUCTION
-    cst_val: 10
+    cst_val: 1
     cst_comment: Nombre de points d'action que coûte la construction d'un tuyau.
 
   -
     cst_name: COUT_AMELIORATION
-    cst_val: 10
+    cst_val: 1
     cst_comment: Nombre de points d'action que coûte l'amélioration d'un tuyau.
 
   -
     cst_name: COUT_DESTRUCTION
-    cst_val: 30
+    cst_val: 3
     cst_comment: Nombre de points d'action que coûte la destruction d'un tuyau.
 
   -
     cst_name: COUT_DESTRUCTION_SUPER_TUYAU
-    cst_val: 40
+    cst_val: 4
     cst_comment: Nombre de points d'action que coûte la destruction d'un
                  Super Tuyau™.
 
@@ -52,13 +52,13 @@ constant:
 
   -
     cst_name: COUT_DEBLAYAGE
-    cst_val: 20
+    cst_val: 2
     cst_comment: Nombre de points d'action que coûte le déblayage d'une case de
                  débris.
 
   -
     cst_name: COUT_MODIFICATION_ASPIRATION
-    cst_val: 10
+    cst_val: 1
     cst_comment: Nombre de points d'action que coûte le déplacement d'une
                  unité de puissance d'aspiration de la base (la première
                  modification de chaque tour est offerte).

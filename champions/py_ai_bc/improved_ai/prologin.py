@@ -68,7 +68,7 @@ def jouer_tour():
     # print_map()
     if api.tour_actuel() % 2 in [0, 1]:
         detruire()
-    while api.points_action() >= 10:
+    while api.points_action() >= api.COUT_CONSTRUCTION:
         # print(api.points_action(), file = sys.stderr)
         if not coup():
             break
@@ -76,7 +76,7 @@ def jouer_tour():
         if not bouger_aspiration():
             break
     # print(api.cout_prochaine_modification_aspiration(), api.points_action())
-    if api.points_action() >= 30:
+    if api.points_action() >= api.COUT_DESTRUCTION:
         detruire()
 def coup():
     # Récupérer les infos sur la grille
@@ -87,10 +87,6 @@ def coup():
     for i in range(N):
         for j in range(N):
             grille[i][j] = api.type_case((i,j))
-            if api.points_action() != 40:
-                pass
-            elif False:
-                pass
             # elif grille[i][j] == api.case_type.TUYAU: print('T', end = "", file = sys.stderr)
             # elif grille[i][j] == api.case_type.PULSAR: print('#', end = "", file = sys.stderr)
             # else: print('.', end = "", file = sys.stderr)
