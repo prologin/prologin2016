@@ -126,9 +126,13 @@ $\bullet$ \underline{\textbf{#1}}
 \end{center}
 \end{titlepage}
 
+\small
+
 % Sommaire ===========================================================
 \cleardoublepage
 \tableofcontents
+
+\normalsize
 
 % Corps ==============================================================
 %\cleardoublepage
@@ -140,15 +144,13 @@ $\bullet$ \underline{\textbf{#1}}
 
 \vspace{4cm}
 
-\begin{center}\includegraphics[width=\linewidth]{\psubjectpicture}\end{center}
-
-\newpage
+\begin{center}\includegraphics[height=14cm]{\psubjectpicture}\end{center}
 
 \input{subject_content.tex}
 
 \input{finale.tex}
 
-\input{subject_end.tex}
+%\input{subject_end.tex}
 
 \newpage
 \section{API}
