@@ -228,5 +228,8 @@ caractéristiques d'un pulsar sur la carte, sous la forme de cinq entiers :
 
 Voici un exemple avec deux pulsars :
 
-  11 15 9 5 8
-  15 11 9 5 8
+::
+
+    11 15 9 5 8
+    15 11 9 5 8
+
