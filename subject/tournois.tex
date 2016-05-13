@@ -60,15 +60,15 @@ vous est accordée. Cette limite compte aussi la taille de la pile.
 D'autres limitations sont appliquées :
 
 \begin{itemize}
-    \item Le système de fichiers est entièrement en lecture seule ;
-    \item Seuls \texttt{/usr}, \texttt{/var} et \texttt{/tmp} sont montés ;
-    \item Vous n'avez pas le droit d'utiliser des processus en parallèle ;
-    \item La mémoire est limitée à 500Mio ;
-    \item La taille totale de votre output ne doit pas dépasser 256Kio (elle
+    \item le système de fichiers est entièrement en lecture seule ;
+    \item seuls \texttt{/usr}, \texttt{/var} et \texttt{/tmp} sont montés ;
+    \item vous n'avez pas le droit d'utiliser des processus en parallèle ;
+    \item la mémoire est limitée à 500Mio ;
+    \item la taille totale de votre output ne doit pas dépasser 256Kio (elle
         sera tronquée à partir de cette limite) ;
-    \item Le temps d'exécution total du processus est limité à 300 secondes de
-        temps réel.
-    \item Chaque appel de fonction est limité à une seconde de tems réel plus
+    \item le temps d'exécution total du processus est limité à 300 secondes de
+        temps réel ;
+    \item chaque appel de fonction est limité à une seconde de tems réel plus
         500 millisecondes de marge pour prendre en compte le surcoût de
         sérialisation/désérialisation des valeurs depuis et vers les langages
         cibles.
