@@ -11,34 +11,46 @@ côté. Le reste de la région est constitué de pulsars et de cases vides.
 
 \subsubsection{Base}\label{base}
 
+\begin{wrapfigure}{R}{0.3\textwidth}
+    \centering
+    \raisebox{0pt}[\dimexpr\height-3.5\baselineskip\relax]{\includegraphics{asset/base.png}}
+    \caption*{Trois cases de base (au sud) de puissance d'aspiration 1, 2 et 1.}
+\end{wrapfigure}
+
 Les bases se trouvant sur deux bords opposés appartiennent au même
 joueur. Chaque case possède initialement une unité de puissance
 d'aspiration, qui pourra être assignée à d'autres cases en cours de jeu,
 dans la limite de \texttt{LIMITE\_ASPIRATION} unités par case.
-
-\includegraphics{asset/base.png}
-
-{Trois cases de base (au sud) de puissance d'aspiration 1, 2 et 1.}
 
 \subsubsection{Zone interdite}\label{zone-interdite}
 
 Ce sont les cases du bord des sites qui ne sont pas des cases de base,
 il n'est pas possible de construire par dessus.
 
-\includegraphics{asset/interdit.png}
-
-{La zone interdite, en rouge, de part et d'autre d'une base (au sud) de taille 3 sur un site de côté 9.}
+\begin{figure}[!h]
+    \centering
+    \includegraphics{asset/interdit.png}
+    \caption*{La zone interdite, en rouge, de part et d'autre d'une base (au sud) de taille 3 sur un site de côté 9.}
+\end{figure}
 
 \subsubsection{Vide}\label{vide}
 
 Ce sont des cases qui ne contiennent rien, la seule action possible est
 de construire par dessus.
 
-\includegraphics{asset/vide.png}
-
-{Du vide entre deux tuyaux.}
+\begin{figure}[!h]
+    \centering
+    \includegraphics{asset/vide.png}
+    \caption*{Du vide entre deux tuyaux.}
+\end{figure}
 
 \subsubsection{Pulsar}\label{pulsar}
+
+\begin{wrapfigure}{R}{0.3\textwidth}
+    \centering
+    \raisebox{0pt}[\dimexpr\height-3.5\baselineskip\relax]{\includegraphics{asset/pulsar.png}}
+    \caption*{Un pulsar.}
+\end{wrapfigure}
 
 Un pulsar a une position fixe, et possède des caractéristiques qui lui
 sont propres :
@@ -53,37 +65,39 @@ sont propres :
   un nombre de pulsations restantes \emph{R}.
 \end{itemize}
 
-\includegraphics{asset/pulsar.png}
 
-{Un pulsar.}
 
 \subsubsection{Tuyau}\label{tuyau}
+
+\begin{wrapfigure}[10]{R}{0.3\textwidth}
+    \centering
+    \includegraphics{asset/tuyau.png}
+    \caption*{Trois tuyaux.}
+
+    \vspace{1cm}
+
+    \includegraphics{asset/supertuyau.png}
+    \caption*{Un SuperTuyau™ entre deux tuyaux.}
+
+    \vspace{1cm}
+
+    \includegraphics{asset/debris.png}
+    \caption*{Un débris entre deux tuyaux.}
+\end{wrapfigure}
 
 Le tuyau est un composant qui permet de transporter le plasma. Les
 effets d'un tuyau (ou d'un Super-Tuyau™) ne dépendent pas du joueur qui
 l'a construit.
-
-\includegraphics{asset/tuyau.png}
-
-{Trois tuyaux.}
 
 \subsubsection{Super-Tuyau™}\label{super-tuyau}
 
 Le Super-Tuyau™ transporte du plasma plus rapidement qu'un tuyau et
 coûte plus cher à détruire.
 
-\includegraphics{asset/supertuyau.png}
-
-{Un SuperTuyau™ entre deux tuyaux.}
-
 \subsubsection{Débris}\label{duxe9bris}
 
 Ce sont les restes de la destruction d'un tuyau. Du plasma peut en
 sortir mais pas y rentrer.
-
-\includegraphics{asset/debris.png}
-
-{Un débris entre deux tuyaux.}
 
 \subsection{Déroulement d'un tour}\label{duxe9roulement-dun-tour}
 
