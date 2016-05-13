@@ -11,6 +11,8 @@ Au centre de chaque bord se trouve une rangée de bases de ``LONGUEUR_BASE``
 cases, encadrée de zones interdites de chaque côté. Le reste de la région est
 constitué de pulsars et de cases vides.
 
+.. image:: ../subject/slides/pictures/map.png
+
 Base
 ====
 
