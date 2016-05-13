@@ -62,17 +62,20 @@
 \end{frame}
 
 \begin{frame}
+    La simulation
+\end{frame}
+
+\begin{frame}
 	\frametitle{Présentation}
 	\begin{itemize}
-        \item Jeu de stratégie à 2 joueurs : \textcolor{green}{\textbf{Vert}} et
-            \textcolor{pink}{\textbf{Rose}}
+        \item Confrontation 2 joueurs
         \item Tour par tour
-        \item Carte carrée de taille fixe
+        \item Récolter maximum d'énergie
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Plateau}
+	\frametitle{Site}
 	\center{\includegraphics[width=7cm]{pictures/map}}
 \end{frame}
 
@@ -95,17 +98,15 @@
 \begin{frame}
 	\frametitle{Tuyau}
     \begin{columns}[T]
-        \begin{column}{.05\textwidth}
-        \end{column}
-        \begin{column}{.4\textwidth}
-            \center{Simple tuyau} \\
-            \vspace{1.5cm}
+        \begin{column}{.3\textwidth}
             \includegraphics[width=3cm]{pictures/tuyau}
         \end{column}
-        \begin{column}{.55\textwidth}
-            \center{Super Tuyau™} \\
-            \vspace{0.8cm}
-            \includegraphics[width=3cm]{pictures/super-tuyau}
+        \begin{column}{.7\textwidth}
+            \begin{itemize}
+                \item Construit dans les zones vides
+                \item Neutre
+                \item Conduit le plasma
+            \end{itemize}
         \end{column}
     \end{columns}
 \end{frame}
@@ -118,9 +119,11 @@
         \end{column}
         \begin{column}{.7\textwidth}
             \begin{itemize}
-                \item Ressource émise par les pulsars
-                \item Se déplace dans la direction qui le rapproche le plus d'une base
-                \item Disparaît s'il n'est relié à aucune base à la fin d'un tour
+                \item Ressource convoitée
+                \item Émis par les pulsars
+                \item Acheminé aux bases par des tuyaux
+                \item Disparaît si non relié à une base
+                \item Se déplace vers la base la plus proche
             \end{itemize}
         \end{column}
     \end{columns}
@@ -149,15 +152,48 @@
         \begin{column}{.7\textwidth}
             \begin{itemize}
                 \item Case de récolte du plasma
-                \item Possède une puissance d'aspiration qui réduit la distance de cette case au reste du plateau
-                \item 5 points d'aspiration maximum par case
+                \item Peuvent être boostées et mieux aspirer
+                \item Points d'aspirations transférables
+                \item Entre 0 et 5 points d'aspiration par case
             \end{itemize}
         \end{column}
     \end{columns}
 \end{frame}
 
 \begin{frame}
+    \frametitle{Super-Tuyau™}
+    \begin{columns}[T]
+        \begin{column}{.3\textwidth}
+            \includegraphics[width=3cm]{pictures/super-tuyau}
+        \end{column}
+        \begin{column}{.7\textwidth}
+            \begin{itemize}
+                \item Amélioration d'un tuyau existant
+                \item Plus résistant
+                \item Le plasma se déplace de deux cases
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Débris}
+    \begin{columns}[T]
+        \begin{column}{.3\textwidth}
+            \includegraphics[width=3cm]{pictures/destruction}
+        \end{column}
+        \begin{column}{.7\textwidth}
+            \begin{itemize}
+                \item Restes d'un tuyau détruit
+                \item Zone inconstructible
+                \item Peut uniquement être déblayé
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+\begin{frame}
 	\frametitle{Points d'actions}
+    100 tours :
 	\begin{columns}[T]
         \begin{column}{.65\textwidth}
             \begin{itemize}
@@ -175,11 +211,18 @@
 	            \item[] 1
 	            \item[] 1
 	            \item[] 0 $\rightarrow$ 1
-	            \item[] 3/4
-	            \item[] 1
+                \item[] 3/4 (+ 2 plasmas)
+	            \item[] 2
             \end{itemize}
         \end{column}
     \end{columns}
+    \vspace{0.5cm}
+    Celui qui a récolté le plus de plasma gagne !
+\end{frame}
+
+\begin{frame}
+    \frametitle{Questions}
+    Posez vos questions sur le sujet de la finale
 \end{frame}
 
 \begin{frame}
@@ -193,11 +236,6 @@
         \item Dimanche 17~h~42
         \item Lundi 00~h~42 (tournoi final)
     \end{itemize}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Questions}
-    Posez vos questions sur le sujet de la finale
 \end{frame}
 
 \begin{frame}
