@@ -6,10 +6,10 @@ Cahier des charges
 Site
 ----
 
-Chaque site consiste en une grille carrée de ``TAILLE_TERRAIN`` cases de côté. Au
-centre de chaque bord se trouve une rangée de bases de ``LONGUEUR_BASE`` cases, encadrée
-de zones interdites de chaque côté. Le reste de la région est constitué de
-pulsars et de cases vides.
+Chaque site consiste en une grille carrée de ``TAILLE_TERRAIN`` cases de côté.
+Au centre de chaque bord se trouve une rangée de bases de ``LONGUEUR_BASE``
+cases, encadrée de zones interdites de chaque côté. Le reste de la région est
+constitué de pulsars et de cases vides.
 
 Base
 ====
@@ -22,14 +22,14 @@ qui pourra être assignée à d'autres cases en cours de jeu, dans la limite de
 Zone interdite
 ==============
 
-Ce sont les cases du bord des sites qui ne sont pas des cases de base, il n'est pas
-possible de construire par dessus.
+Ce sont les cases du bord des sites qui ne sont pas des cases de base, il n'est
+pas possible de construire par dessus.
 
 Vide
 ====
 
-Ce sont des cases qui ne contiennent rien, la seule action possible est de construire
-par dessus.
+Ce sont des cases qui ne contiennent rien, la seule action possible est de
+construire par dessus.
 
 Pulsar
 ======
@@ -51,13 +51,14 @@ construit.
 Super-Tuyau™
 ============
 
-Le super tuyau transporte du plasma plus rapidement qu'un tuyau et coûte plus cher à détruire.
+Le Super-Tuyau™ transporte du plasma plus rapidement qu'un tuyau et coûte plus
+cher à détruire.
 
 Débris
 ======
 
-Ce sont les restes de la destruction d'un tuyau. Du plasma peut en sortir mais pas y
-rentrer.
+Ce sont les restes de la destruction d'un tuyau. Du plasma peut en sortir mais
+pas y rentrer.
 
 ---------------------
 Déroulement d'un tour
@@ -91,7 +92,7 @@ points d'action pour détruire un Super-Tuyau™. Un tir de plasma vous consomme
 de plus ``CHARGE_DESTRUCTION`` charges de plasma que vous avez collecté. La
 case visée est remplacée par une case de débris.
 
-Le plasma encore présent dans le tuyau ou Super Tuyau™ détruit persiste dans
+Le plasma encore présent dans le tuyau ou Super-Tuyau™ détruit persiste dans
 les débris.
 
 Déblayer des débris
@@ -126,14 +127,14 @@ tuyaux disparaît définitivement. Sinon, les règles ci-dessous s'appliquent.
 La *distance effective* entre une case ``c`` et une case de base ``b`` est
 égale à ``D(c,b)-A(b)``, où ``D(c,b)`` est la longueur du plus court chemin de
 ``c`` à ``b`` ne passant que par des tuyaux et ``A(b)`` est la puissance
-d'aspiration possédée par la case ``b``. Un Super Tuyau™ est considéré comme un
+d'aspiration possédée par la case ``b``. Un Super-Tuyau™ est considéré comme un
 tuyau dans le calcul des distances. La *distance minimale* d'une case est la
 plus petite distance effective entre cette case et n'importe quelle case de
 base à laquelle elle est reliée.
 
-À la fin d'un tour, il peut y avoir du plasma dans un tuyau, un Super Tuyau™,
+À la fin d'un tour, il peut y avoir du plasma dans un tuyau, un Super-Tuyau™,
 ou des débris. À partir d'une case à distance minimale ``D_min``, le plasma se
-déplace vers les cases voisines de base, tuyau ou Super Tuyau™ à distance
+déplace vers les cases voisines de base, tuyau ou Super-Tuyau™ à distance
 minimale ``D_min-1``. Il y en a toujours au moins une. Quand il y en a
 plusieurs, le plasma se divise en quantités égales sur chacune de ces cases.
 Le plasma qui arrive sur une case de base est immédiatement collecté par le
