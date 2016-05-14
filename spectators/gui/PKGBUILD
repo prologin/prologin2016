@@ -3,7 +3,7 @@
 
 pkgname=stechec2-prologin2016-gui
 pkgver=2016_0.1
-pkgrel=2
+pkgrel=3
 pkgdesc="Stechec2 with Prologin 2016 GUI"
 arch=('i686' 'x86_64')
 url="https://prologin.org/"
@@ -23,5 +23,5 @@ package() {
     cd "$srcdir/prologin2016/spectators"
     mkdir -p "$pkgdir/usr/share/stechec2/prologin2016/"
     cp -r gui "$pkgdir/usr/share/stechec2/prologin2016/"
-    install -Dm755  gui/replay.py "$pkgdir/usr/bin/prologin2016-replay"
+    install -Dm755 gui/prologin2016-replay "$pkgdir/usr/bin/prologin2016-replay"
 }
