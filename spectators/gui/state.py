@@ -243,7 +243,7 @@ class DumpReader(Reader):
         return self.get_next_state()
 
     def is_ended(self):
-        return self.turn == len(self.turns) - 1
+        return self.turn == len(self.turns)
 
     def get_turn(self):
         return self.turn

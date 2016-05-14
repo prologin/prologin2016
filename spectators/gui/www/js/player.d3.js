@@ -738,6 +738,8 @@ $(function () {
         canGoBackwards = msg.canGoBackwards;
         canSeek = msg.canSeek;
         tvMode = msg.tvMode;
+        if (tvMode)
+          TURN_DURATION /= 2;
       } else if (msg.c === 'end') {
         // TODO: show game end
       } else if (msg.c === 'turn') {

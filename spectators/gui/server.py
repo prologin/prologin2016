@@ -3,6 +3,7 @@ import json
 import logging
 import os.path
 import random
+import sys
 import threading
 
 from aiohttp import web
@@ -85,6 +86,8 @@ class Server:
         if self.state:
             self.send('turn', state=self.state)
             self.state_reader.go_next()
+        if self.tv_mode and self.state_reader.is_ended():
+            self.end_game()
 
     def go_previous(self):
         self.state_reader.go_previous()
@@ -131,7 +134,14 @@ class Server:
             self.loop.run_until_complete(handler.finish_connections(4))
             self.loop.run_until_complete(self.app.cleanup())
 
+    def kill(self):
+        self.loop.stop()
+        self.loop.call_soon(self.loop.close)
+        self.loop.call_soon(sys.exit, 0)
+
     def end_game(self):
         self.state_reader.wait_end()
         self.send('end')
         self.ws.close(code=1)
+        if self.tv_mode:
+            self.loop.call_later(1, self.kill)
