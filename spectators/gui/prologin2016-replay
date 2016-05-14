@@ -1,0 +1,4 @@
+#!/bin/sh
+
+/usr/share/stechec2/prologin2016/gui/replay.py $@
+
