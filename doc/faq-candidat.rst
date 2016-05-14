@@ -24,14 +24,16 @@ Bouton LOAD : Sauvegarde la map actuelle dans le fichier du champ 'File'.
 
 Bouton LOAD TYPES : Charge les attributs du pinceau de pulsars du fichier FILES du dossier courant:
 
-exemple
+Exemple
 -------
 
-40 85 25
-20 55 10
-10 100 4
-6 40 5
-3 100 1
+::
+
+    40 85 25
+    20 55 10
+    10 100 4
+    6 40 5
+    3 100 1
 
 Bouton UPDATE : Utilise les valeurs rentrées manuellement.
 
