@@ -27,7 +27,7 @@ f = unsafePerformIO $ do
 try_clear = void . deblayer . f
 try_build = void . construire . f
 try_upgrade = void . ameliorer . f
-try_destroy = void . detruire . f
+try_destroy = void . liftM3 (\x y z -> x >> y >> z) deblayer construire ameliorer
 
 try_move_upa = deplacer_aspiration `on` f
 
@@ -36,9 +36,9 @@ jouer_tour = do
   hist_debris_deblayes >>= traverse_ try_clear
   hist_tuyaux_construits >>= traverse_ try_build
   hist_tuyaux_ameliores >>= traverse_ try_upgrade
-  hist_tuyaux_detruits >>= traverse_ try_destroy
   liftM2 zip hist_points_aspiration_retires hist_points_aspiration_ajoutes
     >>= traverse_ (uncurry try_move_upa)
+  hist_tuyaux_detruits >>= traverse_ try_destroy
 
 hs_partie_init = return ()
 foreign export ccall hs_partie_init :: IO ()
