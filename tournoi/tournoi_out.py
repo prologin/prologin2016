@@ -87,7 +87,7 @@ for i, c in enumerate(l, 1):
     print('<tr>')
     print('<td>{}</td>'.format(i))
     print('<td>{}</td>'.format(score.get(c.pk, 0) // 2))
-    print('<td><strong>{}</strong></td>'.format(c.name))
+    print('<td><strong><a href="http://concours/champions/{}/sources/">{}</a></strong></td>'.format(c.id, c.name))
     print('<td>{}</td><td>{}</td>'.format(c.author.username, c.author.get_full_name()))
     print('</tr>')
 print('</table>')

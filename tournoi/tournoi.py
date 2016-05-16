@@ -16,7 +16,7 @@ from prologin.concours.stechec.models import Tournament, Match, MatchPlayer, Cha
 
 from tournoi_common import get_champions
 
-maps_ids = (1,19,20,22)
+maps_ids = (1, 15, 17, 18, 19, 20, 21, 22, 47, 48)
 maps = [Map.objects.get(pk=i) for i in maps_ids]
 
 prologin = User.objects.get(username="seirl")

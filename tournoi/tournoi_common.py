@@ -10,7 +10,7 @@ from prologin.concours.stechec.models import Tournament, Match, MatchPlayer, Cha
 
 from django.utils.dateparse import parse_datetime
 import pytz
-date_debut = parse_datetime('2016-05-15 01:42:00')
+date_debut = parse_datetime('2016-05-16 00:42:00')
 date_debut = pytz.timezone('Europe/Paris').localize(date_debut, is_dst=None)
 
 def get_champions():

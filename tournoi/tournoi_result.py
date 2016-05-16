@@ -15,27 +15,24 @@ django.setup()
 from django.contrib.auth.models import User
 from prologin.concours.stechec.models import Tournament, Match, MatchPlayer, Champion, TournamentPlayer, Map
 
-from tournoi_common import bots, get_champions
+from tournoi_common import get_champions
 
 chs = get_champions()
 
 tournoi = Tournament.objects.get(id=int(sys.argv[1]))
-matches = Match.objects.filter(tournament=tournoi)
 
-def count_finished(matches):
-    done = 0
-    total = 0
-    for m in matches:
-        if m.status == 'done':
-            done += 1
-        total += 1
-    return done, total
 
-done, total = count_finished(matches)
+while True:
+    done = Match.objects.filter(tournament=tournoi, status='done').count()
+    total = Match.objects.filter(tournament=tournoi).count()
 
-if done < total:
-    print('WARNING: This is a temporary result, some matches are not over yet.')
-    print('Matchs done / launched: {} / {}'.format(done, total))
+    if done < total:
+        print('WARNING: This is a temporary result, some matches are not over yet.')
+        print('Matchs done / launched: {} / {}'.format(done, total))
+    import time
+    time.sleep(1)
+
+input()
 
 #matches = list(Match.objects.filter(createur = prologin, id__gt = 37911))
 
