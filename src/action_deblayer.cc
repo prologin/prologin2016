@@ -19,14 +19,14 @@
 
 #include "actions.hh"
 
-int ActionDeblayer::check(const GameState* st) const
+int ActionDeblayer::check(const GameState& st) const
 {
-    case_type ct = st->get_cell_type(position_);
+    case_type ct = st.get_cell_type(position_);
     if (ct == case_type::INTERDIT)
         return POSITION_INVALIDE;
     if (ct != case_type::DEBRIS)
         return PAS_DE_DEBRIS;
-    if (st->get_action_points() < COUT_DEBLAYAGE)
+    if (st.get_action_points() < COUT_DEBLAYAGE)
         return PA_INSUFFISANTS;
     return OK;
 }

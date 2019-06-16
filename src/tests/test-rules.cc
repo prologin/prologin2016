@@ -8,12 +8,12 @@ TEST_F(RulesTest, Rules_Finish)
     while (!rules->is_finished())
     {
         rules->start_of_player_turn(1);
-        EXPECT_EQ(turn, rules->get_game_state()->get_turn());
+        EXPECT_EQ(turn, rules->get_game_state().get_turn());
         ++turn;
         rules->end_of_player_turn(1);
         EXPECT_FALSE(rules->is_finished());
         rules->start_of_player_turn(2);
-        EXPECT_EQ(turn, rules->get_game_state()->get_turn());
+        EXPECT_EQ(turn, rules->get_game_state().get_turn());
         ++turn;
         rules->end_of_player_turn(2);
     }

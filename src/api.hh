@@ -21,98 +21,40 @@
 #define API_HH_
 
 #include <rules/actions.hh>
+#include <rules/api.hh>
 #include <rules/game-state.hh>
 #include <rules/player.hh>
 #include <vector>
 
+#include "actions.hh"
 #include "constant.hh"
 #include "game_state.hh"
-
-/// A shared pointer to the current game state
-/**
- * Stechec2 works with the game state as a chained link. Only the head is really
- * relevant, but the rest of the chain is used for undo.
- * The system is made so that the Api class owns the GameState, but the pointed
- * GameState object will keep changing since at each change we will get a new
- * head for the list.
- * But with this it is impossible to maintain, outside of the Api class, a
- * pointer to the current GameState. Or to have several Api classes sharing the
- * same GameState. This is annoying for unit tests for example.
- * This class encapsulate the GameState for that purpose, with minimum of code
- * changed.
- * The ideal solution would be a good build in Stechec2 ownership semantics.
- */
-class GameStateWrapper
-{
-    struct SharedState
-    {
-        GameState* game_state;
-        SharedState(GameState* game_state)
-            : game_state(game_state)
-        {
-        }
-        ~SharedState() { delete game_state; }
-    };
-    std::shared_ptr<SharedState> ptr;
-
-public:
-    explicit GameStateWrapper(GameState* game_state)
-        : ptr(std::make_shared<SharedState>(game_state))
-    {
-    }
-    operator GameState*() const { return ptr->game_state; }
-    GameStateWrapper& operator=(GameState* g)
-    {
-        ptr->game_state = g;
-        return *this;
-    }
-    GameState* operator->() const { return ptr->game_state; }
-    GameState& operator*() const { return *ptr->game_state; }
-};
 
 /*!
 ** The methods of this class are exported through 'interface.cc'
 ** to be called by the clients
 */
-class Api
+class Api final : public rules::Api<GameState, erreur>
 {
 public:
-    Api(const GameStateWrapper& game_state, rules::Player_sptr player);
+    Api(std::unique_ptr<GameState> game_state, rules::Player_sptr player);
     virtual ~Api() {}
 
-    const rules::Player_sptr player() const { return player_; }
-    void player_set(rules::Player_sptr player) { player_ = player; }
-
-    rules::Actions* actions() { return &actions_; }
-
-    const GameState* game_state() const { return game_state_; }
-    GameState* game_state() { return game_state_; }
-    void game_state_set(rules::GameState* gs)
-    {
-        game_state_ = dynamic_cast<GameState*>(gs);
-    }
-
-private:
-    GameStateWrapper game_state_;
-    rules::Player_sptr player_;
-    rules::Actions actions_;
-
-public:
     /// Construit un tuyau sur une case donnée.
-    erreur construire(position pos);
+    ApiActionFunc<ActionConstruire, position> construire;
 
     /// Améliore un tuyau en Super Tuyau™.
-    erreur ameliorer(position pos);
+    ApiActionFunc<ActionAmeliorer, position> ameliorer;
 
     /// Détruit un tuyau sur une case donnée.
-    erreur detruire(position pos);
+    ApiActionFunc<ActionDetruire, position> detruire;
 
     /// Déplace une unité de puissance d'aspiration d'une case de votre base
     /// vers une autre.
-    erreur deplacer_aspiration(position source, position destination);
+    ApiActionFunc<ActionDeplacerAspiration> deplacer_aspiration;
 
     /// Déblaye une case de débris.
-    erreur deblayer(position pos);
+    ApiActionFunc<ActionDeblayer, position> deblayer;
 
     /// Renvoie le type d'une case donnée.
     case_type type_case(position pos);

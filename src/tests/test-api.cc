@@ -25,159 +25,195 @@
 
 TEST_F(ApiTest, Api_TypeCase)
 {
-    EXPECT_EQ(VIDE, players[0].api->type_case({1, 1}));
-    st->build_pipe({1, 1}, players[0].id);
-    EXPECT_EQ(TUYAU, players[0].api->type_case({1, 1}));
-    st->upgrade_pipe({1, 1}, players[0].id);
-    EXPECT_EQ(SUPER_TUYAU, players[0].api->type_case({1, 1}));
-    st->destroy_pipe({1, 1});
-    EXPECT_EQ(DEBRIS, players[0].api->type_case({1, 1}));
-    st->clear_rubble({1, 1});
-    EXPECT_EQ(VIDE, players[0].api->type_case({1, 1}));
+    for (auto& player : players)
+    {
+        EXPECT_EQ(VIDE, player.api->type_case({1, 1}));
+        st(player)->build_pipe({1, 1}, player.id);
+        EXPECT_EQ(TUYAU, player.api->type_case({1, 1}));
+        st(player)->upgrade_pipe({1, 1}, player.id);
+        EXPECT_EQ(SUPER_TUYAU, player.api->type_case({1, 1}));
+        st(player)->destroy_pipe({1, 1});
+        EXPECT_EQ(DEBRIS, player.api->type_case({1, 1}));
+        st(player)->clear_rubble({1, 1});
+        EXPECT_EQ(VIDE, player.api->type_case({1, 1}));
 
-    EXPECT_EQ(INTERDIT, players[0].api->type_case({0, 1}));
-    EXPECT_EQ(BASE, players[0].api->type_case({0, TAILLE_TERRAIN / 2}));
+        EXPECT_EQ(INTERDIT, player.api->type_case({0, 1}));
+        EXPECT_EQ(BASE, player.api->type_case({0, TAILLE_TERRAIN / 2}));
+    }
 }
 
 TEST_F(ApiTest, Api_ListePulsars)
 {
-    std::vector<position> expected;
-    expected.push_back(TEST_PULSAR_POSITION);
-    EXPECT_EQ(expected, players[0].api->liste_pulsars());
+    for (auto& player : players)
+    {
+        std::vector<position> expected;
+        expected.push_back(TEST_PULSAR_POSITION);
+        EXPECT_EQ(expected, player.api->liste_pulsars());
+    }
 }
 
 TEST_F(ApiTest, Api_ListePlasmas)
 {
-    std::vector<position> expected;
-    EXPECT_EQ(expected, players[0].api->liste_plasmas());
-    for (int i = 1; i < TEST_PULSAR_POSITION.x; ++i)
-        st->build_pipe({i, TEST_PULSAR_POSITION.y}, players[0].id);
-    auto pulsar = st->get_pulsar(TEST_PULSAR_POSITION);
-    while ((int)st->get_turn() != pulsar.periode)
-        st->increment_turn();
-    st->emit_plasma();
-    position pos{TEST_PULSAR_POSITION.x - 1, TEST_PULSAR_POSITION.y};
-    expected.push_back(pos);
-    EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
-                                    players[0].api->liste_plasmas().begin()));
-    st->build_pipe({pos.x, pos.y - 1}, players[0].id);
-    st->build_pipe({pos.x + 1, pos.y - 1}, players[0].id);
-    st->reset_board_distances();
-    st->emit_plasma();
-    expected.push_back({pos.x + 1, pos.y - 1});
-    EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
-                                    players[0].api->liste_plasmas().begin()));
+    for (auto& player : players)
+    {
+        std::vector<position> expected;
+        EXPECT_EQ(expected, player.api->liste_plasmas());
+        for (int i = 1; i < TEST_PULSAR_POSITION.x; ++i)
+            st(player)->build_pipe({i, TEST_PULSAR_POSITION.y}, player.id);
+        auto pulsar = st(player)->get_pulsar(TEST_PULSAR_POSITION);
+        while ((int)st(player)->get_turn() != pulsar.periode)
+            st(player)->increment_turn();
+        st(player)->emit_plasma();
+        position pos{TEST_PULSAR_POSITION.x - 1, TEST_PULSAR_POSITION.y};
+        expected.push_back(pos);
+        EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
+                                        player.api->liste_plasmas().begin()));
+        st(player)->build_pipe({pos.x, pos.y - 1}, player.id);
+        st(player)->build_pipe({pos.x + 1, pos.y - 1}, player.id);
+        st(player)->reset_board_distances();
+        st(player)->emit_plasma();
+        expected.push_back({pos.x + 1, pos.y - 1});
+        EXPECT_TRUE(std::is_permutation(expected.begin(), expected.end(),
+                                        player.api->liste_plasmas().begin()));
+    }
 }
 
 TEST_F(ApiTest, Api_ListeTuyaux)
 {
-    std::vector<position> expected;
-    EXPECT_EQ(expected, players[0].api->liste_tuyaux());
-    auto build = [&](position pos) {
-        st->build_pipe(pos, players[0].id);
-        expected.push_back(pos);
-        EXPECT_TRUE(
-            std::is_permutation(expected.begin(), expected.end(),
-                                players[0].api->liste_tuyaux().begin()));
-    };
-    build({1, 1});
-    build({2, 1});
-    build({1, 2});
+    for (auto& player : players)
+    {
+        std::vector<position> expected;
+        EXPECT_EQ(expected, player.api->liste_tuyaux());
+        auto build = [&](position pos) {
+            st(player)->build_pipe(pos, player.id);
+            expected.push_back(pos);
+            EXPECT_TRUE(
+                std::is_permutation(expected.begin(), expected.end(),
+                                    player.api->liste_tuyaux().begin()));
+        };
+        build({1, 1});
+        build({2, 1});
+        build({1, 2});
+    }
 }
 
 TEST_F(ApiTest, Api_ListeSuperTuyaux)
 {
-    std::vector<position> expected;
-    EXPECT_EQ(expected, players[0].api->liste_super_tuyaux());
-    auto build_upgrade = [&](position pos) {
-        st->build_pipe(pos, players[0].id);
-        EXPECT_TRUE(
-            std::is_permutation(expected.begin(), expected.end(),
-                                players[0].api->liste_super_tuyaux().begin()));
-        st->upgrade_pipe(pos, players[0].id);
-        expected.push_back(pos);
-        EXPECT_TRUE(
-            std::is_permutation(expected.begin(), expected.end(),
-                                players[0].api->liste_super_tuyaux().begin()));
-    };
-    build_upgrade({1, 1});
-    build_upgrade({2, 1});
-    build_upgrade({1, 2});
+    for (auto& player : players)
+    {
+        std::vector<position> expected;
+        EXPECT_EQ(expected, player.api->liste_super_tuyaux());
+        auto build_upgrade = [&](position pos) {
+            st(player)->build_pipe(pos, player.id);
+            EXPECT_TRUE(
+                std::is_permutation(expected.begin(), expected.end(),
+                                    player.api->liste_super_tuyaux().begin()));
+            st(player)->upgrade_pipe(pos, player.id);
+            expected.push_back(pos);
+            EXPECT_TRUE(
+                std::is_permutation(expected.begin(), expected.end(),
+                                    player.api->liste_super_tuyaux().begin()));
+        };
+        build_upgrade({1, 1});
+        build_upgrade({2, 1});
+        build_upgrade({1, 2});
+    }
 }
 
 TEST_F(ApiTest, Api_ListeDebris)
 {
-    std::vector<position> expected;
-    EXPECT_EQ(expected, players[0].api->liste_debris());
-    auto build_destroy = [&](position pos) {
-        st->build_pipe(pos, players[0].id);
-        EXPECT_TRUE(
-            std::is_permutation(expected.begin(), expected.end(),
-                                players[0].api->liste_debris().begin()));
-        st->destroy_pipe(pos);
-        expected.push_back(pos);
-        EXPECT_TRUE(
-            std::is_permutation(expected.begin(), expected.end(),
-                                players[0].api->liste_debris().begin()));
-    };
-    build_destroy({1, 1});
-    build_destroy({2, 1});
-    build_destroy({1, 2});
+    for (auto& player : players)
+    {
+        std::vector<position> expected;
+        EXPECT_EQ(expected, player.api->liste_debris());
+        auto build_destroy = [&](position pos) {
+            st(player)->build_pipe(pos, player.id);
+            EXPECT_TRUE(
+                std::is_permutation(expected.begin(), expected.end(),
+                                    player.api->liste_debris().begin()));
+            st(player)->destroy_pipe(pos);
+            expected.push_back(pos);
+            EXPECT_TRUE(
+                std::is_permutation(expected.begin(), expected.end(),
+                                    player.api->liste_debris().begin()));
+        };
+        build_destroy({1, 1});
+        build_destroy({2, 1});
+        build_destroy({1, 2});
+    }
 }
 
 TEST_F(ApiTest, Api_EstPulsar)
 {
-    EXPECT_FALSE(players[0].api->est_pulsar({1, 1}));
-    EXPECT_TRUE(players[0].api->est_pulsar(TEST_PULSAR_POSITION));
+    for (auto& player : players)
+    {
+        EXPECT_FALSE(player.api->est_pulsar({1, 1}));
+        EXPECT_TRUE(player.api->est_pulsar(TEST_PULSAR_POSITION));
+    }
 }
 
 TEST_F(ApiTest, Api_EstTuyau)
 {
-    EXPECT_FALSE(players[0].api->est_tuyau({1, 1}));
-    st->build_pipe({1, 1}, players[0].id);
-    EXPECT_TRUE(players[0].api->est_tuyau({1, 1}));
-    st->upgrade_pipe({1, 1}, players[0].id);
-    EXPECT_TRUE(players[0].api->est_tuyau({1, 1}));
+    for (auto& player : players)
+    {
+        EXPECT_FALSE(player.api->est_tuyau({1, 1}));
+        st(player)->build_pipe({1, 1}, player.id);
+        EXPECT_TRUE(player.api->est_tuyau({1, 1}));
+        st(player)->upgrade_pipe({1, 1}, player.id);
+        EXPECT_TRUE(player.api->est_tuyau({1, 1}));
+    }
 }
 
 TEST_F(ApiTest, Api_EstSimpleTuyau)
 {
-    EXPECT_FALSE(players[0].api->est_simple_tuyau({1, 1}));
-    st->build_pipe({1, 1}, players[0].id);
-    EXPECT_TRUE(players[0].api->est_simple_tuyau({1, 1}));
-    st->upgrade_pipe({1, 1}, players[0].id);
-    EXPECT_FALSE(players[0].api->est_simple_tuyau({1, 1}));
+    for (auto& player : players)
+    {
+        EXPECT_FALSE(player.api->est_simple_tuyau({1, 1}));
+        st(player)->build_pipe({1, 1}, player.id);
+        EXPECT_TRUE(player.api->est_simple_tuyau({1, 1}));
+        st(player)->upgrade_pipe({1, 1}, player.id);
+        EXPECT_FALSE(player.api->est_simple_tuyau({1, 1}));
+    }
 }
 
 TEST_F(ApiTest, Api_EstSuperTuyau)
 {
-    EXPECT_FALSE(players[0].api->est_super_tuyau({1, 1}));
-    st->build_pipe({1, 1}, players[0].id);
-    EXPECT_FALSE(players[0].api->est_super_tuyau({1, 1}));
-    st->upgrade_pipe({1, 1}, players[0].id);
-    EXPECT_TRUE(players[0].api->est_super_tuyau({1, 1}));
+    for (auto& player : players)
+    {
+        EXPECT_FALSE(player.api->est_super_tuyau({1, 1}));
+        st(player)->build_pipe({1, 1}, player.id);
+        EXPECT_FALSE(player.api->est_super_tuyau({1, 1}));
+        st(player)->upgrade_pipe({1, 1}, player.id);
+        EXPECT_TRUE(player.api->est_super_tuyau({1, 1}));
+    }
 }
 
 TEST_F(ApiTest, Api_EstDebris)
 {
-    EXPECT_FALSE(players[0].api->est_debris({1, 1}));
-    st->build_pipe({1, 1}, players[0].id);
-    EXPECT_FALSE(players[0].api->est_debris({1, 1}));
-    st->destroy_pipe({1, 1});
-    EXPECT_TRUE(players[0].api->est_debris({1, 1}));
+    for (auto& player : players)
+    {
+        EXPECT_FALSE(player.api->est_debris({1, 1}));
+        st(player)->build_pipe({1, 1}, player.id);
+        EXPECT_FALSE(player.api->est_debris({1, 1}));
+        st(player)->destroy_pipe({1, 1});
+        EXPECT_TRUE(player.api->est_debris({1, 1}));
+    }
 }
 
 TEST_F(ApiTest, Api_EstLibre)
 {
-    EXPECT_TRUE(players[0].api->est_libre({1, 1}));
-    EXPECT_FALSE(players[0].api->est_libre({0, TAILLE_TERRAIN / 2}));
-    st->build_pipe({1, 1}, players[0].id);
-    EXPECT_FALSE(players[0].api->est_libre({1, 1}));
+    for (auto& player : players)
+    {
+        EXPECT_TRUE(player.api->est_libre({1, 1}));
+        EXPECT_FALSE(player.api->est_libre({0, TAILLE_TERRAIN / 2}));
+        st(player)->build_pipe({1, 1}, player.id);
+        EXPECT_FALSE(player.api->est_libre({1, 1}));
+    }
 }
 
 TEST_F(ApiTest, Api_InfoPulsar)
 {
-    auto pulsar = st->get_pulsar(TEST_PULSAR_POSITION);
+    auto pulsar = st(players[0])->get_pulsar(TEST_PULSAR_POSITION);
     for (auto& player : players)
     {
         auto p = player.api->info_pulsar(TEST_PULSAR_POSITION);
@@ -190,26 +226,33 @@ TEST_F(ApiTest, Api_InfoPulsar)
 
 TEST_F(ApiTest, Api_ChargesPresentes)
 {
-    for (int i = 1; i < TEST_PULSAR_POSITION.x; ++i)
-        st->build_pipe({i, TEST_PULSAR_POSITION.y}, players[0].id);
-    auto pulsar = st->get_pulsar(TEST_PULSAR_POSITION);
-    while ((int)st->get_turn() != pulsar.periode)
-        st->increment_turn();
-    position pos{TEST_PULSAR_POSITION.x - 1, TEST_PULSAR_POSITION.y};
-    EXPECT_EQ(0, players[0].api->charges_presentes(pos));
-    st->emit_plasma();
-    EXPECT_EQ(pulsar.puissance, players[0].api->charges_presentes(pos));
+    for (auto& player : players)
+    {
+        for (int i = 1; i < TEST_PULSAR_POSITION.x; ++i)
+            st(player)->build_pipe({i, TEST_PULSAR_POSITION.y}, player.id);
+        auto pulsar = st(player)->get_pulsar(TEST_PULSAR_POSITION);
+        while ((int)st(player)->get_turn() != pulsar.periode)
+            st(player)->increment_turn();
+        position pos{TEST_PULSAR_POSITION.x - 1, TEST_PULSAR_POSITION.y};
+        EXPECT_EQ(0, player.api->charges_presentes(pos));
+        st(player)->emit_plasma();
+        EXPECT_EQ(pulsar.puissance, player.api->charges_presentes(pos));
+    }
 }
 
 TEST_F(ApiTest, Api_ConstructeurTuyau)
 {
-    const auto& api = players[0].api;
-    st->build_pipe({1, 1}, players[0].id);
-    EXPECT_EQ(players[0].id, api->constructeur_tuyau({1, 1}));
-    st->build_pipe({4, 2}, players[1].id);
-    EXPECT_EQ(players[1].id, api->constructeur_tuyau({4, 2}));
-    st->upgrade_pipe({4, 2}, players[0].id);
-    EXPECT_EQ(players[0].id, api->constructeur_tuyau({4, 2}));
+    for (size_t player_index : {0, 1})
+    {
+        auto& player = players[player_index];
+        auto& other_player = players[1 - player_index];
+        st(player)->build_pipe({1, 1}, player.id);
+        EXPECT_EQ(player.id, player.api->constructeur_tuyau({1, 1}));
+        st(player)->build_pipe({4, 2}, other_player.id);
+        EXPECT_EQ(other_player.id, player.api->constructeur_tuyau({4, 2}));
+        st(player)->upgrade_pipe({4, 2}, player.id);
+        EXPECT_EQ(player.id, player.api->constructeur_tuyau({4, 2}));
+    }
 }
 
 TEST_F(ApiTest, Api_ProprietaireBase)
@@ -247,65 +290,72 @@ TEST_F(ApiTest, Api_BasesListes)
 
 TEST_F(ApiTest, Api_PuissanceApiration)
 {
-    for (int i = 0; i < TAILLE_TERRAIN; ++i)
+    for (auto& player : players)
     {
-        int p = i >= TAILLE_TERRAIN / 3 && i < TAILLE_TERRAIN * 2 / 3 ? 1 : -1;
-        EXPECT_EQ(p, players[0].api->puissance_aspiration({0, i}));
+        for (int i = 0; i < TAILLE_TERRAIN; ++i)
+        {
+            int p =
+                i >= TAILLE_TERRAIN / 3 && i < TAILLE_TERRAIN * 2 / 3 ? 1 : -1;
+            EXPECT_EQ(p, player.api->puissance_aspiration({0, i}));
+        }
+        position pos{TAILLE_TERRAIN / 2, 0};
+        EXPECT_EQ(1, player.api->puissance_aspiration(pos));
+        st(player)->increment_vacuum(pos);
+        EXPECT_EQ(2, player.api->puissance_aspiration(pos));
+        st(player)->increment_vacuum(pos);
+        EXPECT_EQ(3, player.api->puissance_aspiration(pos));
+        pos.x += 1;
+        EXPECT_EQ(1, player.api->puissance_aspiration(pos));
     }
-    position pos{TAILLE_TERRAIN / 2, 0};
-    EXPECT_EQ(1, players[0].api->puissance_aspiration(pos));
-    st->increment_vacuum(pos);
-    EXPECT_EQ(2, players[0].api->puissance_aspiration(pos));
-    st->increment_vacuum(pos);
-    EXPECT_EQ(3, players[0].api->puissance_aspiration(pos));
-    pos.x += 1;
-    EXPECT_EQ(1, players[0].api->puissance_aspiration(pos));
 }
 
 TEST_F(ApiTest, Api_DirectionsPlasma)
 {
-    position pos{1, TAILLE_TERRAIN / 2};
-    std::vector<position> expected;
-    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION);
-    players[0].api->construire(pos);
-    expected.push_back({0, TAILLE_TERRAIN / 2});
-    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION);
-    players[0].api->construire({pos.x, pos.y + 1});
-    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
+    for (auto& player : players)
+    {
+        position pos{1, TAILLE_TERRAIN / 2};
+        std::vector<position> expected;
+        EXPECT_EQ(expected, player.api->directions_plasma(pos));
+        set_points(st(player), COUT_CONSTRUCTION);
+        player.api->construire(pos);
+        expected.push_back({0, TAILLE_TERRAIN / 2});
+        EXPECT_EQ(expected, player.api->directions_plasma(pos));
+        set_points(st(player), COUT_CONSTRUCTION);
+        player.api->construire({pos.x, pos.y + 1});
+        EXPECT_EQ(expected, player.api->directions_plasma(pos));
 
-    expected.clear();
-    pos = position{TAILLE_TERRAIN - 3, TAILLE_TERRAIN / 2};
-    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION);
-    players[0].api->construire(pos);
-    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION);
-    players[0].api->construire({pos.x, pos.y + 1});
-    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION);
-    players[0].api->construire({pos.x + 1, pos.y + 1});
-    expected.push_back({pos.x, pos.y + 1});
-    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION);
-    players[0].api->construire({pos.x, pos.y - 1});
-    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION);
-    DEBUG("%d\n", players[0].api->est_tuyau({pos.x + 1, pos.y - 1}));
-    players[0].api->construire({pos.x + 1, pos.y - 1});
-    expected.push_back({pos.x, pos.y - 1});
-    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_DESTRUCTION);
-    st->decrease_plasma(players[0].id, -CHARGE_DESTRUCTION);
-    players[0].api->detruire({pos.x, pos.y - 1});
-    expected.pop_back();
-    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
-    set_points(st, COUT_CONSTRUCTION);
-    players[0].api->construire({pos.x + 1, pos.y});
-    expected.clear();
-    expected.push_back({pos.x + 1, pos.y});
-    EXPECT_EQ(expected, players[0].api->directions_plasma(pos));
+        expected.clear();
+        pos = position{TAILLE_TERRAIN - 3, TAILLE_TERRAIN / 2};
+        EXPECT_EQ(expected, player.api->directions_plasma(pos));
+        set_points(st(player), COUT_CONSTRUCTION);
+        player.api->construire(pos);
+        EXPECT_EQ(expected, player.api->directions_plasma(pos));
+        set_points(st(player), COUT_CONSTRUCTION);
+        player.api->construire({pos.x, pos.y + 1});
+        EXPECT_EQ(expected, player.api->directions_plasma(pos));
+        set_points(st(player), COUT_CONSTRUCTION);
+        player.api->construire({pos.x + 1, pos.y + 1});
+        expected.push_back({pos.x, pos.y + 1});
+        EXPECT_EQ(expected, player.api->directions_plasma(pos));
+        set_points(st(player), COUT_CONSTRUCTION);
+        player.api->construire({pos.x, pos.y - 1});
+        EXPECT_EQ(expected, player.api->directions_plasma(pos));
+        set_points(st(player), COUT_CONSTRUCTION);
+        DEBUG("%d\n", player.api->est_tuyau({pos.x + 1, pos.y - 1}));
+        player.api->construire({pos.x + 1, pos.y - 1});
+        expected.push_back({pos.x, pos.y - 1});
+        EXPECT_EQ(expected, player.api->directions_plasma(pos));
+        set_points(st(player), COUT_DESTRUCTION);
+        st(player)->decrease_plasma(player.id, -CHARGE_DESTRUCTION);
+        player.api->detruire({pos.x, pos.y - 1});
+        expected.pop_back();
+        EXPECT_EQ(expected, player.api->directions_plasma(pos));
+        set_points(st(player), COUT_CONSTRUCTION);
+        player.api->construire({pos.x + 1, pos.y});
+        expected.clear();
+        expected.push_back({pos.x + 1, pos.y});
+        EXPECT_EQ(expected, player.api->directions_plasma(pos));
+    }
 }
 
 TEST_F(ApiTest, Api_CoutProchaineModificationAspiration)
@@ -313,16 +363,16 @@ TEST_F(ApiTest, Api_CoutProchaineModificationAspiration)
     for (auto& player : players)
     {
         EXPECT_EQ(0, player.api->cout_prochaine_modification_aspiration());
-        st->set_vacuum_moved(true);
+        st(player)->set_vacuum_moved(true);
         EXPECT_EQ(COUT_MODIFICATION_ASPIRATION,
                   player.api->cout_prochaine_modification_aspiration());
-        st->set_vacuum_moved(false);
+        st(player)->set_vacuum_moved(false);
         EXPECT_EQ(0, player.api->cout_prochaine_modification_aspiration());
         auto bases = player.api->ma_base();
         player.api->deplacer_aspiration(bases[0], bases[1]);
         EXPECT_EQ(COUT_MODIFICATION_ASPIRATION,
                   player.api->cout_prochaine_modification_aspiration());
-        st->set_vacuum_moved(false);
+        st(player)->set_vacuum_moved(false);
     }
 }
 
@@ -331,13 +381,14 @@ TEST_F(ApiTest, Api_HistTuyauxConstruits)
     for (int player_index : {0, 1})
     {
         auto& player = players[player_index];
-        auto& other = players[(player_index + 1) % 2];
+        auto& other = players[1 - player_index];
         std::vector<position> expected;
         EXPECT_EQ(expected, other.api->hist_tuyaux_construits());
         auto build = [&](position pos) {
-            set_points(st, COUT_CONSTRUCTION);
+            set_points(st(player), COUT_CONSTRUCTION);
             EXPECT_EQ(OK, player.api->construire(pos));
             expected.push_back(pos);
+            send_actions(&player, &other);
             EXPECT_EQ(expected, other.api->hist_tuyaux_construits());
         };
         build({1, 1 + player_index * 2});
@@ -351,16 +402,17 @@ TEST_F(ApiTest, Api_HistTuyauxDetruits)
     for (int player_index : {0, 1})
     {
         auto& player = players[player_index];
-        auto& other = players[(player_index + 1) % 2];
+        auto& other = players[1 - player_index];
         std::vector<position> expected;
         EXPECT_EQ(expected, other.api->hist_tuyaux_detruits());
         auto build_destroy = [&](position pos) {
-            set_points(st, COUT_CONSTRUCTION);
+            set_points(st(player), COUT_CONSTRUCTION);
             EXPECT_EQ(OK, player.api->construire(pos));
-            set_points(st, COUT_DESTRUCTION);
-            st->decrease_plasma(player.id, -CHARGE_DESTRUCTION);
+            set_points(st(player), COUT_DESTRUCTION);
+            st(player)->decrease_plasma(player.id, -CHARGE_DESTRUCTION);
             EXPECT_EQ(OK, player.api->detruire(pos));
             expected.push_back(pos);
+            send_actions(&player, &other);
             EXPECT_EQ(expected, other.api->hist_tuyaux_detruits());
         };
         build_destroy({1, 1 + player_index * 2});
@@ -374,15 +426,16 @@ TEST_F(ApiTest, Api_HistTuyauxAmeliores)
     for (int player_index : {0, 1})
     {
         auto& player = players[player_index];
-        auto& other = players[(player_index + 1) % 2];
+        auto& other = players[1 - player_index];
         std::vector<position> expected;
         EXPECT_EQ(expected, other.api->hist_tuyaux_ameliores());
         auto build_upgrade = [&](position pos) {
-            set_points(st, COUT_CONSTRUCTION);
+            set_points(st(player), COUT_CONSTRUCTION);
             EXPECT_EQ(OK, player.api->construire(pos));
-            set_points(st, COUT_AMELIORATION);
+            set_points(st(player), COUT_AMELIORATION);
             EXPECT_EQ(OK, player.api->ameliorer(pos));
             expected.push_back(pos);
+            send_actions(&player, &other);
             EXPECT_EQ(expected, other.api->hist_tuyaux_ameliores());
         };
         build_upgrade({1, 1 + player_index * 2});
@@ -396,18 +449,19 @@ TEST_F(ApiTest, Api_HistDebrisDeblayes)
     for (int player_index : {0, 1})
     {
         auto& player = players[player_index];
-        auto& other = players[(player_index + 1) % 2];
+        auto& other = players[1 - player_index];
         std::vector<position> expected;
         EXPECT_EQ(expected, other.api->hist_debris_deblayes());
         auto build_destroy_clear = [&](position pos) {
-            set_points(st, COUT_CONSTRUCTION);
+            set_points(st(player), COUT_CONSTRUCTION);
             EXPECT_EQ(OK, player.api->construire(pos));
-            set_points(st, COUT_DESTRUCTION);
-            st->decrease_plasma(player.id, -CHARGE_DESTRUCTION);
+            set_points(st(player), COUT_DESTRUCTION);
+            st(player)->decrease_plasma(player.id, -CHARGE_DESTRUCTION);
             EXPECT_EQ(OK, player.api->detruire(pos));
-            set_points(st, COUT_DEBLAYAGE);
+            set_points(st(player), COUT_DEBLAYAGE);
             EXPECT_EQ(OK, player.api->deblayer(pos));
             expected.push_back(pos);
+            send_actions(&player, &other);
             EXPECT_EQ(expected, other.api->hist_debris_deblayes());
         };
         build_destroy_clear({1, 1});
@@ -421,19 +475,19 @@ TEST_F(ApiTest, Api_HistPointAspirationAjoutes)
     for (int player_index : {0, 1})
     {
         auto& player = players[player_index];
-        auto& other = players[(player_index + 1) % 2];
+        auto& other = players[1 - player_index];
         std::vector<position> expected;
         EXPECT_EQ(expected, other.api->hist_points_aspiration_ajoutes());
         auto bases = player.api->ma_base();
-        auto move = [&](int base_id) {
-            set_points(st, COUT_MODIFICATION_ASPIRATION);
-            expected.push_back(bases[base_id]);
-            st->increment_vacuum(bases[0]); // let's cheat a bit
-            return player.api->deplacer_aspiration(bases[0], bases[base_id]);
+        auto move = [&](int base_src, int base_dst) {
+            set_points(st(player), COUT_MODIFICATION_ASPIRATION);
+            expected.push_back(bases[base_dst]);
+            return player.api->deplacer_aspiration(bases[base_src],
+                                                   bases[base_dst]);
         };
-        EXPECT_EQ(OK, move(1));
-        EXPECT_EQ(OK, move(2));
-        EXPECT_EQ(OK, move(5));
+        EXPECT_EQ(OK, move(1, 3));
+        EXPECT_EQ(OK, move(2, 4));
+        send_actions(&player, &other);
         EXPECT_EQ(expected, other.api->hist_points_aspiration_ajoutes());
     }
 }
@@ -443,12 +497,12 @@ TEST_F(ApiTest, Api_HistPointAspirationRetires)
     for (int player_index : {0, 1})
     {
         auto& player = players[player_index];
-        auto& other = players[(player_index + 1) % 2];
+        auto& other = players[1 - player_index];
         std::vector<position> expected;
         EXPECT_EQ(expected, other.api->hist_points_aspiration_retires());
         auto bases = player.api->ma_base();
         auto move = [&](int base_id, int to = 0) {
-            set_points(st, COUT_MODIFICATION_ASPIRATION);
+            set_points(st(player), COUT_MODIFICATION_ASPIRATION);
             expected.push_back(bases[base_id]);
             return player.api->deplacer_aspiration(bases[base_id], bases[to]);
         };
@@ -457,6 +511,7 @@ TEST_F(ApiTest, Api_HistPointAspirationRetires)
         EXPECT_EQ(OK, move(2));
         EXPECT_EQ(OK, move(5));
         EXPECT_EQ(OK, move(0, 1));
+        send_actions(&player, &other);
         EXPECT_EQ(expected, other.api->hist_points_aspiration_retires());
     }
 }
@@ -473,7 +528,7 @@ TEST_F(ApiTest, Api_Adversaire)
 {
     for (int player_index : {0, 1})
     {
-        int expected = players[(player_index + 1) % 2].id;
+        int expected = players[1 - player_index].id;
         EXPECT_EQ(expected, players[player_index].api->adversaire());
     }
 }
@@ -484,7 +539,7 @@ TEST_F(ApiTest, Api_PointsAction)
     {
         for (unsigned value : {0, 4, 10, 30, 40})
         {
-            set_points(st, value);
+            set_points(st(player), value);
             ASSERT_EQ(true, player.api->points_action() >= 0);
             EXPECT_EQ(value, (unsigned)player.api->points_action());
         }
@@ -500,7 +555,8 @@ TEST_F(ApiTest, Api_Score)
     };
     for (int player_index : {0, 1})
     {
-        PlayerInfo info = st->get_player_info().at(players[player_index].id);
+        auto& player = players[player_index];
+        PlayerInfo info = st(player)->get_player_info().at(player.id);
         check_score(0, player_index);
         info.collect_plasma(0.3);
         check_score(0, player_index);
@@ -524,8 +580,8 @@ TEST_F(ApiTest, Api_TourActuel)
         for (auto& player : players)
         {
             EXPECT_EQ(turn, player.api->tour_actuel());
+            st(player)->increment_turn();
         }
-        st->increment_turn();
     }
 }
 
@@ -536,7 +592,7 @@ TEST_F(ApiTest, Api_Annuler)
         EXPECT_FALSE(player.api->annuler());
         position pos{1, 1};
         EXPECT_TRUE(player.api->est_libre(pos));
-        set_points(st, COUT_CONSTRUCTION);
+        set_points(st(player), COUT_CONSTRUCTION);
         EXPECT_EQ(OK, player.api->construire(pos));
         EXPECT_TRUE(player.api->est_tuyau(pos));
         EXPECT_TRUE(player.api->annuler());

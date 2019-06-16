@@ -29,7 +29,7 @@ TEST_F(RulesTest, DumpUnicodeString)
     std::ostringstream oss;
     std::string out;
     auto& player1_info =
-        rules->get_game_state()->get_player_info().find(PLAYER_ID_1)->second;
+        rules->get_game_state().get_player_info().find(PLAYER_ID_1)->second;
 
     player1_info.set_name("\xc3\xa9l\xc3\xa9phant"); // éléphant
     oss.str("");

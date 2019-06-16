@@ -19,25 +19,25 @@
 
 #include "actions.hh"
 
-int ActionDeplacerAspiration::check(const GameState* st) const
+int ActionDeplacerAspiration::check(const GameState& st) const
 {
-    case_type source = st->get_cell_type(source_);
-    case_type destination = st->get_cell_type(destination_);
+    case_type source = st.get_cell_type(source_);
+    case_type destination = st.get_cell_type(destination_);
     if (source == case_type::INTERDIT || destination == case_type::INTERDIT)
         return POSITION_INVALIDE;
     if (source_ == destination_)
         return DEPLACEMENT_INVALIDE;
     if (source != case_type::BASE || destination != case_type::BASE)
         return PAS_DANS_BASE;
-    if (st->get_cell_owner(source_) != static_cast<unsigned>(player_id_) ||
-        st->get_cell_owner(destination_) != static_cast<unsigned>(player_id_))
+    if (st.get_cell_owner(source_) != static_cast<unsigned>(player_id_) ||
+        st.get_cell_owner(destination_) != static_cast<unsigned>(player_id_))
         return PAS_DANS_BASE;
-    if (st->get_vacuum(source_) <= 0)
+    if (st.get_vacuum(source_) <= 0)
         return PUISSANCE_INSUFFISANTE;
-    if (st->get_vacuum(destination_) >= LIMITE_ASPIRATION)
+    if (st.get_vacuum(destination_) >= LIMITE_ASPIRATION)
         return LIMITE_ASPIRATION_ATTEINTE;
-    if (st->get_vacuum_moved() &&
-        st->get_action_points() < COUT_MODIFICATION_ASPIRATION)
+    if (st.get_vacuum_moved() &&
+        st.get_action_points() < COUT_MODIFICATION_ASPIRATION)
         return PA_INSUFFISANTS;
     return OK;
 }

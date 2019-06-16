@@ -17,8 +17,8 @@
 ** along with Prologin2016.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "rules.hh"
 #include "actions.hh"
+#include "rules.hh"
 #include <fstream>
 
 Rules::Rules(const rules::Options opt)
@@ -40,8 +40,8 @@ Rules::Rules(const rules::Options opt)
     if (!ifs.is_open())
         FATAL("Cannot open file: %s", opt.map_file.c_str());
 
-    GameStateWrapper game_state(new GameState(ifs, opt.players));
-    api_ = std::make_unique<Api>(game_state, opt.player);
+    auto game_state = std::make_unique<GameState>(ifs, opt.players);
+    api_ = std::make_unique<Api>(std::move(game_state), opt.player);
     register_actions();
 }
 
@@ -76,12 +76,12 @@ void Rules::apply_action(const rules::IAction_sptr& action)
     // client/server desynchronizations and make sure the gamestate is always
     // consistent across the clients and the server.
 
-    int err = action->check(api_->game_state());
+    int err = api_->game_state_check(action);
     if (err)
         FATAL("Synchronization error: received action %d from player %d, but "
               "check() on current gamestate returned %d.",
               action->id(), action->player_id(), err);
-    api_->game_state_set(action->apply(api_->game_state()));
+    api_->game_state_apply(action);
 }
 
 void Rules::at_player_start(rules::ClientMessenger_sptr)
@@ -137,24 +137,24 @@ void Rules::spectator_turn()
 
 void Rules::start_of_player_turn(uint32_t player_id)
 {
-    api_->game_state()->reset_action_points();
-    api_->game_state()->increment_turn();
-    api_->game_state()->set_vacuum_moved(false);
-    api_->game_state()->reset_history(player_id);
+    api_->game_state().reset_action_points();
+    api_->game_state().increment_turn();
+    api_->game_state().set_vacuum_moved(false);
+    api_->game_state().reset_history(player_id);
 }
 
 void Rules::end_of_player_turn(uint32_t /* player_id */)
 {
-    api_->game_state()->move_plasma();
-    api_->game_state()->emit_plasma();
+    api_->game_state().move_plasma();
+    api_->game_state().emit_plasma();
 
-    // Clear the list of game states at the end of each turn (half-round)
-    // We need the linked list of game states only for undo and history,
-    // therefore old states are not needed anymore after the turn ends.
-    api_->game_state()->clear_old_version();
+    // Clear the previous game states at the end of each turn (half-round)
+    // We need the previous game states only for undo and history, therefore
+    // old states are not needed anymore after the turn ends.
+    api_->clear_old_game_states();
 }
 
 bool Rules::is_finished()
 {
-    return api_->game_state()->get_turn() >= NB_TOURS;
+    return api_->game_state().get_turn() >= NB_TOURS;
 }

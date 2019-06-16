@@ -19,14 +19,14 @@
 
 #include "actions.hh"
 
-int ActionConstruire::check(const GameState* st) const
+int ActionConstruire::check(const GameState& st) const
 {
-    case_type ct = st->get_cell_type(position_);
+    case_type ct = st.get_cell_type(position_);
     if (ct == case_type::INTERDIT)
         return POSITION_INVALIDE;
     if (ct != case_type::VIDE)
         return CONSTRUCTION_IMPOSSIBLE;
-    if (st->get_action_points() < COUT_CONSTRUCTION)
+    if (st.get_action_points() < COUT_CONSTRUCTION)
         return PA_INSUFFISANTS;
     return OK;
 }
