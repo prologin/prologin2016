@@ -17,9 +17,9 @@
 ** along with Prologin2016.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <fstream>
 #include "rules.hh"
 #include "actions.hh"
+#include <fstream>
 
 Rules::Rules(const rules::Options opt)
     : TurnBasedRules(opt)
@@ -47,29 +47,21 @@ Rules::Rules(const rules::Options opt)
 
 void Rules::register_actions()
 {
-    api_->actions()->register_action(ID_ACTION_CONSTRUIRE,
-                                     []() -> rules::IAction*
-                                     {
-                                         return new ActionConstruire();
-                                     });
-    api_->actions()->register_action(ID_ACTION_AMELIORER,
-                                     []() -> rules::IAction*
-                                     {
-                                         return new ActionAmeliorer();
-                                     });
-    api_->actions()->register_action(ID_ACTION_DETRUIRE, []() -> rules::IAction*
-                                     {
-                                         return new ActionDetruire();
-                                     });
-    api_->actions()->register_action(ID_ACTION_DEPLACER_ASPIRATION,
-                                     []() -> rules::IAction*
-                                     {
-                                         return new ActionDeplacerAspiration();
-                                     });
-    api_->actions()->register_action(ID_ACTION_DEBLAYER, []() -> rules::IAction*
-                                     {
-                                         return new ActionDeblayer();
-                                     });
+    api_->actions()->register_action(
+        ID_ACTION_CONSTRUIRE,
+        []() -> rules::IAction* { return new ActionConstruire(); });
+    api_->actions()->register_action(
+        ID_ACTION_AMELIORER,
+        []() -> rules::IAction* { return new ActionAmeliorer(); });
+    api_->actions()->register_action(
+        ID_ACTION_DETRUIRE,
+        []() -> rules::IAction* { return new ActionDetruire(); });
+    api_->actions()->register_action(
+        ID_ACTION_DEPLACER_ASPIRATION,
+        []() -> rules::IAction* { return new ActionDeplacerAspiration(); });
+    api_->actions()->register_action(
+        ID_ACTION_DEBLAYER,
+        []() -> rules::IAction* { return new ActionDeblayer(); });
 }
 
 rules::Actions* Rules::get_actions()

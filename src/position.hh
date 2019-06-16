@@ -80,4 +80,4 @@ template <> struct hash<position>
         return s ^ (std::hash<int>()(p.x) + (s << 6) + (s >> 2));
     }
 };
-}
+} // namespace std

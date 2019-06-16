@@ -20,11 +20,11 @@
 #ifndef GAME_STATE_HH
 #define GAME_STATE_HH
 
+#include "constant.hh"
 #include <array>
-#include <unordered_map>
 #include <rules/game-state.hh>
 #include <rules/player.hh>
-#include "constant.hh"
+#include <unordered_map>
 
 #include "position.hh"
 

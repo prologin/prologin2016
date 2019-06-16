@@ -57,7 +57,7 @@ TEST_F(ActionTest, DeplacerAspiration_AspirationLimit)
     position destination_base = {N / 2 - 4, 0};
     position source_base;
     ActionDeplacerAspiration act;
-    for(int i = 0; i <  LIMITE_ASPIRATION - 1; i++)
+    for (int i = 0; i < LIMITE_ASPIRATION - 1; i++)
     {
         source_base = {N / 2 - 3 + i, 0};
         st->reset_action_points();
@@ -68,7 +68,7 @@ TEST_F(ActionTest, DeplacerAspiration_AspirationLimit)
     source_base = {N / 2 - 3 + LIMITE_ASPIRATION, 0};
     st->reset_action_points();
     ActionDeplacerAspiration act2(source_base, destination_base, PLAYER_1);
-    EXPECT_EQ(LIMITE_ASPIRATION, (int) st->get_vacuum(destination_base));
+    EXPECT_EQ(LIMITE_ASPIRATION, (int)st->get_vacuum(destination_base));
     EXPECT_EQ(LIMITE_ASPIRATION_ATTEINTE, act2.check(st));
-    EXPECT_EQ(LIMITE_ASPIRATION, (int) st->get_vacuum(destination_base));
+    EXPECT_EQ(LIMITE_ASPIRATION, (int)st->get_vacuum(destination_base));
 }

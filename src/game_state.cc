@@ -431,8 +431,7 @@ void GameState::compute_board_distances()
     auto& distances = *board_distances_;
     distances.fill(infinity);
 
-    auto compare = [](const elt_t& p1, const elt_t& p2)
-    {
+    auto compare = [](const elt_t& p1, const elt_t& p2) {
         return p1.first > p2.first;
     };
 

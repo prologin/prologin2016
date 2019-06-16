@@ -1,5 +1,6 @@
 /*
-** This file is part of Prologin2016, a rules library for stechec2, a rules library for stechec2.
+** This file is part of Prologin2016, a rules library for stechec2, a rules
+*library for stechec2.
 **
 ** Copyright (c) 2016 Association Prologin <info@prologin.org>
 **
@@ -20,7 +21,8 @@
 #ifndef ACTIONS_HH
 #define ACTIONS_HH
 
-enum action_id {
+enum action_id
+{
     ID_ACTION_CONSTRUIRE,
     ID_ACTION_AMELIORER,
     ID_ACTION_DETRUIRE,
@@ -28,10 +30,10 @@ enum action_id {
     ID_ACTION_DEBLAYER
 };
 
-#include "action_construire.hh"
 #include "action_ameliorer.hh"
-#include "action_detruire.hh"
-#include "action_deplacer_aspiration.hh"
+#include "action_construire.hh"
 #include "action_deblayer.hh"
+#include "action_deplacer_aspiration.hh"
+#include "action_detruire.hh"
 
 #endif // !ACTIONS_HH

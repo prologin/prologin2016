@@ -22,9 +22,9 @@
 #include <string>
 
 #include "api.hh"
-#include "rules.hh"
 #include "constant.hh"
 #include "game_state.hh"
+#include "rules.hh"
 
 /// Decodes a UTF-8 string to a list of 32 bit unicode codepoints. Ignores
 /// erroneous characters.

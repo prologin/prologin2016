@@ -20,13 +20,13 @@
 #ifndef API_HH_
 #define API_HH_
 
-#include <vector>
+#include <rules/actions.hh>
 #include <rules/game-state.hh>
 #include <rules/player.hh>
-#include <rules/actions.hh>
+#include <vector>
 
-#include "game_state.hh"
 #include "constant.hh"
+#include "game_state.hh"
 
 /// A shared pointer to the current game state
 /**
@@ -107,7 +107,8 @@ public:
     /// Détruit un tuyau sur une case donnée.
     erreur detruire(position pos);
 
-    /// Déplace une unité de puissance d'aspiration d'une case de votre base vers une autre.
+    /// Déplace une unité de puissance d'aspiration d'une case de votre base
+    /// vers une autre.
     erreur deplacer_aspiration(position source, position destination);
 
     /// Déblaye une case de débris.
@@ -134,7 +135,8 @@ public:
     /// Renvoie vrai si et seulement si la case contient un pulsar.
     bool est_pulsar(position pos);
 
-    /// Renvoie vrai si et seulement si la case contient un tuyau ou un Super Tuyau™.
+    /// Renvoie vrai si et seulement si la case contient un tuyau ou un Super
+    /// Tuyau™.
     bool est_tuyau(position pos);
 
     /// Renvoie vrai si et seulement si la case contient un simple tuyau.
@@ -146,7 +148,8 @@ public:
     /// Renvoie vrai si et seulement si la case contient un débris.
     bool est_debris(position pos);
 
-    /// Renvoie vrai si et seulement s'il est possible de construire sur cette case.
+    /// Renvoie vrai si et seulement s'il est possible de construire sur cette
+    /// case.
     bool est_libre(position pos);
 
     /// Renvoie les informations propres au pulsar à la position donnée.

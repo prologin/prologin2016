@@ -37,9 +37,11 @@ TEST_F(ActionTest, Detruire_SuperPipeCell)
     st->reset_action_points();
     EXPECT_EQ(OK, act_destroy.check(st));
 
-    // Check that there's no points left after performing a destruction of a super-pipe
+    // Check that there's no points left after performing a destruction of a
+    // super-pipe
     act_destroy.apply_on(st);
-    EXPECT_EQ(NB_POINTS_ACTION - COUT_DESTRUCTION_SUPER_TUYAU, (int) st->get_action_points());
+    EXPECT_EQ(NB_POINTS_ACTION - COUT_DESTRUCTION_SUPER_TUYAU,
+              (int)st->get_action_points());
 }
 
 TEST_F(ActionTest, Detruire_BrokenPipeCell)
