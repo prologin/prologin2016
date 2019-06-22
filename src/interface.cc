@@ -459,7 +459,7 @@ extern "C" int api_tour_actuel()
 /// annuler ce tour-ci.
 extern "C" bool api_annuler()
 {
-    return api->annuler();
+    return api->cancel();
 }
 
 /// Affiche le contenu d'une valeur de type erreur

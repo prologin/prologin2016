@@ -319,14 +319,3 @@ int Api::tour_actuel()
 {
     return game_state_->get_turn();
 }
-
-/// Annule la dernière action. Renvoie ``false`` quand il n'y a pas d'action à
-/// annuler ce tour-ci.
-bool Api::annuler()
-{
-    if (!game_state_.can_cancel())
-        return false;
-    actions_.cancel();
-    game_state_.cancel();
-    return true;
-}

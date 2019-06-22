@@ -165,10 +165,6 @@ public:
 
     /// Renvoie le numéro du tour actuel.
     int tour_actuel();
-
-    /// Annule la dernière action. Renvoie ``false`` quand il n'y a pas d'action
-    /// à annuler ce tour-ci.
-    bool annuler();
 };
 
 #endif /* !API_HH_ */

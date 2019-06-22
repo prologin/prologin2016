@@ -589,13 +589,13 @@ TEST_F(ApiTest, Api_Annuler)
 {
     for (auto& player : players)
     {
-        EXPECT_FALSE(player.api->annuler());
+        EXPECT_FALSE(player.api->cancel());
         position pos{1, 1};
         EXPECT_TRUE(player.api->est_libre(pos));
         set_points(st(player), COUT_CONSTRUCTION);
         EXPECT_EQ(OK, player.api->construire(pos));
         EXPECT_TRUE(player.api->est_tuyau(pos));
-        EXPECT_TRUE(player.api->annuler());
+        EXPECT_TRUE(player.api->cancel());
         EXPECT_TRUE(player.api->est_libre(pos));
     }
 }
