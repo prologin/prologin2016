@@ -25,82 +25,15 @@
 // global used in interface.cc
 Api* api;
 
-Api::Api(const GameStateWrapper& game_state, rules::Player_sptr player)
-    : game_state_(game_state)
-    , player_(std::move(player))
+Api::Api(std::unique_ptr<GameState> game_state, rules::Player_sptr player)
+    : rules::Api<GameState, erreur>(std::move(game_state), player)
+    , construire(this)
+    , ameliorer(this)
+    , detruire(this)
+    , deplacer_aspiration(this)
+    , deblayer(this)
 {
     api = this;
-}
-
-/// Construit un tuyau sur une case donnée.
-erreur Api::construire(position position)
-{
-    rules::IAction_sptr action(new ActionConstruire(position, player_->id));
-
-    erreur err;
-    if ((err = static_cast<erreur>(action->check(game_state_))) != OK)
-        return err;
-
-    actions_.add(action);
-    game_state_set(action->apply(game_state_));
-    return OK;
-}
-
-/// Améliore un tuyau en Super Tuyau™.
-erreur Api::ameliorer(position position)
-{
-    rules::IAction_sptr action(new ActionAmeliorer(position, player_->id));
-
-    erreur err;
-    if ((err = static_cast<erreur>(action->check(game_state_))) != OK)
-        return err;
-
-    actions_.add(action);
-    game_state_set(action->apply(game_state_));
-    return OK;
-}
-
-/// Détruit un tuyau sur une case donnée.
-erreur Api::detruire(position position)
-{
-    rules::IAction_sptr action(new ActionDetruire(position, player_->id));
-
-    erreur err;
-    if ((err = static_cast<erreur>(action->check(game_state_))) != OK)
-        return err;
-
-    actions_.add(action);
-    game_state_set(action->apply(game_state_));
-    return OK;
-}
-
-/// Déplace un point d'aspiration d'un point de la base vers l'autre.
-erreur Api::deplacer_aspiration(position source, position destination)
-{
-    rules::IAction_sptr action(
-        new ActionDeplacerAspiration(source, destination, player_->id));
-
-    erreur err;
-    if ((err = static_cast<erreur>(action->check(game_state_))) != OK)
-        return err;
-
-    actions_.add(action);
-    game_state_set(action->apply(game_state_));
-    return OK;
-}
-
-/// Déblaye une case de débris.
-erreur Api::deblayer(position position)
-{
-    rules::IAction_sptr action(new ActionDeblayer(position, player_->id));
-
-    erreur err;
-    if ((err = static_cast<erreur>(action->check(game_state_))) != OK)
-        return err;
-
-    actions_.add(action);
-    game_state_set(action->apply(game_state_));
-    return OK;
 }
 
 /// Renvoie le type d'une case donnée.
@@ -385,15 +318,4 @@ int Api::score(int id_joueur)
 int Api::tour_actuel()
 {
     return game_state_->get_turn();
-}
-
-/// Annule la dernière action. Renvoie ``false`` quand il n'y a pas d'action à
-/// annuler ce tour-ci.
-bool Api::annuler()
-{
-    if (!game_state_->can_cancel())
-        return false;
-    actions_.cancel();
-    game_state_ = rules::cancel(game_state_.operator GameState*());
-    return true;
 }

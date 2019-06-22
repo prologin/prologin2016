@@ -19,16 +19,16 @@
 
 #include "actions.hh"
 
-int ActionAmeliorer::check(const GameState* st) const
+int ActionAmeliorer::check(const GameState& st) const
 {
-    case_type ct = st->get_cell_type(position_);
+    case_type ct = st.get_cell_type(position_);
     if (ct == case_type::INTERDIT)
         return POSITION_INVALIDE;
     if (ct == case_type::SUPER_TUYAU)
         return AMELIORATION_IMPOSSIBLE;
     if (ct != case_type::TUYAU)
         return AUCUN_TUYAU;
-    if (st->get_action_points() < COUT_AMELIORATION)
+    if (st.get_action_points() < COUT_AMELIORATION)
         return PA_INSUFFISANTS;
     return OK;
 }

@@ -31,11 +31,11 @@ static rules::Players_sptr make_players(int id1, int id2)
         }});
 }
 
-static GameStateWrapper make_test_gamestate(std::string map,
-                                            const rules::Players_sptr& players)
+static std::unique_ptr<GameState>
+make_test_gamestate(std::string map, const rules::Players_sptr& players)
 {
     std::istringstream map_stream(map);
-    return GameStateWrapper(new GameState(map_stream, players));
+    return std::make_unique<GameState>(map_stream, players);
 }
 
 class ActionTest : public ::testing::Test
@@ -47,7 +47,7 @@ protected:
         st = make_test_gamestate(some_map, make_players(PLAYER_1, PLAYER_2));
     }
 
-    GameStateWrapper st = GameStateWrapper(nullptr);
+    std::unique_ptr<GameState> st;
 
     const int PLAYER_1 = 0;
     const int PLAYER_2 = 1;
@@ -63,27 +63,31 @@ protected:
         int player_id_2 = 42;
         utils::Logger::get().level() = utils::Logger::DEBUG_LEVEL;
         auto players_ptr = make_players(player_id_1, player_id_2);
-        st = make_test_gamestate(some_map, players_ptr);
+        auto st = make_test_gamestate(some_map, players_ptr);
         players[0].id = player_id_1;
-        players[0].api = new Api(st, players_ptr->players[0]);
+        players[0].api = std::make_unique<Api>(
+            std::unique_ptr<GameState>(st->copy()), players_ptr->players[0]);
         players[1].id = player_id_2;
-        players[1].api = new Api(st, players_ptr->players[1]);
+        players[1].api = std::make_unique<Api>(
+            std::unique_ptr<GameState>(st->copy()), players_ptr->players[1]);
     }
-
-    virtual void TearDown()
-    {
-        delete players[0].api;
-        delete players[1].api;
-    }
-
-    GameStateWrapper st = GameStateWrapper(nullptr);
 
     struct Player
     {
         int id;
-        Api* api;
+        std::unique_ptr<Api> api;
     };
     std::array<Player, 2> players;
+
+    GameState* st(Player& player) { return &player.api->game_state(); }
+
+    void send_actions(Player* src, Player* dst)
+    {
+        // Apply action from src to dst's game state, then clear src's actions
+        for (const auto& action : src->api->actions()->actions())
+            dst->api->game_state().apply(action);
+        src->api->actions()->clear();
+    }
 };
 
 class RulesTest : public ::testing::Test
@@ -110,7 +114,7 @@ protected:
     std::unique_ptr<Rules> rules;
 };
 
-// Set a given number of action points to a given player
+// Set a given number of action points
 static inline void set_points(GameState* st, unsigned pts)
 {
     st->reset_action_points();

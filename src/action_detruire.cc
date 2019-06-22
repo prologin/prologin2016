@@ -19,19 +19,19 @@
 
 #include "actions.hh"
 
-int ActionDetruire::check(const GameState* st) const
+int ActionDetruire::check(const GameState& st) const
 {
-    case_type ct = st->get_cell_type(position_);
+    case_type ct = st.get_cell_type(position_);
     if (ct == case_type::INTERDIT)
         return POSITION_INVALIDE;
     if (ct != case_type::TUYAU && ct != case_type::SUPER_TUYAU)
         return DESTRUCTION_IMPOSSIBLE;
-    unsigned points = st->get_action_points();
+    unsigned points = st.get_action_points();
     if (points < COUT_DESTRUCTION)
         return PA_INSUFFISANTS;
     if (ct == case_type::SUPER_TUYAU && points < COUT_DESTRUCTION_SUPER_TUYAU)
         return PA_INSUFFISANTS;
-    if (st->get_player_info().at(player_id_).get_collected_plasma() <
+    if (st.get_player_info().at(player_id_).get_collected_plasma() <
         CHARGE_DESTRUCTION)
         return CHARGE_INSUFFISANTE;
     return OK;

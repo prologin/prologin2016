@@ -107,7 +107,7 @@ public:
     // The input stream consists of simply five integers for every pulsar:
     // x y periode puissance nombre_pulsations
     GameState(std::istream&, rules::Players_sptr players);
-    rules::GameState* copy() const final override;
+    GameState* copy() const final override;
 
     const auto& get_player_info() const { return player_info_; }
     auto& get_player_info() { return player_info_; }

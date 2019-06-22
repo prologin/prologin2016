@@ -89,7 +89,7 @@ GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
     }
 }
 
-rules::GameState* GameState::copy() const
+GameState* GameState::copy() const
 {
     return new GameState(*this);
 }
