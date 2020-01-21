@@ -84,8 +84,8 @@ protected:
     void send_actions(Player* src, Player* dst)
     {
         // Apply action from src to dst's game state, then clear src's actions
-        for (const auto& action : src->api->actions()->actions())
-            dst->api->game_state().apply(action);
+        for (const auto& action : src->api->actions()->all())
+            dst->api->game_state().apply(*action);
         src->api->actions()->clear();
     }
 };
