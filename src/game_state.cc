@@ -24,7 +24,7 @@
 #include <queue>
 #include <stack>
 
-PlayerInfo::PlayerInfo(rules::Player_sptr player)
+PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player)
     : player_(std::move(player))
     , collected_plasma_(0)
 {
@@ -38,19 +38,19 @@ void PlayerInfo::collect_plasma(double plasma)
     player_->score = std::floor(collected_plasma_);
 }
 
-GameState::GameState(std::istream& board_stream, rules::Players_sptr players)
+GameState::GameState(std::istream& board_stream, const rules::Players& players)
     : rules::GameState()
     , turn_(0)
     , action_points_(NB_POINTS_ACTION)
     , vacuum_moved_(false)
 {
     unsigned pi = 0;
-    for (auto& p : players->players)
+    for (auto& player : players)
     {
-        if (p->type == rules::PLAYER)
+        if (player->type == rules::PLAYER)
         {
-            player_info_.insert({p->id, p});
-            player_ids_[pi++] = p->id;
+            player_info_.insert({player->id, player});
+            player_ids_[pi++] = player->id;
         }
     }
 

@@ -17,8 +17,8 @@
 ** along with Prologin2016.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "actions.hh"
 #include "rules.hh"
+#include "actions.hh"
 #include <fstream>
 
 Rules::Rules(const rules::Options opt)

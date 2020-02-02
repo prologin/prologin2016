@@ -44,12 +44,12 @@ struct action
     position pos;
 };
 
-/// Information about a player; encapsulate its rules::Player_sptr
+/// Information about a player; encapsulate its std::shared_ptr<rules::Player>
 class PlayerInfo
 {
 public:
-    /// Constructor from the rules::Player_sptr to encapsulate
-    PlayerInfo(rules::Player_sptr player);
+    /// Constructor from the std::shared_ptr<rules::Player> to encapsulate
+    PlayerInfo(std::shared_ptr<rules::Player> player);
 
     /// Increase the amount of collected plasma (thus the score)
     void collect_plasma(double plasma);
@@ -76,7 +76,8 @@ public:
     void add_action(action action) { actions_.push_back(action); }
 
 private:
-    rules::Player_sptr player_;   ///< Encapsulated stechec implementation
+    std::shared_ptr<rules::Player>
+        player_;                  ///< Encapsulated stechec implementation
     double collected_plasma_;     ///< Total collected plasma by this player
     std::vector<action> actions_; ///< Actions taken during last turn
 };
@@ -106,7 +107,7 @@ class GameState : public rules::GameState
 public:
     // The input stream consists of simply five integers for every pulsar:
     // x y periode puissance nombre_pulsations
-    GameState(std::istream&, rules::Players_sptr players);
+    GameState(std::istream&, const rules::Players& players);
     GameState* copy() const final override;
 
     const auto& get_player_info() const { return player_info_; }

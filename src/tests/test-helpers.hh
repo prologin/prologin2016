@@ -21,18 +21,17 @@ static const position TEST_BASE = {N / 2, 0};
 static const position TEST_BASE_ALT = {N / 2 + 1, 0};
 static const position TEST_EMPTY_CELL = {1, 1};
 
-static rules::Players_sptr make_players(int id1, int id2)
+static rules::Players make_players(int id1, int id2)
 {
     /* Create two players (no spectator).  */
-    return rules::Players_sptr(
-        new rules::Players{std::vector<rules::Player_sptr>{
-            rules::Player_sptr(new rules::Player(id1, rules::PLAYER)),
-            rules::Player_sptr(new rules::Player(id2, rules::PLAYER)),
-        }});
+    rules::Players players;
+    players.add(std::make_shared<rules::Player>(id1, rules::PLAYER));
+    players.add(std::make_shared<rules::Player>(id2, rules::PLAYER));
+    return players;
 }
 
 static std::unique_ptr<GameState>
-make_test_gamestate(std::string map, const rules::Players_sptr& players)
+make_test_gamestate(std::string map, const rules::Players& players)
 {
     std::istringstream map_stream(map);
     return std::make_unique<GameState>(map_stream, players);
@@ -62,14 +61,14 @@ protected:
         int player_id_1 = 1337;
         int player_id_2 = 42;
         utils::Logger::get().level() = utils::Logger::DEBUG_LEVEL;
-        auto players_ptr = make_players(player_id_1, player_id_2);
-        auto st = make_test_gamestate(some_map, players_ptr);
+        auto gs_players = make_players(player_id_1, player_id_2);
+        auto st = make_test_gamestate(some_map, gs_players);
         players[0].id = player_id_1;
         players[0].api = std::make_unique<Api>(
-            std::unique_ptr<GameState>(st->copy()), players_ptr->players[0]);
+            std::unique_ptr<GameState>(st->copy()), gs_players[0]);
         players[1].id = player_id_2;
         players[1].api = std::make_unique<Api>(
-            std::unique_ptr<GameState>(st->copy()), players_ptr->players[1]);
+            std::unique_ptr<GameState>(st->copy()), gs_players[1]);
     }
 
     struct Player
