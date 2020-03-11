@@ -93,7 +93,7 @@ typedef enum case_type
     SUPER_TUYAU, /* <- Case contenant un Super Tuyau™ */
     DEBRIS,      /* <- Case contenant des débris à déblayer */
     PULSAR,      /* <- Case contenant un pulsar */
-    BASE,        /* <- Case appartenant à une base d'un des joueurs */
+    BASE_JOUEUR, /* <- Case appartenant à une base d'un des joueurs */
     INTERDIT,    /* <- Case où aucune action n'est possible */
 } case_type;
 

@@ -25,7 +25,7 @@ def print_map():
                 print('S', end = '', file = sys.stderr)
             elif c == api.case_type.PULSAR:
                 print('#', end = '', file = sys.stderr)
-            elif c == api.case_type.BASE:
+            elif c == api.case_type.BASE_JOUEUR:
                 print('B', end = '', file = sys.stderr)
             elif c == api.case_type.DEBRIS:
                 print('D', end = '', file = sys.stderr)

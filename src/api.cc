@@ -196,7 +196,7 @@ std::vector<position> Api::base_ennemie()
 /// Renvoie -1 si la position n'est pas celle d'une base.
 int Api::puissance_aspiration(position position)
 {
-    if (game_state_->get_cell_type(position) == BASE)
+    if (game_state_->get_cell_type(position) == BASE_JOUEUR)
         return game_state_->get_vacuum(position);
     else
         return -1;

@@ -90,7 +90,7 @@ struct Cell
     double plasma;
 
     // ID of either:
-    // - the owner of a BASE;
+    // - the owner of a BASE_JOUEUR;
     // - the player who built a TUYAU;
     // - the one who upgraded one to a SUPER_TUYAU.
     // In the last two cases, this information has no effect on gameplay,
@@ -147,7 +147,7 @@ public:
     bool get_vacuum_moved() const { return vacuum_moved_; }
     void set_vacuum_moved(bool);
 
-    /// Get the vacuum power of a given position, that must be a BASE
+    /// Get the vacuum power of a given position, that must be a BASE_JOUEUR
     unsigned get_vacuum(position) const;
     void decrement_vacuum(position);
     void increment_vacuum(position);
@@ -170,8 +170,8 @@ public:
     double get_plasma(position) const;
     void clear_plasma(position);
 
-    // Should be called on a TUYAU, a SUPER_TUYAU or a BASE. In the last case,
-    // the owner collects the plasma.
+    // Should be called on a TUYAU, a SUPER_TUYAU or a BASE_JOUEUR. In the last
+    // case, the owner collects the plasma.
     void increase_plasma(position, double);
 
     /// Get a player's score. The id must be valid.
@@ -192,7 +192,7 @@ public:
     std::vector<position> direction_plasma(position);
 
     /// Move plasma at the end of a turn. Plasma that is not connected to
-    /// any 'BASE' cell is lost.
+    /// any 'BASE_JOUEUR' cell is lost.
     void move_plasma();
 
     /// Make pulsars produce plasma.
@@ -224,7 +224,7 @@ private:
     // Base vacuum on four sides (Top, Bottom, Left, Right)
     std::array<std::array<unsigned, LONGUEUR_BASE>, 4> vacuums_;
 
-    // The lengths of the shortest paths from pipes to 'BASE' cells.
+    // The lengths of the shortest paths from pipes to 'BASE_JOUEUR' cells.
     // MAX_INT represents cells unreachable from bases.
     std::shared_ptr<matrix<int>> board_distances_;
 };

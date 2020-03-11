@@ -64,7 +64,7 @@ GameState::GameState(std::istream& board_stream, const rules::Players& players)
         for (unsigned j = 0; j < 4; j++)
         {
             if (N / 3 <= i && i < N - N / 3)
-                cell(wall[j]) = {case_type::BASE, 0, player_ids_[j / 2]};
+                cell(wall[j]) = {case_type::BASE_JOUEUR, 0, player_ids_[j / 2]};
             else
                 cell(wall[j]) = {case_type::INTERDIT, 0, 0};
         }
@@ -258,7 +258,7 @@ void GameState::increase_plasma(position p, double plasma)
 {
     assert(plasma > 0);
     auto& c = cell(p);
-    if (c.type == BASE)
+    if (c.type == BASE_JOUEUR)
         player_info_.at(c.owner).collect_plasma(plasma);
     else
     {
@@ -309,7 +309,7 @@ std::vector<position> GameState::direction_plasma(position p)
         {
             auto q = p + delta;
             auto t = cell(q).type;
-            if ((t == TUYAU || t == SUPER_TUYAU || t == BASE) &&
+            if ((t == TUYAU || t == SUPER_TUYAU || t == BASE_JOUEUR) &&
                 distances[board_index(q)] < d)
                 directions.push_back(q);
         }
@@ -351,7 +351,7 @@ void GameState::move_plasma()
             continue; // Disconnected plasma disappears.
         const double plasma = std::get<2>(top) / n_dirs;
         for (const auto p : dirs)
-            if (steps == 1 || cell(p).type == BASE)
+            if (steps == 1 || cell(p).type == BASE_JOUEUR)
                 increase_plasma(p, plasma);
             else
                 plasmas.emplace(steps - 1, p, plasma);
@@ -402,7 +402,7 @@ bool GameState::in_bounds(position p) const
 
 const unsigned& GameState::vacuum_at(position p) const
 {
-    assert(cell(p).type == BASE);
+    assert(cell(p).type == BASE_JOUEUR);
     const int offset = TAILLE_TERRAIN / 3;
     if (p.y == 0)
         return vacuums_[0][p.x - offset];

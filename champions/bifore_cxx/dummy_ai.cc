@@ -87,7 +87,7 @@ void printMap(bool color) {
           case PULSAR:
             cout << "P";
             break;
-          case BASE:
+          case BASE_JOUEUR:
             cout << "B";
             break;
           case INTERDIT:
@@ -125,7 +125,7 @@ void printCase(int x, int y) {
     case PULSAR:
       cout << "1;37mP";
       break;
-    case BASE:
+    case BASE_JOUEUR:
       cout << "1;34mB";
       break;
     case INTERDIT:

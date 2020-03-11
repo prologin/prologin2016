@@ -139,8 +139,8 @@ std::string convert_to_string(case_type in)
         return "\"debris\"";
     case PULSAR:
         return "\"pulsar\"";
-    case BASE:
-        return "\"base\"";
+    case BASE_JOUEUR:
+        return "\"base_joueur\"";
     case INTERDIT:
         return "\"interdit\"";
     }
@@ -537,8 +537,8 @@ std::ostream& operator<<(std::ostream& os, case_type v)
     case PULSAR:
         os << "PULSAR";
         break;
-    case BASE:
-        os << "BASE";
+    case BASE_JOUEUR:
+        os << "BASE_JOUEUR";
         break;
     case INTERDIT:
         os << "INTERDIT";
