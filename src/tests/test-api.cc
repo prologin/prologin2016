@@ -38,7 +38,7 @@ TEST_F(ApiTest, Api_TypeCase)
         EXPECT_EQ(VIDE, player.api->type_case({1, 1}));
 
         EXPECT_EQ(INTERDIT, player.api->type_case({0, 1}));
-        EXPECT_EQ(BASE, player.api->type_case({0, TAILLE_TERRAIN / 2}));
+        EXPECT_EQ(BASE_JOUEUR, player.api->type_case({0, TAILLE_TERRAIN / 2}));
     }
 }
 

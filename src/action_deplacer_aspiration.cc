@@ -27,7 +27,8 @@ int ActionDeplacerAspiration::check(const GameState& st) const
         return POSITION_INVALIDE;
     if (source_ == destination_)
         return DEPLACEMENT_INVALIDE;
-    if (source != case_type::BASE || destination != case_type::BASE)
+    if (source != case_type::BASE_JOUEUR ||
+        destination != case_type::BASE_JOUEUR)
         return PAS_DANS_BASE;
     if (st.get_cell_owner(source_) != static_cast<unsigned>(player_id_) ||
         st.get_cell_owner(destination_) != static_cast<unsigned>(player_id_))
