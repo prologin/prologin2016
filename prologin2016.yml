@@ -45,7 +45,7 @@ constant:
 
   -
     cst_name: CHARGE_DESTRUCTION
-    cst_val: 2
+    cst_val: 2.0
     cst_type: double
     cst_comment: Charge en plasma nécessaire pour la destruction d'un tuyau ou
                  d'un Super Tuyau™.
